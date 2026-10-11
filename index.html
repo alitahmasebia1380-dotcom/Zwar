@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — ROOM 0.8.1 • START HOTFIX</title>
+<title>Z: DON'T LOOK BACK — ROOM 0.8.2 • BOOT FIX + ROOM LOCKS</title>
 <style>
 :root{--fg:#e9e9e9;--muted:#9b9b9b;--red:#a60e16;--glass:rgba(8,8,10,.56)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -26,6 +26,7 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 #startBtn{margin-top:26px;min-width:180px;padding:15px 28px;align-items:center;justify-content:center;border:1px solid #303030;background:#0b0b0d;color:#eee;font-weight:800;letter-spacing:.2em;border-radius:4px;font-size:14px;pointer-events:auto;touch-action:manipulation;-webkit-user-select:none;user-select:none;position:relative;z-index:130}
 #startBtn:active{transform:scale(.98);background:#17171a}
 #loading{margin-top:14px;color:#555;font-size:11px;letter-spacing:.15em;min-height:16px}
+#bootError{display:none;position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:200;width:min(860px,94vw);padding:10px 12px;background:#22090b;border:1px solid #7d232b;color:#ffd9dc;font:11px/1.45 ui-monospace,monospace;white-space:pre-wrap;word-break:break-word}
 #hud{position:fixed;inset:0;z-index:40;pointer-events:none;display:none}
 #objective{position:absolute;left:max(24px,env(safe-area-inset-left));top:max(18px,env(safe-area-inset-top));max-width:min(470px,48vw);font-size:11px;letter-spacing:.08em;text-transform:none;color:#d9d9d9;text-shadow:0 2px 8px #000;white-space:pre-line;line-height:1.45}
 #objective small{display:block;color:#777;margin-bottom:5px;font-size:9px;letter-spacing:.24em}
@@ -86,7 +87,8 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 </head>
 <body>
 <div id="game"></div><div id="grain"></div><div id="vignette"></div><div id="blackout"></div><div id="flash"></div>
-<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP • اتاق صفر — بیدار شو</div><p>You wake up somewhere you do not remember.<br><span dir="rtl">جایی بیدار می‌شوی که یادت نمی‌آید.</span></p><p>Headphones recommended. Darkness is part of the gameplay.<br><span dir="rtl">هدفون پیشنهاد می‌شود. تاریکی بخشی از بازی است.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">ROOM 0.8.1 • START HOTFIX</div></div></div>
+<div id="bootError"></div>
+<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP • اتاق صفر — بیدار شو</div><p>You wake up somewhere you do not remember.<br><span dir="rtl">جایی بیدار می‌شوی که یادت نمی‌آید.</span></p><p>Headphones recommended. Darkness is part of the gameplay.<br><span dir="rtl">هدفون پیشنهاد می‌شود. تاریکی بخشی از بازی است.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">ROOM 0.8.2 • BOOT FIX + ROOM LOCKS</div></div></div>
 <div id="orientationLock"><div><b>LANDSCAPE MODE • حالت افقی</b>Rotate your phone sideways to continue.<br><span dir="rtl">برای ادامه گوشی را افقی کن.</span></div></div>
 <div id="hud"><div id="objective"><small>OBJECTIVE • هدف</small><span id="objectiveText">Find a light.
 یک نور پیدا کن.</span></div><div id="battery">FLASHLIGHT<div id="batteryBar"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="hint"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">RUN<br>بدو</button><button class="ctrl" id="lightBtn">◉</button><button class="ctrl" id="useBtn">USE<br>استفاده</button><div id="fps"></div><div id="guide"></div><div id="pickupArrow">↓</div><div id="portraitTag">LANDSCAPE • NIGHTMARE</div></div>
@@ -98,6 +100,9 @@ import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
 const $=id=>document.getElementById(id);
+function showBootError(message){const el=document.getElementById('bootError');if(!el)return;el.style.display='block';el.textContent='BOOT ERROR / خطای اجرا\n'+String(message)}
+window.addEventListener('error',e=>showBootError(e.message||e.error||'Unknown error'));
+window.addEventListener('unhandledrejection',e=>showBootError(e.reason?.message||e.reason||'Unhandled promise rejection'));
 const clamp=THREE.MathUtils.clamp;
 const isTouch=matchMedia('(pointer:coarse)').matches;
 const ASSET='https://cdn.jsdelivr.net/gh/Hidencod/tge-assets@main/';
@@ -130,6 +135,15 @@ const center=new THREE.Vector2(0,0);
 const colliders=[];
 const interactables=[];
 const state={started:false,flashlight:false,hasFlashlight:false,battery:100,fragments:0,phoneDone:false,doorUnlocked:false,finalNote:false,scare:false,scareDone:false,ended:false,running:false,modal:false,objective:'Find a light. / یک نور پیدا کن.',flashGlitch:1,nextFlashFault:18+Math.random()*5,flashFaulting:false,hallPreview:false,hallLoop:0,hallNoteRead:false,hallShifted:false,hallLookedBack:false,nextShadowAt:4+Math.random()*4,shadowUntil:0,shadowStart:0,shadowSide:-1,nextHallBlackout:3+Math.random()*5,hallBlackoutUntil:0};
+
+// ============================================================
+// 30-ROOM ARCHITECTURE CONTRACT
+// ROOM 01: Wake Up      -> LOCKED after acceptance
+// ROOM 02: The Hallway  -> ACTIVE
+// ROOM 03+: add as isolated sections; never rewrite completed rooms.
+// Persistent cross-room state belongs only in `state`; room-local props,
+// puzzles and effects stay inside their numbered room section.
+// ============================================================
 const player={pos:new THREE.Vector3(0,1.74,2.75),yaw:0,pitch:-.18,radius:.3,speed:2.0};
 camera.position.copy(player.pos);
 
@@ -199,6 +213,18 @@ function wall(w,h,d,x,y,z){box(w,h,d,x,y,z);addCollider(x,z,w,d)}
 box(12,.18,9,0,-.08,0,floorMat);box(12,.18,9,0,3.18,0,ceilMat);
 wall(.18,3.2,9,-6,1.55,0);wall(.18,3.2,9,6,1.55,0);wall(12,3.2,.18,0,1.55,4.5);
 wall(5.1,3.2,.18,-3.45,1.55,-4.5);wall(5.1,3.2,.18,3.45,1.55,-4.5);box(1.45,.6,.18,0,2.9,-4.5,wallMat); // lintel is above the player: visual only, never a 2D collider
+// ============================================================
+// SHARED MATERIALS — declared before any room builder executes.
+// IMPORTANT: keep declarations above every function that uses them.
+// ============================================================
+const doorWood=new THREE.MeshStandardMaterial({map:texturePlaster('#241915','#0a0807'),color:0x5b3528,roughness:.95,metalness:.18});
+loadReadyTexture(READY_TEX_ROOT+'Metal055A/Metal055A.png',{repeat:[1.2,2.0]}).then(t=>{if(t){doorWood.map=t;doorWood.color.set(0x73503b);doorWood.roughness=.88;doorWood.metalness=.24;doorWood.needsUpdate=true}});
+
+// ============================================================
+// ROOM 02 — THE HALLWAY — ACTIVE DEVELOPMENT ZONE
+// New Room 02 work goes below this marker. Do not edit locked Room 01
+// except for a confirmed bug that prevents progression.
+// ============================================================
 // STAGE 2 — THE HALLWAY. Long enough to feel spatially wrong, but still mobile-light.
 box(3.8,.18,20,0,-.08,-14.5,floorMat);box(3.8,.18,20,0,3.18,-14.5,ceilMat);wall(.18,3.2,20,-1.9,1.55,-14.5);wall(.18,3.2,20,1.9,1.55,-14.5);wall(3.8,3.2,.18,0,1.55,-24.5);
 wallpaperPanel(20,2.82,-1.805,1.45,-14.5,Math.PI/2,5.7);wallpaperPanel(20,2.82,1.805,1.45,-14.5,-Math.PI/2,5.7);
@@ -226,6 +252,8 @@ let hallChair=null;
 const hallShadow=new THREE.Mesh(new THREE.PlaneGeometry(.52,1.82),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide}));
 hallShadow.position.set(-1.795,1.18,-12);hallShadow.rotation.y=Math.PI/2;hallShadow.visible=false;scene.add(hallShadow);
 
+
+// ===== END ROOM 02 STATIC GEOMETRY BLOCK =====
 
 // Decayed wallpaper: enough pattern to feel like an old lived-in room, with torn areas exposing plaster.
 wallpaperPanel(11.55,2.82,0,1.47,4.405,Math.PI,3.3);
@@ -285,9 +313,12 @@ async function buildProps(){
 }
 const propsReady=buildProps();
 
+// ============================================================
+// ROOM 01 — WAKE UP — LOCKED BASELINE
+// Status: feature-complete. Freeze layout/gameplay after approval.
+// Only progression-blocking bug fixes are allowed here.
+// ============================================================
 // Stable thin door: local geometry avoids the broken GLB door artifact seen on iPhone.
-const doorWood=new THREE.MeshStandardMaterial({map:texturePlaster('#241915','#0a0807'),color:0x5b3528,roughness:.95,metalness:.18});
-loadReadyTexture(READY_TEX_ROOT+'Metal055A/Metal055A.png',{repeat:[1.2,2.0]}).then(t=>{if(t){doorWood.map=t;doorWood.color.set(0x73503b);doorWood.roughness=.88;doorWood.metalness=.24;doorWood.needsUpdate=true}});
 const doorTrim=new THREE.MeshStandardMaterial({color:0x0d0b0a,roughness:.9});
 const brass=new THREE.MeshStandardMaterial({color:0x625135,roughness:.42,metalness:.55});
 const doorVisual=new THREE.Group();doorVisual.position.set(-.79,0,-4.405);scene.add(doorVisual);
@@ -507,6 +538,7 @@ function startGame(){
  setTimeout(()=>{$('guide').style.opacity=0},5600);
  setTimeout(()=>{subtitle(bi('Samyar wakes up on the floor.','سامیار روی زمین بیدار می‌شود.'));hint(bi('The weak warm light is the flashlight.','نور گرم ضعیف، چراغ‌قوه است.'),4300)},700);
 }
+// BOOT GATE: reaching this line means all top-level room construction completed successfully.
 const startButton=$('startBtn');
 startButton.onclick=e=>{e?.preventDefault?.();startGame()};
 startButton.addEventListener('pointerup',e=>{e.preventDefault();startGame()},{passive:false});
@@ -534,6 +566,7 @@ function update(dt,t){if(!state.started)return;
  interactionCheck();
  // Let the player actually walk through the door and experience a short Stage-2 preview before ending Room 0.
  if(!state.hallPreview&&state.doorUnlocked&&!doorBlock.active&&player.pos.z<-6.15){state.hallPreview=true;setObjective(bi('Find the patient file in the hallway.','پرونده بیمار را در راهرو پیدا کن.'));subtitle(bi('STAGE 2 — THE HALLWAY','مرحله ۲ — راهرو'),3000);knock()}
+ // ===== ROOM 02 RUNTIME — THE HALLWAY =====
  if(state.hallPreview){
    hallFrame.visible=true;if(hallChair)hallChair.visible=true;
    // Corridor lighting is unstable: dirty fluorescent tubes repeatedly lose power.
