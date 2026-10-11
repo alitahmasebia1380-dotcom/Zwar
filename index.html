@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — PACK 1 • ROOM 0.10 • PORTRAIT + DOOR 3</title>
+<title>Z: DON'T LOOK BACK — PACK 1 • ROOM 0.10.1 • PERFORMANCE LOCK</title>
 <style>
 :root{--fg:#e9e9e9;--muted:#9b9b9b;--red:#a60e16;--glass:rgba(8,8,10,.56)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -81,7 +81,7 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 <body>
 <div id="game"></div><div id="grain"></div><div id="vignette"></div><div id="blackout"></div><div id="flash"></div>
 <div id="bootError"></div>
-<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 01 — WAKE UP • اتاق ۱ — بیدار شو</div><p>You wake up somewhere you do not remember.<br><span dir="rtl">جایی بیدار می‌شوی که یادت نمی‌آید.</span></p><p>Headphones recommended. Darkness is part of the gameplay.<br><span dir="rtl">هدفون پیشنهاد می‌شود. تاریکی بخشی از بازی است.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">PACK 1 • ROOM 0.10 • PORTRAIT + DOOR 3</div></div></div>
+<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 01 — WAKE UP • اتاق ۱ — بیدار شو</div><p>You wake up somewhere you do not remember.<br><span dir="rtl">جایی بیدار می‌شوی که یادت نمی‌آید.</span></p><p>Headphones recommended. Darkness is part of the gameplay.<br><span dir="rtl">هدفون پیشنهاد می‌شود. تاریکی بخشی از بازی است.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">PACK 1 • ROOM 0.10.1 • PERFORMANCE LOCK</div></div></div>
 <div id="orientationLock"><div><b>PORTRAIT MODE • حالت عمودی</b>Rotate your phone upright to continue.<br><span dir="rtl">برای ادامه گوشی را عمودی نگه دار.</span></div></div>
 <div id="hud"><div id="objective"><small>OBJECTIVE • هدف</small><span id="objectiveText">Find a light.
 یک نور پیدا کن.</span></div><div id="battery">FLASHLIGHT<div id="batteryBar"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="hint"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">🏃<small>RUN • بدو</small></button><button class="ctrl" id="lightBtn">◉</button><button class="ctrl" id="useBtn">USE<br>استفاده</button><div id="fps"></div><div id="guide"></div><div id="pickupArrow">↓</div><div id="portraitTag">PORTRAIT • NIGHTMARE</div></div>
@@ -113,8 +113,10 @@ scene.fog=new THREE.FogExp2(0x030304,.055);
 const camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.04,60);
 camera.rotation.order='YXZ';
 const renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:'high-performance',alpha:false,stencil:false});
-renderer.setSize(innerWidth,innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.25));
+// PERFORMANCE LOCK: use a stable mobile render scale. Frequent DPR reallocations were causing visible iPhone micro-freezes.
+let renderScale=Math.min(devicePixelRatio,isTouch?1.05:1.25);
+renderer.setPixelRatio(renderScale);
+renderer.setSize(innerWidth,innerHeight,false);
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure=.42;
@@ -127,7 +129,7 @@ const raycaster=new THREE.Raycaster();
 const center=new THREE.Vector2(0,0);
 const colliders=[];
 const interactables=[];
-const state={started:false,flashlight:false,hasFlashlight:false,battery:100,fragments:0,phoneDone:false,phoneRinging:false,nextPhoneRing:0,doorUnlocked:false,finalNote:false,scare:false,scareDone:false,ended:false,running:false,modal:false,objective:'Find a light. / یک نور پیدا کن.',flashGlitch:1,nextFlashFault:18+Math.random()*5,flashFaulting:false,hallPreview:false,hallLookedBack:false,hallShifted:false,nextShadowAt:5+Math.random()*5,shadowUntil:0,shadowStart:0,shadowSide:-1,nextHallBlackout:3+Math.random()*5,hallBlackoutUntil:0,hallRoom3Open:false,hallCodeKnown:false,hallEndDoorUnlocked:false,hallEndDoorOpen:false,hallTransitioning:false,nextStepAt:0,nextAmbientAt:10+Math.random()*8,lastAmbientAt:0,hallScreamPlayed:false};
+const state={started:false,flashlight:false,hasFlashlight:false,battery:100,fragments:0,phoneDone:false,phoneRinging:false,nextPhoneRing:0,doorUnlocked:false,finalNote:false,scare:false,scareDone:false,ended:false,running:false,modal:false,objective:'Find a light. / یک نور پیدا کن.',flashGlitch:1,nextFlashFault:18+Math.random()*5,flashFaulting:false,hallPreview:false,hallLookedBack:false,hallShifted:false,nextShadowAt:5+Math.random()*5,shadowUntil:0,shadowStart:0,shadowSide:-1,nextHallBlackout:3+Math.random()*5,hallBlackoutUntil:0,hallRoom3Open:false,hallCodeKnown:false,hallEndDoorUnlocked:false,hallEndDoorOpen:false,hallTransitioning:false,nextStepAt:0,nextAmbientAt:10+Math.random()*8,lastAmbientAt:0,hallScreamPlayed:false,nextInteractionTick:0,nextHallLightTick:0};
 
 // ============================================================
 // 30-ROOM / 3-PACK ARCHITECTURE CONTRACT
@@ -135,7 +137,8 @@ const state={started:false,flashlight:false,hasFlashlight:false,battery:100,frag
 // PACK 2 = ROOMS 11–20   (separate pack later)
 // PACK 3 = ROOMS 21–30   (separate pack later)
 // ROOM 01: Wake Up      -> LOCKED except confirmed progression fixes
-// ROOM 02: The Hallway  -> ACTIVE
+// ROOM 02: The Hallway  -> LOCKED / APPROVED
+// ROOM 03: NEXT ACTIVE ROOM
 // Once a room is approved, later rooms do not rewrite it.
 // Persistent cross-room state belongs only in `state`; room-local props,
 // puzzles and effects stay inside their numbered room section.
@@ -543,10 +546,26 @@ const SFX_URL={
  scream:'https://upload.wikimedia.org/wikipedia/commons/e/e6/Nick121087_-_Demonic_Woman_Scream_(cc0)_(freesound).mp3',
  shock:'https://upload.wikimedia.org/wikipedia/commons/transcoded/8/8d/Metal_drop_thump.ogg/Metal_drop_thump.ogg.mp3'
 };
-const sfx={};for(const [name,url] of Object.entries(SFX_URL)){const a=new Audio(url);a.preload='metadata';a.playsInline=true;sfx[name]=a}
-function primeSfx(){for(const a of Object.values(sfx)){try{a.muted=true;const p=a.play();if(p?.then)p.then(()=>{a.pause();a.currentTime=0;a.muted=false}).catch(()=>{a.muted=false})}catch{a.muted=false}}}
-function playSfx(name,vol=.55,rate=1){const a=sfx[name];if(!a)return null;try{a.pause();a.currentTime=0;a.volume=clamp(vol,0,1);a.playbackRate=rate;const p=a.play();p?.catch?.(()=>{});return a}catch{return null}}
-function stopSfx(name){const a=sfx[name];if(a){try{a.pause();a.currentTime=0}catch{}}}
+// PERFORMANCE: HTMLAudio pools prevent pause/seek/restart contention on footsteps and repeated ambience.
+// Real recorded SFX are preserved; there is still no background music.
+const sfx={};
+const SFX_POOL_SIZE={step:3,knock:2,doorCreak:2,doorHandle:2,phone:1,cry:1,scream:1,shock:2};
+for(const [name,url] of Object.entries(SFX_URL)){
+ const pool=[];const count=SFX_POOL_SIZE[name]||1;
+ for(let i=0;i<count;i++){const a=new Audio(url);a.preload='auto';a.playsInline=true;try{a.load()}catch{}pool.push(a)}
+ sfx[name]={pool,index:0};
+}
+function primeSfx(){
+ // Never start all clips at once: on iOS that can cause decoder spikes right after WAKE UP.
+ // Files are already requested with preload=auto; user interaction simply unlocks later playback.
+ for(const entry of Object.values(sfx))for(const a of entry.pool){try{a.load()}catch{}}
+}
+function playSfx(name,vol=.55,rate=1){
+ const entry=sfx[name];if(!entry)return null;
+ const a=entry.pool[entry.index++%entry.pool.length];
+ try{a.pause();a.currentTime=0;a.volume=clamp(vol,0,1);a.playbackRate=rate;const p=a.play();p?.catch?.(()=>{});return a}catch{return null}
+}
+function stopSfx(name){const entry=sfx[name];if(entry)for(const a of entry.pool){try{a.pause();a.currentTime=0}catch{}}}
 function ring(){playSfx('phone',.34,1)}
 function knock(){playSfx('knock',.30,.92+Math.random()*.08)}
 function scareBoom(){playSfx('shock',.82,.92)}
@@ -594,15 +613,27 @@ function triggerScare(){if(state.scareDone||!entity)return;state.scareDone=true;
 
 function openDoor(){if(!state.doorUnlocked){subtitle(bi('LOCKED','قفل است'));openKeypad();return}if(doorBlock.active){doorBlock.active=false;doorProxy.visible=false;playSfx('doorHandle',.38,1);setTimeout(()=>playSfx('doorCreak',.56,.95),90);const st=performance.now(),r0=doorVisual.rotation.y;function anim(t){const k=clamp((t-st)/900,0,1),e=1-Math.pow(1-k,3);doorVisual.rotation.y=r0-Math.PI*.56*e;if(k<1)requestAnimationFrame(anim)}requestAnimationFrame(anim);setObjective(BI.enterHall);subtitle(bi('The doorway is clear.','راه باز است.'),1600)}}
 
-function nearestUsable(maxDist=2.6){let best=null,bestD=maxDist;for(const o of interactables){if(!o.visible)continue;const wp=new THREE.Vector3();o.getWorldPosition(wp);const d=Math.hypot(wp.x-player.pos.x,wp.z-player.pos.z);if(d<bestD){best=o;bestD=d}}return best}
-function useObject(){if(state.modal||!state.started)return;let o=currentInteract||nearestUsable(state.hasFlashlight?2.05:3.0);if(!o){hint(bi('Move closer and look at the object.','نزدیک‌تر شو و به شیء نگاه کن.'),1500);return}const t=o.userData.type;if(t==='flashlight')pickupFlashlight();else if(t==='phone')answerPhone();else if(t==='fragment')collectFragment(o);else if(t==='keypad')openKeypad('room1');else if(t==='finalNote')inspectFinal();else if(t==='hallCodeNote')readHallCodeNote();else if(t==='hallDoor')tryHallDoor(o);else if(t==='hallKeypad'){if(!state.hallCodeKnown){hint(bi('The code is inside Door 3.','رمز داخل اتاق شماره ۳ است.'),1900)}else openKeypad('hall')}else if(t==='hallEndDoor')openHallEndDoor();else if(t==='door')openDoor()}
+const usableWorldPos=new THREE.Vector3(),visibleInteractables=[],interactionHits=[];
+function nearestUsable(maxDist=2.6){let best=null,bestD=maxDist;for(const o of interactables){if(!o.visible)continue;o.getWorldPosition(usableWorldPos);const d=Math.hypot(usableWorldPos.x-player.pos.x,usableWorldPos.z-player.pos.z);if(d<bestD){best=o;bestD=d}}return best}
+function useObject(){if(state.modal||!state.started)return;interactionCheck(clock.elapsedTime,true);let o=currentInteract||nearestUsable(state.hasFlashlight?2.05:3.0);if(!o){hint(bi('Move closer and look at the object.','نزدیک‌تر شو و به شیء نگاه کن.'),1500);return}const t=o.userData.type;if(t==='flashlight')pickupFlashlight();else if(t==='phone')answerPhone();else if(t==='fragment')collectFragment(o);else if(t==='keypad')openKeypad('room1');else if(t==='finalNote')inspectFinal();else if(t==='hallCodeNote')readHallCodeNote();else if(t==='hallDoor')tryHallDoor(o);else if(t==='hallKeypad'){if(!state.hallCodeKnown){hint(bi('The code is inside Door 3.','رمز داخل اتاق شماره ۳ است.'),1900)}else openKeypad('hall')}else if(t==='hallEndDoor')openHallEndDoor();else if(t==='door')openDoor()}
 
 // Invisible door interaction proxy
 const doorProxy=new THREE.Mesh(new THREE.BoxGeometry(1.62,2.52,.10),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));doorProxy.position.set(0,1.25,-4.34);scene.add(doorProxy);doorProxy.userData={type:'door'};interactables.push(doorProxy);
 
 let currentInteract=null;
-function interactionCheck(){if(state.modal){$('prompt').style.opacity=0;return}raycaster.setFromCamera(center,camera);const hits=raycaster.intersectObjects(interactables.filter(o=>o.visible),true);let hit=null;for(const h of hits){let root=h.object;while(root.parent&&root.parent!==scene&&root.parent!==camera&&!root.userData.type)root=root.parent;if(root.userData.type&&h.distance<2.15){hit=root;break}}if(!hit&&!state.hasFlashlight){const d=Math.hypot(player.pos.x-.35,player.pos.z-1.0);if(d<3.0)hit=flashlightHit}
-currentInteract=hit;const p=$('prompt');if(!hit){p.style.opacity=0;return}let text='USE';switch(hit.userData.type){case'flashlight':text=bi('TAKE FLASHLIGHT','چراغ‌قوه را بردار');break;case'phone':text=state.phoneDone?bi('PHONE','تلفن'):bi('ANSWER PHONE','تلفن را جواب بده');break;case'fragment':text=bi('READ','بخوان');break;case'keypad':text=bi('KEYPAD','صفحه رمز');break;case'finalNote':text=bi('READ NOTE','یادداشت را بخوان');break;case'hallCodeNote':text=bi('READ EXIT CODE','رمز خروج را بخوان');break;case'hallDoor':text=hit.userData.number===3?bi('OPEN DOOR 3','در شماره ۳ را باز کن'):bi('TRY DOOR','در را امتحان کن');break;case'hallKeypad':text=bi('FINAL KEYPAD','صفحه رمز نهایی');break;case'hallEndDoor':text=state.hallEndDoorUnlocked?bi('OPEN FINAL DOOR','در آخر را باز کن'):bi('FINAL DOOR — LOCKED','در آخر — قفل');break;case'door':text=state.doorUnlocked?bi('OPEN DOOR','در را باز کن'):bi('LOCKED DOOR','در قفل است');break}p.textContent=text;p.style.opacity=1}
+function interactionCheck(t=0,force=false){
+ // Raycasting every rendered frame created garbage and small GC spikes on iPhone.
+ // 20 Hz is visually indistinguishable for a USE prompt and much cheaper.
+ if(!force&&t<state.nextInteractionTick)return;
+ state.nextInteractionTick=t+.05;
+ if(state.modal){$('prompt').style.opacity=0;return}
+ visibleInteractables.length=0;for(const o of interactables)if(o.visible)visibleInteractables.push(o);
+ interactionHits.length=0;raycaster.setFromCamera(center,camera);raycaster.intersectObjects(visibleInteractables,true,interactionHits);
+ let hit=null;for(const h of interactionHits){let root=h.object;while(root.parent&&root.parent!==scene&&root.parent!==camera&&!root.userData.type)root=root.parent;if(root.userData.type&&h.distance<2.15){hit=root;break}}
+ if(!hit&&!state.hasFlashlight){const d=Math.hypot(player.pos.x-.35,player.pos.z-1.0);if(d<3.0)hit=flashlightHit}
+ currentInteract=hit;const p=$('prompt');if(!hit){p.style.opacity=0;return}
+ let text='USE';switch(hit.userData.type){case'flashlight':text=bi('TAKE FLASHLIGHT','چراغ‌قوه را بردار');break;case'phone':text=state.phoneDone?bi('PHONE','تلفن'):bi('ANSWER PHONE','تلفن را جواب بده');break;case'fragment':text=bi('READ','بخوان');break;case'keypad':text=bi('KEYPAD','صفحه رمز');break;case'finalNote':text=bi('READ NOTE','یادداشت را بخوان');break;case'hallCodeNote':text=bi('READ EXIT CODE','رمز خروج را بخوان');break;case'hallDoor':text=hit.userData.number===3?bi('OPEN DOOR 3','در شماره ۳ را باز کن'):bi('TRY DOOR','در را امتحان کن');break;case'hallKeypad':text=bi('FINAL KEYPAD','صفحه رمز نهایی');break;case'hallEndDoor':text=state.hallEndDoorUnlocked?bi('OPEN FINAL DOOR','در آخر را باز کن'):bi('FINAL DOOR — LOCKED','در آخر — قفل');break;case'door':text=state.doorUnlocked?bi('OPEN DOOR','در را باز کن'):bi('LOCKED DOOR','در قفل است');break}p.textContent=text;p.style.opacity=1
+}
 
 function setFlashlight(v,forced=false){
  if(!state.hasFlashlight&&!forced){hint(bi('You do not have the flashlight yet. Follow the weak warm light and press USE.','هنوز چراغ‌قوه را برنداشتی. نور گرم ضعیف را دنبال کن و USE را بزن.'),2600);return}
@@ -655,8 +686,19 @@ startButton.onclick=e=>{e?.preventDefault?.();startGame()};
 startButton.addEventListener('pointerup',e=>{e.preventDefault();startGame()},{passive:false});
 startButton.addEventListener('touchend',e=>{e.preventDefault();startGame()},{passive:false});setInterval(()=>{if(state.started&&!state.hasFlashlight&&!state.modal){const d=Math.hypot(player.pos.x-.35,player.pos.z-1.0);if(d<2.7){$('prompt').textContent=bi('USE — TAKE FLASHLIGHT','USE — چراغ‌قوه را بردار');$('prompt').style.opacity=1}}},500);
 
-let perfAcc=0,frames=0,lastPerf=performance.now(),dynamicPR=Math.min(devicePixelRatio,1.25);
-function adaptPerformance(dt){perfAcc+=dt;frames++;if(perfAcc>2.5){const fps=frames/perfAcc;$('fps').textContent=`${fps.toFixed(0)} FPS`;if(isTouch){if(fps<46&&dynamicPR>.72){dynamicPR=Math.max(.72,dynamicPR-.1);renderer.setPixelRatio(dynamicPR)}else if(fps>57&&dynamicPR<1.15){dynamicPR=Math.min(1.15,dynamicPR+.05);renderer.setPixelRatio(dynamicPR)}}perfAcc=0;frames=0}}
+let perfAcc=0,frames=0,lastScaleChange=0;
+function adaptPerformance(dt){
+ perfAcc+=dt;frames++;
+ if(perfAcc<4)return;
+ const fps=frames/perfAcc;$('fps').textContent=`${fps.toFixed(0)} FPS`;
+ // Downshift only after sustained low FPS. Never bounce upward during the same session:
+ // setPixelRatio reallocates the canvas backbuffer and was one of the main periodic hitch sources.
+ const now=performance.now();
+ if(isTouch&&fps<47&&renderScale>.80&&now-lastScaleChange>9000){
+   renderScale=Math.max(.80,renderScale-.08);renderer.setPixelRatio(renderScale);renderer.setSize(innerWidth,innerHeight,false);lastScaleChange=now;
+ }
+ perfAcc=0;frames=0;
+}
 
 function update(dt,t){if(!state.started)return;
  if(!state.modal){let f=0,s=0;if(keys.KeyW||keys.ArrowUp)f+=1;if(keys.KeyS||keys.ArrowDown)f-=1;if(keys.KeyA||keys.ArrowLeft)s-=1;if(keys.KeyD||keys.ArrowRight)s+=1;f+=-jy;s+=jx;const len=Math.hypot(f,s);if(len>1){f/=len;s/=len}const speed=player.speed*(state.running?1.72:1);const sy=Math.sin(player.yaw),cy=Math.cos(player.yaw);const dx=(-sy*f+cy*s)*speed*dt,dz=(-cy*f-sy*s)*speed*dt;let nx=player.pos.x+dx,nz=player.pos.z+dz;if(collisionTry(nx,player.pos.z))player.pos.x=nx;if(collisionTry(player.pos.x,nz))player.pos.z=nz}
@@ -674,7 +716,7 @@ function update(dt,t){if(!state.started)return;
  $('batteryFill').style.transform=`scaleX(${state.battery/100})`;
  // occasional dead ceiling flicker after phone
  if(state.phoneDone&&Math.random()<.0009){ceilingFlicker.intensity=.16;setTimeout(()=>ceilingFlicker.intensity=0,45)}
- interactionCheck();
+ interactionCheck(t);
  // Room 01 -> Room 02 transition. Room 01 remains locked; all active development below is Room 02.
  if(!state.hallPreview&&state.doorUnlocked&&!doorBlock.active&&player.pos.z<-6.15){state.hallPreview=true;setObjective(bi('Find Door 3.','در شماره ۳ را پیدا کن.'));subtitle(bi('STAGE 2 — THE HALLWAY','مرحله ۲ — راهرو'),3000);hallWounds.forEach(m=>m.visible=true);hallFrame.visible=true;if(hallChair)hallChair.visible=true;scheduleNextAmbient(t)}
  // ===== ROOM 02 RUNTIME — THE HALLWAY =====
@@ -683,15 +725,15 @@ function update(dt,t){if(!state.started)return;
    // Unstable fluorescent light: visual flicker is frequent, sound is deliberately sparse.
    if(t>state.nextHallBlackout){state.hallBlackoutUntil=t+.12+Math.random()*.32;state.nextHallBlackout=t+2.8+Math.random()*5.8}
    const blackout=t<state.hallBlackoutUntil;
-   hallLamp.intensity=blackout?0:(.55+Math.max(0,Math.sin(t*8.1))*.95);hallLamp2.intensity=blackout?0:(.30+Math.max(0,Math.sin(t*5.7+1.4))*.62);
-   hallCeilingLights.forEach((l,i)=>{const f=.52+.48*Math.max(0,Math.sin(t*(5.4+i*.73)+i*1.9)),randomDrop=Math.random()<.014?0:1;l.intensity=blackout?0:l.userData.base*f*randomDrop;if(l.userData.tube)l.userData.tube.material.opacity=blackout?.025:.10+.22*f*randomDrop});
+   // Update expensive dynamic light state at 20 Hz, while rendering remains full-frame.
+   if(t>=state.nextHallLightTick){state.nextHallLightTick=t+.05;hallLamp.intensity=blackout?0:(.55+Math.max(0,Math.sin(t*8.1))*.95);hallLamp2.intensity=blackout?0:(.30+Math.max(0,Math.sin(t*5.7+1.4))*.62);for(let i=0;i<hallCeilingLights.length;i++){const l=hallCeilingLights[i],f=.52+.48*Math.max(0,Math.sin(t*(5.4+i*.73)+i*1.9)),randomDrop=Math.random()<.014?0:1;l.intensity=blackout?0:l.userData.base*f*randomDrop;if(l.userData.tube)l.userData.tube.material.opacity=blackout?.025:.10+.22*f*randomDrop}}
    // Real footsteps, quiet and tied to player movement. No background music.
    if(!state.modal){const moved=Math.hypot(player.pos.x-stepAnchor.x,player.pos.z-stepAnchor.z),need=state.running?.62:.82;if(moved>need&&t>state.nextStepAt){playSfx('step',state.running?.12:.085,.90+Math.random()*.16);stepAnchor.copy(player.pos);state.nextStepAt=t+(state.running?.22:.34)}}
    // Sparse recurring knocks/creaks/cry. A scream is rare and only after a long stretch of hallway time.
    if(t>state.nextAmbientAt&&!state.modal)playHallAmbient(t);
    // When Samyar looks back, a non-clue object silently changes place after he faces forward again.
-   const forwardNow=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);if(player.pos.z<-11&&forwardNow.z>.28)state.hallLookedBack=true;
-   if(state.hallLookedBack&&!state.hallShifted&&forwardNow.z<-.30){state.hallShifted=true;if(hallChair){hallChair.position.x=-.82;hallChair.position.z=-18.3;hallChair.rotation.y=.68}hallFrame.position.z=-12.6;hallFrame.rotation.z=.09;playSfx('shock',.10,.66)}
+   const forwardZ=-Math.cos(player.yaw);if(player.pos.z<-11&&forwardZ>.28)state.hallLookedBack=true;
+   if(state.hallLookedBack&&!state.hallShifted&&forwardZ<-.30){state.hallShifted=true;if(hallChair){hallChair.position.x=-.82;hallChair.position.z=-18.3;hallChair.rotation.y=.68}hallFrame.position.z=-12.6;hallFrame.rotation.z=.09;playSfx('shock',.10,.66)}
    // Blink-and-you-miss-it wall shadows.
    if(t>state.nextShadowAt&&player.pos.z<-8.5&&player.pos.x>-1.6){state.shadowStart=t;state.shadowUntil=t+.30;state.shadowSide=Math.random()<.5?-1:1;hallShadow.visible=true;hallShadow.rotation.y=state.shadowSide<0?Math.PI/2:-Math.PI/2;hallShadow.position.x=state.shadowSide*1.795;hallShadow.position.z=player.pos.z-2.8;state.nextShadowAt=t+6.5+Math.random()*10.0}
    if(hallShadow.visible){const q=clamp((t-state.shadowStart)/.30,0,1);hallShadow.position.z=player.pos.z-2.8+q*5.6;hallShadow.material.opacity=Math.sin(q*Math.PI)*.62;if(t>=state.shadowUntil){hallShadow.visible=false;hallShadow.material.opacity=0}}
@@ -706,8 +748,9 @@ function update(dt,t){if(!state.started)return;
 function loop(){const dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;update(dt,t);renderer.render(scene,camera);requestAnimationFrame(loop)}loop();
 
 function syncOrientationUI(){const bad=innerWidth>innerHeight;$('orientationLock').style.display=bad?'flex':'none';if(!state.started){$('intro').style.display='flex';$('startBtn').style.display='inline-flex'}}
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.fov=64;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);syncOrientationUI();setTimeout(syncOrientationUI,180)});
-addEventListener('orientationchange',()=>{setTimeout(()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);syncOrientationUI()},260)});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.fov=64;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false);syncOrientationUI();setTimeout(syncOrientationUI,180)});
+addEventListener('orientationchange',()=>{setTimeout(()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false);syncOrientationUI()},260)});
+addEventListener('visibilitychange',()=>{if(!document.hidden){clock.getDelta();perfAcc=0;frames=0;state.nextInteractionTick=0}});
 // Prevent iOS double tap zoom/context menu
 addEventListener('contextmenu',e=>e.preventDefault());
 </script>
