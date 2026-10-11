@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — PACK 1 • ROOMS 01–10 • RED-TEAM BUILD 1.1 • MOBILE LIGHTING FIX</title>
+<title>Z: DON'T LOOK BACK — PACK 1 • ROOMS 01–10 • RED-TEAM BUILD 1.2 • FLASHLIGHT x2</title>
 <style>
 :root{--fg:#ececec;--muted:#8e8e93;--blood:#7e0c16;--panel:rgba(8,8,10,.92)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -90,8 +90,8 @@ const renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:'high-pe
 const renderScale=Math.min(devicePixelRatio||1,isTouch?.82:1.15);renderer.setPixelRatio(renderScale);renderer.setSize(innerWidth,innerHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.92;renderer.shadowMap.enabled=false;UI.game.appendChild(renderer.domElement);
 const hemi=new THREE.HemisphereLight(0x242834,0x0a0807,.42);scene.add(hemi);
 const world=new THREE.Group();scene.add(world);
-const flashlight=new THREE.SpotLight(0xfff4de,145,13,Math.PI/7,.78,1.65);flashlight.castShadow=false;camera.add(flashlight);scene.add(camera);const fTarget=new THREE.Object3D();fTarget.position.set(0,-.04,-5);camera.add(fTarget);flashlight.target=fTarget;flashlight.position.set(.04,-.02,.02);
-const spill=new THREE.PointLight(0xd7d0c5,7.5,2.7,2);camera.add(spill);spill.position.set(0,-.15,-.2);
+const flashlight=new THREE.SpotLight(0xfff4de,290,13,Math.PI/7,.78,1.65);flashlight.castShadow=false;camera.add(flashlight);scene.add(camera);const fTarget=new THREE.Object3D();fTarget.position.set(0,-.04,-5);camera.add(fTarget);flashlight.target=fTarget;flashlight.position.set(.04,-.02,.02);
+const spill=new THREE.PointLight(0xd7d0c5,15,2.7,2);camera.add(spill);spill.position.set(0,-.15,-.2);
 const candleLight=new THREE.PointLight(0xffa64a,0,3.4,2);camera.add(candleLight);candleLight.position.set(.22,-.42,-.32);
 
 // ---------- Shared materials ----------
@@ -200,7 +200,7 @@ function movementVector(){let x=input.joyX,y=-input.joyY;if(input.keys.has('KeyA
 function nearestInteraction(){let best=null,bd=99;const f=new THREE.Vector3(-Math.sin(P.yaw),0,-Math.cos(P.yaw));for(const it of interactables){if(!it.enabled||!it.obj?.parent)continue;const wp=new THREE.Vector3();it.obj.getWorldPosition(wp);const dx=wp.x-P.pos.x,dz=wp.z-P.pos.z,dist=Math.hypot(dx,dz);if(dist>it.range||dist>=bd)continue;const dot=(dx*f.x+dz*f.z)/(dist||1);if(dot<.15)continue;best=it;bd=dist}return best}
 function interact(){if(Game.modal||Game.lock)return;const it=nearestInteraction();if(it){try{it.action(it)}catch(e){bootFail(e)}}}
 function toggleLight(){if(!Game.hasFlashlight||Game.flashlightDead)return;Game.flashlightOn=!Game.flashlightOn;updateLights()}
-function updateLights(){flashlight.intensity=(Game.flashlightOn&&!Game.flashlightDead)?145:0;spill.intensity=(Game.flashlightOn&&!Game.flashlightDead)?7.5:0;candleLight.intensity=Game.candle?22:0;UI.candle.style.display=Game.candle?'block':'none';UI.battery.parentElement.style.display=Game.hasFlashlight?'block':'none'}
+function updateLights(){flashlight.intensity=(Game.flashlightOn&&!Game.flashlightDead)?290:0;spill.intensity=(Game.flashlightOn&&!Game.flashlightDead)?15:0;candleLight.intensity=Game.candle?22:0;UI.candle.style.display=Game.candle?'block':'none';UI.battery.parentElement.style.display=Game.hasFlashlight?'block':'none'}
 
 // ---------- Stage manager ----------
 const Game={stage:0,started:false,modal:false,lock:false,hasFlashlight:false,flashlightOn:false,flashlightDead:false,battery:100,candle:false,local:{},update:null,player:P,checkpoint:1};
