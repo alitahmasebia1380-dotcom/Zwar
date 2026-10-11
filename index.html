@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — ROOM 0</title>
+<title>Z: DON'T LOOK BACK — ROOM 0.2</title>
 <style>
 :root{--fg:#e9e9e9;--muted:#9b9b9b;--red:#a60e16;--glass:rgba(8,8,10,.56)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -55,6 +55,9 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:
 #endPanel .panel{text-align:center}
 #endPanel h2{font-size:26px;color:#ddd}
 #fps{position:absolute;right:12px;bottom:8px;font:10px ui-monospace,monospace;color:#444}
+
+#rotateHint{position:absolute;left:50%;top:max(62px,calc(env(safe-area-inset-top) + 46px));transform:translateX(-50%);font-size:8px;letter-spacing:.2em;color:#777;opacity:0;transition:opacity .25s;white-space:nowrap;pointer-events:none}
+@media (orientation:portrait) and (max-width:600px){#rotateHint{opacity:.65}}
 @media (pointer:fine){#joy,#useBtn,#lightBtn,#runBtn{opacity:.22}#joy:hover,#useBtn:hover,#lightBtn:hover,#runBtn:hover{opacity:.7}}
 @media (max-height:520px){#objective{font-size:10px}.ctrl{transform:scale(.88);transform-origin:center}#joy{transform:scale(.88);transform-origin:left bottom}#subtitle{bottom:8%}}
 </style>
@@ -64,8 +67,8 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;color:
 </head>
 <body>
 <div id="game"></div><div id="grain"></div><div id="vignette"></div><div id="blackout"></div><div id="flash"></div>
-<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP</div><p>You wake up somewhere you do not remember.</p><p>Headphones recommended. Darkness is part of the gameplay.</p><button id="startBtn">WAKE UP</button><div id="loading">READY</div></div></div>
-<div id="hud"><div id="objective"><small>OBJECTIVE</small><span id="objectiveText">Find a light.</span></div><div id="battery">FLASHLIGHT<div id="batteryBar"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="hint"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">RUN</button><button class="ctrl" id="lightBtn">◉</button><button class="ctrl" id="useBtn">USE</button><div id="fps"></div></div>
+<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP</div><p>You wake up somewhere you do not remember.</p><p>Headphones recommended. Darkness is part of the gameplay.</p><button id="startBtn">WAKE UP</button><div id="loading">ROOM 0.2 • READY</div></div></div>
+<div id="hud"><div id="objective"><small>OBJECTIVE</small><span id="objectiveText">Find a light.</span></div><div id="battery">FLASHLIGHT<div id="batteryBar"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="hint"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">RUN</button><button class="ctrl" id="lightBtn">◉</button><button class="ctrl" id="useBtn">USE</button><div id="fps"></div><div id="rotateHint">ROTATE PHONE FOR A WIDER VIEW</div></div>
 <div id="keypad"><div class="panel"><h2>DOOR LOCK</h2><p>The display waits for three digits.</p><div id="codeDisplay">_ _ _</div><div id="keys"></div><button class="closeBtn" id="keyClose">BACK</button></div></div>
 <div id="notePanel"><div class="panel"><h2>NOTE</h2><p id="noteText"></p><button class="closeBtn" id="noteClose">PUT IT DOWN</button></div></div>
 <div id="endPanel"><div class="panel"><h2>ROOM 0 COMPLETE</h2><p>The hallway should not exist.</p><p>Stage 2: THE HALLWAY</p><button class="closeBtn" onclick="location.reload()">RESTART ROOM 0</button></div></div>
@@ -101,7 +104,7 @@ const center=new THREE.Vector2(0,0);
 const colliders=[];
 const interactables=[];
 const state={started:false,flashlight:false,hasFlashlight:false,battery:100,fragments:0,phoneDone:false,doorUnlocked:false,finalNote:false,scare:false,scareDone:false,ended:false,running:false,modal:false,objective:'Find a light.'};
-const player={pos:new THREE.Vector3(0,1.68,2.6),yaw:Math.PI,pitch:0,radius:.3,speed:2.0};
+const player={pos:new THREE.Vector3(0,1.68,2.6),yaw:0,pitch:-.04,radius:.3,speed:2.0};
 camera.position.copy(player.pos);
 
 function seeded(seed=123){let s=seed>>>0;return()=>((s=(s*1664525+1013904223)>>>0)/4294967296)}
@@ -129,8 +132,8 @@ wall(5.1,3.2,.18,-3.45,1.55,-4.5);wall(5.1,3.2,.18,3.45,1.55,-4.5);wall(1.45,.6,
 box(3.2,.18,8,0,-.08,-8.4,floorMat);box(3.2,.18,8,0,3.18,-8.4,ceilMat);wall(.18,3.2,8,-1.6,1.55,-8.4);wall(.18,3.2,8,1.6,1.55,-8.4);wall(3.2,3.2,.18,0,1.55,-12.4);
 
 // Lighting: intentionally nearly black without flashlight
-const hemi=new THREE.HemisphereLight(0x18202b,0x080605,.055);scene.add(hemi);
-const emergency=new THREE.PointLight(0x671018,.13,4.8,2);emergency.position.set(-4.8,2.6,-3.7);scene.add(emergency);
+const hemi=new THREE.HemisphereLight(0x202a36,0x070606,.085);scene.add(hemi);
+const emergency=new THREE.PointLight(0x671018,.18,5.2,2);emergency.position.set(-4.8,2.6,-3.7);scene.add(emergency);
 const ceilingFlicker=new THREE.PointLight(0xbcc6c9,.0,6.5,2);ceilingFlicker.position.set(0,2.85,.2);scene.add(ceilingFlicker);
 
 const flashlight=new THREE.SpotLight(0xf4f1df,0,16,Math.PI/7,.42,1.35);flashlight.position.set(.12,-.08,-.05);flashlight.castShadow=true;flashlight.shadow.mapSize.set(isTouch?512:1024,isTouch?512:1024);flashlight.shadow.camera.near=.12;flashlight.shadow.camera.far=18;camera.add(flashlight);scene.add(camera);
@@ -165,7 +168,9 @@ function markerDisc(x,y,z,color=0xb6ad88){const m=new THREE.Mesh(new THREE.Circl
 function paper(x,y,z,rotY=0,text='',num=null){const mat=new THREE.MeshStandardMaterial({color:0xd0c4a7,roughness:1,side:THREE.DoubleSide});const m=new THREE.Mesh(new THREE.PlaneGeometry(.32,.24),mat);m.position.set(x,y,z);m.rotation.set(-Math.PI/2+.08,rotY,0);m.castShadow=true;scene.add(m);m.userData={type:'fragment',text,num,collected:false};interactables.push(m);return m}
 const flashlightPickup=new THREE.Group();
 const fp1=new THREE.Mesh(new THREE.CylinderGeometry(.065,.075,.34,12),new THREE.MeshStandardMaterial({color:0x282c2e,metalness:.6,roughness:.3}));fp1.rotation.z=Math.PI/2;flashlightPickup.add(fp1);const fp2=new THREE.Mesh(new THREE.CylinderGeometry(.1,.065,.09,16),new THREE.MeshStandardMaterial({color:0x141617,metalness:.7,roughness:.24}));fp2.rotation.z=Math.PI/2;fp2.position.x=-.2;flashlightPickup.add(fp2);flashlightPickup.position.set(.5,.12,1.15);flashlightPickup.rotation.y=.5;scene.add(flashlightPickup);flashlightPickup.userData={type:'flashlight'};interactables.push(flashlightPickup);
-const pickGlow=new THREE.PointLight(0xd9d2a5,.25,1.2,2);pickGlow.position.set(.5,.25,1.15);scene.add(pickGlow);
+const pickGlow=new THREE.PointLight(0xe9dfad,1.15,2.8,2);pickGlow.position.set(.5,.22,1.15);scene.add(pickGlow);
+const pickupHalo=new THREE.Mesh(new THREE.RingGeometry(.12,.22,24),new THREE.MeshBasicMaterial({color:0xe4dcae,transparent:true,opacity:.38,side:THREE.DoubleSide,depthWrite:false}));pickupHalo.position.set(.5,.035,1.15);pickupHalo.rotation.x=-Math.PI/2;scene.add(pickupHalo);
+const pickupLED=new THREE.Mesh(new THREE.SphereGeometry(.025,10,8),new THREE.MeshBasicMaterial({color:0xf5edbc}));pickupLED.position.set(.31,.14,1.15);scene.add(pickupLED);
 
 // Phone on desk (stylized but interactive)
 const phone=new THREE.Group();const phoneBase=new THREE.Mesh(new THREE.BoxGeometry(.38,.12,.26),blackMat);phone.add(phoneBase);const receiver=new THREE.Mesh(new THREE.BoxGeometry(.42,.08,.1),new THREE.MeshStandardMaterial({color:0x111214,roughness:.8}));receiver.position.y=.11;phone.add(receiver);phone.position.set(3.45,1.02,1.55);scene.add(phone);phone.userData={type:'phone'};interactables.push(phone);
@@ -220,7 +225,7 @@ function openKeypad(){state.modal=true;code='';updateCode();$('keypad').style.di
 $('keyClose').onclick=()=>{$('keypad').style.display='none';state.modal=false};
 function checkCode(){if(code==='731'){state.doorUnlocked=true;$('keypad').style.display='none';state.modal=false;tone(900,.12,.12,'sine');setTimeout(()=>tone(1200,.15,.08,'sine'),130);finalNote.visible=true;setObjective('Something appeared on the desk.');subtitle('The lock clicks.');}else{tone(95,.28,.2,'square');code='';updateCode();setTimeout(knock,330);subtitle('Wrong.',900)}}
 
-function pickupFlashlight(){if(state.hasFlashlight)return;state.hasFlashlight=true;flashlightPickup.visible=false;pickGlow.intensity=0;flashlightBody.visible=true;setFlashlight(true);setObjective('Answer the ringing phone.');subtitle('A flashlight. The battery is almost full.');setTimeout(()=>{ring();phoneLight.intensity=.8},950);hint(isTouch?'Drag the right side to look • ◉ toggles light':'Mouse to look • F toggles flashlight',3500)}
+function pickupFlashlight(){if(state.hasFlashlight)return;state.hasFlashlight=true;flashlightPickup.visible=false;pickGlow.intensity=0;pickupHalo.visible=false;pickupLED.visible=false;flashlightBody.visible=true;setFlashlight(true);setObjective('Answer the ringing phone.');subtitle('A flashlight. The battery is almost full.');setTimeout(()=>{ring();phoneLight.intensity=.8},950);hint(isTouch?'Drag the right side to look • ◉ toggles light':'Mouse to look • F toggles flashlight',3500)}
 function answerPhone(){if(state.phoneDone||!state.hasFlashlight)return;state.phoneDone=true;phoneLight.intensity=0;ring();subtitle('MOM: «بالاخره بیدار شدی؟ هر اتفاقی افتاد... چراغو خاموش نکن.»',6000);whisper('بالاخره بیدار شدی؟ هر اتفاقی افتاد، چراغو خاموش نکن.');setObjective('Find the three torn fragments.');setTimeout(()=>{ceilingFlicker.intensity=.65;setTimeout(()=>ceilingFlicker.intensity=0,110)},1200)}
 function collectFragment(o){if(o.userData.collected)return;o.userData.collected=true;o.visible=false;if(o.userData.glow)o.userData.glow.intensity=0;state.fragments++;showNote(o.userData.text,()=>{if(state.fragments<3)setObjective(`Find the torn fragments. ${state.fragments}/3`);else{setObjective('Use the numbers on the door keypad.');subtitle('7... 3... 1...',1800)}})}
 function inspectFinal(){if(state.finalNote)return;state.finalNote=true;showNote('DON\'T LOOK BEHIND YOU.',()=>{setObjective('Do not turn around.');beginScareSetup()})}
@@ -253,7 +258,7 @@ let lookId=null,lastLook=null;renderer.domElement.addEventListener('pointerdown'
 let joyId=null,jx=0,jy=0;const joy=$('joy'),stick=$('stick');function joyMove(e){const r=joy.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,m=Math.hypot(dx,dy),lim=r.width*.34,k=m>lim?lim/m:1;jx=dx*k/lim;jy=dy*k/lim;stick.style.transform=`translate(${dx*k}px,${dy*k}px)`}joy.addEventListener('pointerdown',e=>{joyId=e.pointerId;joy.setPointerCapture(e.pointerId);joyMove(e)});joy.addEventListener('pointermove',e=>{if(e.pointerId===joyId)joyMove(e)});joy.addEventListener('pointerup',e=>{if(e.pointerId===joyId){joyId=null;jx=jy=0;stick.style.transform=''}});joy.addEventListener('pointercancel',()=>{joyId=null;jx=jy=0;stick.style.transform=''});
 $('useBtn').addEventListener('pointerdown',e=>{e.preventDefault();useObject()});$('lightBtn').addEventListener('pointerdown',e=>{e.preventDefault();setFlashlight(!state.flashlight)});$('runBtn').addEventListener('pointerdown',e=>{e.preventDefault();state.running=true});$('runBtn').addEventListener('pointerup',()=>state.running=false);$('runBtn').addEventListener('pointercancel',()=>state.running=false);
 
-function startGame(){audioInit();if(actx.state==='suspended')actx.resume();state.started=true;$('intro').style.display='none';$('hud').style.display='block';$('blackout').style.transition='opacity 2.4s ease';requestAnimationFrame(()=>$('blackout').style.opacity=.05);setTimeout(()=>{subtitle('You wake up on the floor.');hint('Find the flashlight.',2500)},1200)}
+function startGame(){audioInit();if(actx.state==='suspended')actx.resume();state.started=true;$('intro').style.display='none';$('hud').style.display='block';$('blackout').style.transition='opacity 2.4s ease';requestAnimationFrame(()=>$('blackout').style.opacity=.05);setTimeout(()=>{subtitle('You wake up on the floor.');hint('Follow the faint warm light. Take the flashlight.',3200)},900)}
 $('startBtn').onclick=startGame;
 
 let perfAcc=0,frames=0,lastPerf=performance.now(),dynamicPR=Math.min(devicePixelRatio,1.25);
@@ -265,6 +270,7 @@ function update(dt,t){if(!state.started)return;
  // flashlight subtle human sway, no expensive volumetric post process
  flashlight.position.x=.12+Math.sin(t*1.7)*.007;flashTarget.position.x=Math.sin(t*.9)*.08;flashTarget.position.y=-.05+Math.sin(t*1.3)*.025;
  if(state.flashlight){state.battery=Math.max(0,state.battery-dt*.055);if(state.battery<=0)setFlashlight(false);flashlight.intensity=47+Math.sin(t*13)*.25;if(state.scare&&!state.scareDone&&Math.random()<.025)flashlight.intensity=Math.random()<.5?5:47}
+ if(!state.hasFlashlight){const pulse=.72+.28*Math.sin(t*3.2);pickGlow.intensity=.85+pulse*.55;pickupHalo.material.opacity=.22+pulse*.20;pickupLED.scale.setScalar(.8+pulse*.5)}
  $('batteryFill').style.transform=`scaleX(${state.battery/100})`;
  // occasional dead ceiling flicker after phone
  if(state.phoneDone&&Math.random()<.0009){ceilingFlicker.intensity=.38;setTimeout(()=>ceilingFlicker.intensity=0,55)}
