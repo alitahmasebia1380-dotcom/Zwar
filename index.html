@@ -3,479 +3,479 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
-<meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — PACK 1 • ROOMS 01–10 • RED-TEAM BUILD 1.2 • FLASHLIGHT x2</title>
+<meta name="theme-color" content="#020203" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>Z: DON'T LOOK BACK — PACK 1 V2 • HARD REBUILD</title>
 <style>
-:root{--fg:#ececec;--muted:#8e8e93;--blood:#7e0c16;--panel:rgba(8,8,10,.92)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+:root{--fg:#ededee;--muted:#86868d;--red:#86111a;--panel:rgba(7,7,9,.94);--line:#2b2b31}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;background:#000;color:var(--fg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overscroll-behavior:none}
+button{font:inherit}
 #game{position:fixed;inset:0;background:#000;touch-action:none}
 #game canvas{display:block;width:100%!important;height:100%!important;touch-action:none}
-#vignette,#blackout,#flash,#damage{position:fixed;inset:0;pointer-events:none}
-#vignette{z-index:20;background:radial-gradient(circle at center,transparent 34%,rgba(0,0,0,.25) 58%,rgba(0,0,0,.94) 100%)}
+#vignette,#blackout,#flash,#damage,#underwater{position:fixed;inset:0;pointer-events:none}
+#vignette{z-index:20;background:radial-gradient(circle at center,transparent 38%,rgba(0,0,0,.22) 62%,rgba(0,0,0,.91) 100%)}
 #blackout{z-index:70;background:#000;opacity:1;transition:opacity .28s linear}
-#flash{z-index:71;background:#fff;opacity:0;mix-blend-mode:screen}
-#damage{z-index:72;opacity:0;background:radial-gradient(circle,transparent 20%,rgba(105,0,8,.58) 100%)}
-#intro{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;overflow:auto}
+#flash{z-index:71;background:#fff;opacity:0}
+#damage{z-index:72;opacity:0;background:radial-gradient(circle,transparent 18%,rgba(92,0,8,.66) 100%);transition:opacity .18s}
+#underwater{z-index:19;display:none;background:linear-gradient(rgba(7,47,64,.28),rgba(0,19,30,.52));mix-blend-mode:screen}
+#intro{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;overflow:auto;-webkit-overflow-scrolling:touch}
 #introCard{width:min(680px,94vw)}
-#logo{font-size:clamp(28px,8vw,62px);letter-spacing:.08em;font-weight:950;margin:0 0 8px}.z{color:#9b111e}
-#pack{font-size:11px;letter-spacing:.34em;color:#64646a;margin-bottom:28px}
-#intro p{color:#a3a3a8;font-size:13px;line-height:1.7;max-width:560px;margin:8px auto}
-#startBtn,#continueBtn,.panel button{appearance:none;border:1px solid #333;background:#0c0c0f;color:#eee;border-radius:5px;padding:14px 20px;font-weight:800;letter-spacing:.13em;font-size:12px;min-width:190px;margin:8px;touch-action:manipulation}
-#startBtn:active,#continueBtn:active,.panel button:active{transform:scale(.985);background:#17171b}
+#logo{font-size:clamp(29px,8vw,64px);letter-spacing:.08em;font-weight:950;margin:0 0 8px;white-space:nowrap}.z{color:#9f111d}
+#pack{font-size:11px;letter-spacing:.32em;color:#626269;margin-bottom:24px}
+#intro p{color:#a1a1a7;font-size:13px;line-height:1.72;max-width:590px;margin:8px auto}
+.mainBtn,.panel button{appearance:none;border:1px solid #33343a;background:#0c0c0f;color:#eee;border-radius:5px;padding:14px 20px;font-weight:850;letter-spacing:.12em;font-size:12px;min-width:190px;margin:8px;touch-action:manipulation}
+.mainBtn:active,.panel button:active{transform:scale(.985);background:#17171b}
 #continueBtn{display:none}
-#assetStatus{font-size:10px;letter-spacing:.12em;color:#555;margin-top:14px;min-height:16px}
+#assetStatus{font-size:10px;letter-spacing:.11em;color:#55565d;margin-top:14px;min-height:16px}
 #hud{display:none;position:fixed;inset:0;z-index:30;pointer-events:none}
-#objective{position:absolute;top:max(18px,env(safe-area-inset-top));left:max(18px,env(safe-area-inset-left));width:min(60vw,470px);font-size:12px;line-height:1.45;text-shadow:0 2px 8px #000;white-space:pre-line}
-#objective small{display:block;color:#73737a;font-size:9px;letter-spacing:.25em;margin-bottom:5px}
-#roomTag{position:absolute;top:max(18px,env(safe-area-inset-top));right:max(18px,env(safe-area-inset-right));text-align:right;font-size:10px;letter-spacing:.18em;color:#9d9da4;text-shadow:0 2px 8px #000}
-#battery{margin-top:6px;width:122px;height:5px;border:1px solid #4b4b50;border-radius:5px;overflow:hidden;margin-left:auto}#batteryFill{height:100%;width:100%;background:#d4d4d6}
-#dot{position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px;border-radius:50%;background:rgba(255,255,255,.74);box-shadow:0 0 6px #fff}
-#prompt{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);font-size:11px;letter-spacing:.07em;text-align:center;text-shadow:0 2px 8px #000;min-width:210px}
-#subtitle{position:absolute;left:50%;bottom:22%;transform:translateX(-50%);width:min(88vw,640px);text-align:center;font-size:13px;line-height:1.6;text-shadow:0 2px 10px #000;white-space:pre-line;opacity:0;transition:opacity .2s}
-#chapterCard{display:none;position:fixed;inset:0;z-index:82;pointer-events:none;align-items:center;justify-content:center;background:rgba(0,0,0,.82);text-align:center;padding:20px}
-#chapterCard.show{display:flex;animation:chapter 2.4s both}@keyframes chapter{0%{opacity:0}16%{opacity:1}78%{opacity:1}100%{opacity:0}}
-#chapterCard h2{font-size:clamp(22px,7vw,46px);letter-spacing:.12em;margin:0 0 8px}#chapterCard p{color:#999;letter-spacing:.1em;margin:0}
-#joy{pointer-events:auto;position:absolute;left:max(26px,env(safe-area-inset-left));bottom:max(34px,env(safe-area-inset-bottom));width:138px;height:138px;border:1px solid rgba(255,255,255,.15);border-radius:50%;background:rgba(255,255,255,.025);touch-action:none}
-#stick{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px;border-radius:50%;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.16);transform:translate(0,0)}
-.ctrl{pointer-events:auto;position:absolute;appearance:none;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(5,5,7,.36);color:#eee;width:76px;height:76px;font-weight:900;letter-spacing:.07em;touch-action:none}.ctrl small{display:block;font-size:8px;margin-top:2px;color:#a9a9ae}
-#runBtn{right:max(20px,env(safe-area-inset-right));bottom:max(178px,calc(env(safe-area-inset-bottom) + 144px))}
+#objective{position:absolute;top:max(17px,env(safe-area-inset-top));left:max(17px,env(safe-area-inset-left));width:min(62vw,470px);font-size:11px;line-height:1.48;text-shadow:0 2px 8px #000;white-space:pre-line;opacity:.94;transition:opacity .6s}
+#objective small{display:block;color:#77777e;font-size:8px;letter-spacing:.23em;margin-bottom:5px}
+#roomTag{position:absolute;top:max(17px,env(safe-area-inset-top));right:max(17px,env(safe-area-inset-right));text-align:right;font-size:9px;letter-spacing:.17em;color:#8d8d94;text-shadow:0 2px 8px #000}
+#battery{margin-top:6px;width:110px;height:4px;border:1px solid #46464c;border-radius:4px;overflow:hidden;margin-left:auto}#batteryFill{height:100%;width:100%;background:#d5d5d7}
+#dot{position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px;border-radius:50%;background:rgba(255,255,255,.72);box-shadow:0 0 6px #fff}
+#prompt{position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);font-size:10px;letter-spacing:.07em;text-align:center;text-shadow:0 2px 8px #000;min-width:230px;white-space:pre-line}
+#subtitle{position:absolute;left:50%;bottom:21%;transform:translateX(-50%);width:min(90vw,680px);text-align:center;font-size:13px;line-height:1.58;text-shadow:0 2px 11px #000;white-space:pre-line;opacity:0;transition:opacity .2s}
+#chapterCard{display:none;position:fixed;inset:0;z-index:82;pointer-events:none;align-items:center;justify-content:center;background:rgba(0,0,0,.84);text-align:center;padding:20px}
+#chapterCard.show{display:flex;animation:chapter 2.55s both}@keyframes chapter{0%{opacity:0}15%{opacity:1}77%{opacity:1}100%{opacity:0}}
+#chapterCard h2{font-size:clamp(22px,7vw,46px);letter-spacing:.11em;margin:0 0 8px}#chapterCard p{color:#999;letter-spacing:.08em;margin:0;white-space:pre-line}
+#joy{pointer-events:auto;position:absolute;left:max(24px,env(safe-area-inset-left));bottom:max(34px,env(safe-area-inset-bottom));width:136px;height:136px;border:1px solid rgba(255,255,255,.14);border-radius:50%;background:rgba(255,255,255,.022);touch-action:none}
+#stick{position:absolute;left:50%;top:50%;width:52px;height:52px;margin:-26px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);transform:translate(0,0)}
+.ctrl{pointer-events:auto;position:absolute;appearance:none;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(5,5,7,.38);color:#eee;font-weight:900;letter-spacing:.06em;touch-action:none;text-align:center}
+.ctrl small{display:block;font-size:7px;margin-top:2px;color:#a9a9af}
+#runBtn{left:max(52px,calc(env(safe-area-inset-left) + 28px));bottom:max(186px,calc(env(safe-area-inset-bottom) + 152px));width:70px;height:70px}
 #useBtn{right:max(22px,env(safe-area-inset-right));bottom:max(38px,env(safe-area-inset-bottom));width:82px;height:82px}
-#lightBtn{right:max(116px,calc(env(safe-area-inset-right) + 94px));bottom:max(46px,calc(env(safe-area-inset-bottom) + 8px));width:62px;height:62px}
-#candleIcon{display:none;position:absolute;right:max(19px,env(safe-area-inset-right));top:max(76px,calc(env(safe-area-inset-top) + 58px));font-size:18px;filter:drop-shadow(0 0 8px #f7a852)}
-#breathWrap{display:none;position:absolute;left:50%;top:84px;transform:translateX(-50%);width:42vw;max-width:240px;text-align:center;font-size:9px;letter-spacing:.15em;color:#9cc4d2}#breath{height:5px;border:1px solid #4d7180;margin-top:5px}#breathFill{height:100%;width:100%;background:#a6d3df}
-#orientationLock{display:none;position:fixed;inset:0;z-index:120;background:#000;align-items:center;justify-content:center;text-align:center;padding:32px;line-height:1.7;color:#aaa}#orientationLock b{display:block;color:#eee;letter-spacing:.18em;margin-bottom:10px}
-.modal{display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.panel{width:min(430px,94vw);max-height:82dvh;background:var(--panel);border:1px solid #2f2f34;border-radius:8px;padding:18px;overflow:auto;-webkit-overflow-scrolling:touch;box-shadow:0 20px 80px #000}.panel h2{margin:0 0 12px;font-size:17px;letter-spacing:.08em}.panel p{font-size:13px;line-height:1.8;color:#c4c4c8;white-space:pre-line;user-select:text}.panel button{display:block;margin:14px auto 0}
-#keypad .display{font:700 28px/1 ui-monospace,monospace;letter-spacing:.22em;text-align:center;margin:16px 0 18px}.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.keys button{min-width:0;margin:0;padding:15px 4px;font-size:18px}.keys .zero{grid-column:2}
-#endPanel h2{color:#ddd}#endPanel .seal{font-size:11px;letter-spacing:.22em;color:#8f8f94;margin-top:16px}
-#bootError{display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:200;background:#26080c;border:1px solid #7e202a;color:#ffd8dc;padding:12px;font:12px/1.5 ui-monospace,monospace;white-space:pre-wrap;word-break:break-word;max-height:32vh;overflow:auto}
-#debug{display:none;position:fixed;z-index:160;top:4px;left:4px;background:#000a;color:#0f0;font:10px ui-monospace;padding:4px;pointer-events:none}
+#lightBtn{right:max(116px,calc(env(safe-area-inset-right) + 94px));bottom:max(47px,calc(env(safe-area-inset-bottom) + 9px));width:62px;height:62px}
+#holdBtn{display:none;left:max(133px,calc(env(safe-area-inset-left) + 109px));bottom:max(178px,calc(env(safe-area-inset-bottom) + 144px));width:68px;height:68px;font-size:9px}
+#candleIcon{display:none;position:absolute;right:max(18px,env(safe-area-inset-right));top:max(73px,calc(env(safe-area-inset-top) + 57px));font-size:18px;filter:drop-shadow(0 0 8px #f1a553)}
+#breathWrap,#staminaWrap{display:none;position:absolute;left:50%;transform:translateX(-50%);width:42vw;max-width:240px;text-align:center;font-size:8px;letter-spacing:.14em;color:#9fc2cf}
+#breathWrap{top:76px}#staminaWrap{top:101px;color:#c5b887}
+.meter{height:5px;border:1px solid #4e6d77;margin-top:5px}.meter>div{height:100%;width:100%;background:#afd3de}
+#staminaWrap .meter{border-color:#746b4d}#staminaFill{background:#d0c38c}
+#orientationLock{display:none;position:fixed;inset:0;z-index:120;background:#000;align-items:center;justify-content:center;text-align:center;padding:32px;line-height:1.7;color:#aaa}#orientationLock b{display:block;color:#eee;letter-spacing:.16em;margin-bottom:10px}
+.modal{display:none;position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.90);align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}.panel{width:min(430px,94vw);max-height:82dvh;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px;overflow:auto;-webkit-overflow-scrolling:touch;box-shadow:0 20px 80px #000}.panel h2{margin:0 0 12px;font-size:17px;letter-spacing:.08em}.panel p{font-size:13px;line-height:1.8;color:#c5c5ca;white-space:pre-line;user-select:text;-webkit-user-select:text}.panel button{display:block;margin:14px auto 0}
+#endPanel h2{color:#ddd}#endPanel .seal{font-size:11px;letter-spacing:.21em;color:#8f8f96;margin-top:16px;white-space:pre-line}
+#bootError{display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:200;background:#26080c;border:1px solid #7e202a;color:#ffd8dc;padding:12px;font:11px/1.5 ui-monospace,monospace;white-space:pre-wrap;word-break:break-word;max-height:34vh;overflow:auto}
+#debug{display:none;position:fixed;z-index:160;top:4px;left:4px;max-width:78vw;background:#000c;color:#6dff79;font:9px/1.35 ui-monospace;padding:5px;pointer-events:none;white-space:pre-line}
 @media (orientation:landscape) and (pointer:coarse){#orientationLock{display:flex}}
-@media (pointer:coarse){#vignette{background:radial-gradient(circle at center,transparent 40%,rgba(0,0,0,.28) 66%,rgba(0,0,0,.92) 100%)}}
+@media (pointer:coarse){#vignette{background:radial-gradient(circle at center,transparent 42%,rgba(0,0,0,.26) 68%,rgba(0,0,0,.92) 100%)}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
 </head>
 <body>
-<div id="game"></div><div id="vignette"></div><div id="blackout"></div><div id="flash"></div><div id="damage"></div>
-<div id="intro"><div id="introCard"><h1 id="logo"><span class="z">Z:</span> DON'T LOOK BACK</h1><div id="pack">PACK 1 • ROOMS 01–10</div><p>Psychological horror. Headphones recommended. There is no background music; listen to the building.<br><span dir="rtl">ترس روان‌شناختی. هدفون پیشنهاد می‌شود. موسیقی پس‌زمینه نداریم؛ به خود ساختمان گوش بده.</span></p><button id="startBtn">START PACK 1 • شروع</button><button id="continueBtn">CONTINUE • ادامه</button><div id="assetStatus">PREPARING NIGHTMARE…</div></div></div>
-<div id="hud"><div id="objective"><small>OBJECTIVE • هدف</small><span id="objectiveText"></span></div><div id="roomTag"><span id="roomName">ROOM 01</span><div id="battery"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">RUN<small>بدو</small></button><button class="ctrl" id="useBtn">USE<small>استفاده</small></button><button class="ctrl" id="lightBtn">◉<small>LIGHT</small></button><div id="candleIcon">🕯️</div><div id="breathWrap">BREATH • نفس<div id="breath"><div id="breathFill"></div></div></div></div>
+<div id="game"></div><div id="underwater"></div><div id="vignette"></div><div id="blackout"></div><div id="flash"></div><div id="damage"></div>
+<div id="intro"><div id="introCard"><h1 id="logo"><span class="z">Z:</span> DON'T LOOK BACK</h1><div id="pack">PACK 1 V2 • ROOMS 01–10 • HARD REBUILD</div><p>Psychological horror. Use headphones. The building talks before it attacks.<br><span dir="rtl">ترس روان‌شناختی. از هدفون استفاده کن. ساختمان قبل از حمله باهات حرف می‌زند.</span></p><button class="mainBtn" id="startBtn">START PACK 1 • شروع</button><button class="mainBtn" id="continueBtn">CONTINUE • ادامه</button><div id="assetStatus">PREPARING NIGHTMARE…</div></div></div>
+<div id="hud"><div id="objective"><small>OBJECTIVE • هدف</small><span id="objectiveText"></span></div><div id="roomTag"><span id="roomName">ROOM 01</span><div id="battery"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">RUN<small>بدو</small></button><button class="ctrl" id="holdBtn">HOLD<small>نگه دار</small></button><button class="ctrl" id="useBtn">USE<small>استفاده</small></button><button class="ctrl" id="lightBtn">◉<small>LIGHT</small></button><div id="candleIcon">🕯️</div><div id="breathWrap">BREATH • نفس<div class="meter"><div id="breathFill"></div></div></div><div id="staminaWrap">STAMINA • توان<div class="meter"><div id="staminaFill"></div></div></div></div>
 <div id="chapterCard"><div><h2 id="chapterTitle"></h2><p id="chapterSub"></p></div></div>
 <div id="orientationLock"><div><b>PORTRAIT MODE • حالت عمودی</b>Rotate your phone upright to continue.<br><span dir="rtl">برای ادامه گوشی را عمودی نگه دار.</span></div></div>
 <div id="notePanel" class="modal"><div class="panel"><h2 id="noteTitle">NOTE</h2><p id="noteText"></p><button id="noteClose">CLOSE • بستن</button></div></div>
-<div id="keypad" class="modal"><div class="panel"><h2 id="keyTitle">DOOR LOCK • قفل در</h2><p id="keyHint"></p><div class="display" id="codeDisplay">_ _ _</div><div class="keys" id="keys"></div><button id="keyClose">BACK • برگشت</button></div></div>
-<div id="endPanel" class="modal"><div class="panel"><h2>PACK 1 COMPLETE • پک اول تمام شد</h2><p id="endText"></p><div class="seal">FEARS 01–10 • FACED, NOT ERASED</div><button id="restartBtn">RESTART PACK 1 • شروع دوباره</button></div></div>
+<div id="endPanel" class="modal"><div class="panel"><h2>PACK 1 COMPLETE • پک اول تمام شد</h2><p id="endText"></p><div class="seal">FEARS 01–10\nFACED, NOT ERASED</div><button id="restartBtn">RESTART PACK 1 • شروع دوباره</button></div></div>
 <div id="bootError"></div><div id="debug"></div>
 <script type="module">
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { clone as skeletonClone } from 'three/addons/utils/SkeletonUtils.js';
 
 // ============================================================
-// Z: DON'T LOOK BACK — PACK 1 / ROOMS 01–10
-// Clean room-based architecture. No stage code executes before enter().
+// Z: DON'T LOOK BACK — PACK 1 V2 / ROOMS 01–10
+// One-file mobile build. Stage state is isolated and cleared on transition.
 // ============================================================
 const $=id=>document.getElementById(id);
-const UI={game:$('game'),intro:$('intro'),start:$('startBtn'),cont:$('continueBtn'),asset:$('assetStatus'),hud:$('hud'),obj:$('objectiveText'),room:$('roomName'),battery:$('batteryFill'),prompt:$('prompt'),sub:$('subtitle'),joy:$('joy'),stick:$('stick'),run:$('runBtn'),use:$('useBtn'),light:$('lightBtn'),candle:$('candleIcon'),chapter:$('chapterCard'),chapterTitle:$('chapterTitle'),chapterSub:$('chapterSub'),note:$('notePanel'),noteTitle:$('noteTitle'),noteText:$('noteText'),noteClose:$('noteClose'),keypad:$('keypad'),keyTitle:$('keyTitle'),keyHint:$('keyHint'),code:$('codeDisplay'),keys:$('keys'),keyClose:$('keyClose'),end:$('endPanel'),endText:$('endText'),restart:$('restartBtn'),blackout:$('blackout'),flash:$('flash'),damage:$('damage'),breathWrap:$('breathWrap'),breathFill:$('breathFill'),boot:$('bootError'),debug:$('debug')};
-const DEBUG=new URLSearchParams(location.search).has('debug'); if(DEBUG)UI.debug.style.display='block';
-function bootFail(err){console.error(err);UI.boot.style.display='block';UI.boot.textContent='BOOT ERROR / خطای اجرا\n'+(err?.stack||err?.message||String(err));}
-addEventListener('error',e=>bootFail(e.error||e.message));addEventListener('unhandledrejection',e=>bootFail(e.reason));
+const UI={game:$('game'),intro:$('intro'),start:$('startBtn'),cont:$('continueBtn'),asset:$('assetStatus'),hud:$('hud'),objBox:$('objective'),obj:$('objectiveText'),room:$('roomName'),battery:$('batteryFill'),prompt:$('prompt'),sub:$('subtitle'),joy:$('joy'),stick:$('stick'),run:$('runBtn'),hold:$('holdBtn'),use:$('useBtn'),light:$('lightBtn'),candle:$('candleIcon'),chapter:$('chapterCard'),chapterTitle:$('chapterTitle'),chapterSub:$('chapterSub'),note:$('notePanel'),noteTitle:$('noteTitle'),noteText:$('noteText'),noteClose:$('noteClose'),end:$('endPanel'),endText:$('endText'),restart:$('restartBtn'),blackout:$('blackout'),flash:$('flash'),damage:$('damage'),underwater:$('underwater'),breathWrap:$('breathWrap'),breathFill:$('breathFill'),staminaWrap:$('staminaWrap'),staminaFill:$('staminaFill'),boot:$('bootError'),debug:$('debug')};
+const DEBUG=new URLSearchParams(location.search).has('debug');if(DEBUG)UI.debug.style.display='block';
 const bi=(en,fa)=>`${en}\n${fa}`;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const rad=d=>d*Math.PI/180;
+let subtitleTimer=0,objectiveTimer=0;
+function bootFail(err){console.error(err);UI.boot.style.display='block';UI.boot.textContent='BOOT ERROR / خطای اجرا\n'+(err?.stack||err?.message||String(err));}
+addEventListener('error',e=>bootFail(e.error||e.message));addEventListener('unhandledrejection',e=>bootFail(e.reason));
+function subtitle(t,ms=3000){UI.sub.textContent=t;UI.sub.style.opacity='1';clearTimeout(subtitleTimer);subtitleTimer=setTimeout(()=>UI.sub.style.opacity='0',ms)}
+function objective(t,ms=5600){UI.obj.textContent=t;UI.objBox.style.opacity='.95';clearTimeout(objectiveTimer);if(ms>0)objectiveTimer=setTimeout(()=>UI.objBox.style.opacity='.14',ms)}
+function chapter(en,fa){UI.chapterTitle.textContent=en;UI.chapterSub.textContent=fa;UI.chapter.classList.remove('show');void UI.chapter.offsetWidth;UI.chapter.classList.add('show')}
+function showNote(title,text){Game.modal=true;UI.noteTitle.textContent=title;UI.noteText.textContent=text;UI.note.classList.add('open')}
+UI.noteClose.onclick=()=>{UI.note.classList.remove('open');Game.modal=false};
+function flashScreen(v=.42,ms=55){UI.flash.style.opacity=String(v);setTimeout(()=>UI.flash.style.opacity='0',ms)}
 
 // ---------- Renderer ----------
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x030304);scene.fog=new THREE.FogExp2(0x050506,.055);
-const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.04,70);camera.rotation.order='YXZ';
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x020203);scene.fog=new THREE.FogExp2(0x040405,.05);
+const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.035,85);camera.rotation.order='YXZ';
 const isTouch=matchMedia('(pointer:coarse)').matches;
 const renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:'high-performance',alpha:false,stencil:false});
-const renderScale=Math.min(devicePixelRatio||1,isTouch?.82:1.15);renderer.setPixelRatio(renderScale);renderer.setSize(innerWidth,innerHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.92;renderer.shadowMap.enabled=false;UI.game.appendChild(renderer.domElement);
-const hemi=new THREE.HemisphereLight(0x242834,0x0a0807,.42);scene.add(hemi);
+const FIXED_DPR=Math.min(devicePixelRatio||1,isTouch?.84:1.15);renderer.setPixelRatio(FIXED_DPR);renderer.setSize(innerWidth,innerHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.94;renderer.shadowMap.enabled=false;UI.game.appendChild(renderer.domElement);
 const world=new THREE.Group();scene.add(world);
-const flashlight=new THREE.SpotLight(0xfff4de,290,13,Math.PI/7,.78,1.65);flashlight.castShadow=false;camera.add(flashlight);scene.add(camera);const fTarget=new THREE.Object3D();fTarget.position.set(0,-.04,-5);camera.add(fTarget);flashlight.target=fTarget;flashlight.position.set(.04,-.02,.02);
-const spill=new THREE.PointLight(0xd7d0c5,15,2.7,2);camera.add(spill);spill.position.set(0,-.15,-.2);
-const candleLight=new THREE.PointLight(0xffa64a,0,3.4,2);camera.add(candleLight);candleLight.position.set(.22,-.42,-.32);
+const hemi=new THREE.HemisphereLight(0x242731,0x070606,.36);scene.add(hemi);
+const flashlight=new THREE.SpotLight(0xfff1d9,290,10.5,rad(18),.82,1.55);flashlight.castShadow=false;camera.add(flashlight);scene.add(camera);const flashTarget=new THREE.Object3D();flashTarget.position.set(0,-.03,-5.5);camera.add(flashTarget);flashlight.target=flashTarget;flashlight.position.set(.04,-.015,.03);
+const spill=new THREE.PointLight(0xd8d0c4,15,2.6,2);spill.position.set(0,-.16,-.18);camera.add(spill);
+const candleLight=new THREE.PointLight(0xffa34a,0,3.0,2);candleLight.position.set(.22,-.42,-.32);camera.add(candleLight);
+const redScareLight=new THREE.PointLight(0x87101a,0,2.4,2);redScareLight.position.set(0,0,-.5);camera.add(redScareLight);
 
-// ---------- Shared materials ----------
-const MAT={wall:new THREE.MeshStandardMaterial({color:0x3a3938,roughness:.96,metalness:.02}),wallDark:new THREE.MeshStandardMaterial({color:0x17171a,roughness:.98}),floor:new THREE.MeshStandardMaterial({color:0x242322,roughness:.9}),ceiling:new THREE.MeshStandardMaterial({color:0x292827,roughness:1}),wood:new THREE.MeshStandardMaterial({color:0x321e14,roughness:.88}),metal:new THREE.MeshStandardMaterial({color:0x252a2d,roughness:.66,metalness:.7}),paper:new THREE.MeshStandardMaterial({color:0xb9b09a,roughness:1}),blood:new THREE.MeshStandardMaterial({color:0x3e0208,roughness:.75}),white:new THREE.MeshStandardMaterial({color:0xbcb8ae,roughness:.9}),black:new THREE.MeshStandardMaterial({color:0x050506,roughness:.95}),yellow:new THREE.MeshStandardMaterial({color:0x7d6a19,roughness:.9}),blue:new THREE.MeshStandardMaterial({color:0x1b2830,roughness:.82}),red:new THREE.MeshStandardMaterial({color:0x43080d,roughness:.9}),green:new THREE.MeshStandardMaterial({color:0x183321,roughness:.9})};
-const GEO={unit:new THREE.BoxGeometry(1,1,1),paper:new THREE.BoxGeometry(.36,.015,.27),sphere:new THREE.SphereGeometry(.5,18,12),cyl:new THREE.CylinderGeometry(.5,.5,1,12),cone:new THREE.ConeGeometry(.5,1,12)};
-const colliders=[];const interactables=[];const animated=[];
-function meshBox(x,y,z,sx,sy,sz,mat=MAT.wall,parent=world){const m=new THREE.Mesh(GEO.unit,mat);m.position.set(x,y,z);m.scale.set(sx,sy,sz);parent.add(m);return m}
+// ---------- Shared materials / geometry ----------
+const MAT={
+ wall:new THREE.MeshStandardMaterial({color:0x3a3938,roughness:.96,metalness:.01}),
+ wallDark:new THREE.MeshStandardMaterial({color:0x17171a,roughness:.98}),
+ plaster:new THREE.MeshStandardMaterial({color:0x484642,roughness:.97}),
+ floor:new THREE.MeshStandardMaterial({color:0x242322,roughness:.91}),
+ tile:new THREE.MeshStandardMaterial({color:0x283138,roughness:.68,metalness:.04}),
+ ceiling:new THREE.MeshStandardMaterial({color:0x292827,roughness:1}),
+ wood:new THREE.MeshStandardMaterial({color:0x321f15,roughness:.88}),
+ metal:new THREE.MeshStandardMaterial({color:0x262b2e,roughness:.64,metalness:.68}),
+ paper:new THREE.MeshStandardMaterial({color:0xb9b09a,roughness:1}),
+ blood:new THREE.MeshStandardMaterial({color:0x390208,roughness:.76}),
+ white:new THREE.MeshStandardMaterial({color:0xbeb9af,roughness:.9}),
+ black:new THREE.MeshStandardMaterial({color:0x050506,roughness:.98}),
+ yellow:new THREE.MeshStandardMaterial({color:0x7d6a19,roughness:.9}),
+ blue:new THREE.MeshStandardMaterial({color:0x1a303b,roughness:.8}),
+ red:new THREE.MeshStandardMaterial({color:0x43080d,roughness:.9}),
+ green:new THREE.MeshStandardMaterial({color:0x183321,roughness:.9})
+};
+const SHARED_MATS=new Set(Object.values(MAT));
+const GEO={unit:new THREE.BoxGeometry(1,1,1),paper:new THREE.BoxGeometry(.36,.015,.27),sphere:new THREE.SphereGeometry(.5,16,11),cyl:new THREE.CylinderGeometry(.5,.5,1,12),cone:new THREE.ConeGeometry(.5,1,12),plane:new THREE.PlaneGeometry(1,1)};
+const SHARED_GEO=new Set(Object.values(GEO));
+const colliders=[],raycastables=[],interactions=[],dynamic=[];
+function meshBox(x,y,z,sx,sy,sz,mat=MAT.wall,parent=world,ray=true){const m=new THREE.Mesh(GEO.unit,mat);m.position.set(x,y,z);m.scale.set(sx,sy,sz);parent.add(m);if(ray)raycastables.push(m);return m}
 function solid(x,z,sx,sz){const c={x,z,hx:sx/2,hz:sz/2,active:true};colliders.push(c);return c}
 function wall(x,y,z,sx,sy,sz,mat=MAT.wall){const m=meshBox(x,y,z,sx,sy,sz,mat);solid(x,z,sx,sz);return m}
 function floor(x,z,sx,sz,mat=MAT.floor){return meshBox(x,-.08,z,sx,.16,sz,mat)}
-function ceiling(x,z,sx,sz){return meshBox(x,3.05,z,sx,.12,sz,MAT.ceiling)}
-function lamp(x,z,intensity=3.2,color=0xd6cdb8,range=5){const calibrated=intensity*70;const bulb=meshBox(x,2.82,z,.26,.07,.26,new THREE.MeshStandardMaterial({color:0xddd6c6,emissive:color,emissiveIntensity:3.2}));const l=new THREE.PointLight(color,calibrated,range,2);l.position.set(x,2.65,z);world.add(l);animated.push({type:'lamp',light:l,base:calibrated,seed:Math.random()*20});return {bulb,light:l}}
-function roomShell(w,d,opts={}){const z=opts.z||0,x=opts.x||0;floor(x,z,w,d,opts.floor||MAT.floor);ceiling(x,z,w,d);wall(x-w/2,1.45,z,.18,3,d,opts.wall||MAT.wall);wall(x+w/2,1.45,z,.18,3,d,opts.wall||MAT.wall);wall(x,1.45,z-d/2,w,3,.18,opts.wall||MAT.wall);wall(x,1.45,z+d/2,w,3,.18,opts.wall||MAT.wall)}
-function corridor(zCenter,length,width=3,opts={}){floor(0,zCenter,width,length,opts.floor||MAT.floor);ceiling(0,zCenter,width,length);wall(-width/2,1.45,zCenter,.16,3,length,opts.wall||MAT.wall);wall(width/2,1.45,zCenter,.16,3,length,opts.wall||MAT.wall)}
-function openGapWallZ(z,w,gap=1.3,mat=MAT.wall){const side=(w-gap)/2;wall(-(gap/2+side/2),1.45,z,side,3,.18,mat);wall((gap/2+side/2),1.45,z,side,3,.18,mat)}
-function createDoor(x,z,axis='z',label='OPEN • باز کن'){const g=new THREE.Group();world.add(g);const panel=meshBox(x,1.25,z,axis==='z'?1.25:.12,2.5,axis==='z'?.12:1.25,MAT.wood,g);const c=solid(x,z,axis==='z'?1.25:.12,axis==='z'?.12:1.25);const d={group:g,panel,collider:c,open:false,axis};addInteract(panel,label,()=>openDoor(d));return d}
-function openDoor(d){if(!d||d.open)return;d.open=true;d.collider.active=false;audio.play('door',.5);const start=performance.now(),base=d.panel.rotation.y;animated.push({type:'door',obj:d.panel,start,base,done:false});}
-function addInteract(obj,label,action,range=1.65){const it={obj,label,action,range,enabled:true};interactables.push(it);obj.userData.interaction=it;return it}
-function paper(x,z,title,text,onRead){const m=new THREE.Mesh(GEO.paper,MAT.paper);m.position.set(x,.84,z);m.rotation.x=-Math.PI/2;world.add(m);addInteract(m,'READ • بخوان',()=>{showNote(title,text);if(onRead)onRead();});return m}
-function pedestal(x,z){const p=meshBox(x,.5,z,.62,1,.62,MAT.wood);return p}
-function addPropTable(x,z){meshBox(x,.6,z,1.55,.1,.72,MAT.wood);meshBox(x-.62,.3,z-.24,.1,.6,.1,MAT.wood);meshBox(x+.62,.3,z-.24,.1,.6,.1,MAT.wood);meshBox(x-.62,.3,z+.24,.1,.6,.1,MAT.wood);meshBox(x+.62,.3,z+.24,.1,.6,.1,MAT.wood);solid(x,z,1.55,.72)}
-function addBed(x,z){meshBox(x,.35,z,1.75,.35,2.15,MAT.white);meshBox(x,.67,z-.82,1.7,.55,.12,MAT.metal);solid(x,z,1.75,2.15)}
+function ceiling(x,z,sx,sz,mat=MAT.ceiling){return meshBox(x,3.05,z,sx,.12,sz,mat)}
+function openGapWallZ(z,w,gap=1.35,mat=MAT.wall){const side=(w-gap)/2;wall(-(gap/2+side/2),1.45,z,side,3,.18,mat);wall((gap/2+side/2),1.45,z,side,3,.18,mat)}
+function roomShell(w,d,opts={}){const x=opts.x||0,z=opts.z||0;floor(x,z,w,d,opts.floor||MAT.floor);ceiling(x,z,w,d,opts.ceiling||MAT.ceiling);wall(x-w/2,1.45,z,.18,3,d,opts.wall||MAT.wall);wall(x+w/2,1.45,z,.18,3,d,opts.wall||MAT.wall);wall(x,1.45,z-d/2,w,3,.18,opts.wall||MAT.wall);wall(x,1.45,z+d/2,w,3,.18,opts.wall||MAT.wall)}
+function corridor(x,zCenter,length,width=3,opts={}){floor(x,zCenter,width,length,opts.floor||MAT.floor);ceiling(x,zCenter,width,length,opts.ceiling||MAT.ceiling);wall(x-width/2,1.45,zCenter,.16,3,length,opts.wall||MAT.wall);wall(x+width/2,1.45,zCenter,.16,3,length,opts.wall||MAT.wall)}
+function emissivePanel(x,y,z,sx,sy,sz,color=0xd7ccb6,intensity=3,parent=world){const mat=new THREE.MeshStandardMaterial({color:0xbeb8aa,roughness:.75,emissive:color,emissiveIntensity:intensity});return meshBox(x,y,z,sx,sy,sz,mat,parent)}
+function lightPool(x,z,w=1.45,d=2.8,opacity=.16,color=0xf1e4c8){const mat=new THREE.MeshBasicMaterial({color,transparent:true,opacity,depthWrite:false,blending:THREE.AdditiveBlending});const p=new THREE.Mesh(GEO.plane,mat);p.position.set(x,.012,z);p.rotation.x=-Math.PI/2;p.scale.set(w,d,1);world.add(p);return p}
+function lampFake(x,z,intensity=1,color=0xd5c9b2){emissivePanel(x,2.92,z,.36,.055,.36,color,2.5+intensity*.6);lightPool(x,z,1.45,2.5,.08+.05*intensity,color)}
+function createDoor(x,z,axis='z',label=bi('OPEN','باز کن'),opts={}){const g=new THREE.Group();world.add(g);const panel=meshBox(x,1.23,z,axis==='z'?1.22:.12,2.46,axis==='z'?.12:1.22,opts.mat||MAT.wood,g);const c=solid(x,z,axis==='z'?1.22:.12,axis==='z'?.12:1.22);const d={group:g,panel,collider:c,open:false,axis,locked:!!opts.locked};addInteract(panel,label,()=>{if(d.locked){subtitle(bi('Locked.','قفله.'),900);return}openDoor(d)});return d}
+function openDoor(d){if(!d||d.open)return;d.open=true;d.collider.active=false;Audio.play('door',.42);dynamic.push({type:'door',obj:d.panel,t:0,base:d.panel.rotation.y,axis:d.axis})}
+function addInteract(obj,label,action,range=1.7){const it={obj,label,action,range,enabled:true};interactions.push(it);obj.userData.interaction=it;return it}
+function paper(x,z,title,text,onRead){const m=new THREE.Mesh(GEO.paper,MAT.paper);m.position.set(x,.83,z);m.rotation.x=-Math.PI/2;world.add(m);raycastables.push(m);addInteract(m,bi('READ','بخوان'),()=>{showNote(title,text);if(onRead)onRead()});return m}
+function addPropTable(x,z){meshBox(x,.61,z,1.55,.10,.72,MAT.wood);meshBox(x-.63,.30,z-.24,.09,.60,.09,MAT.wood);meshBox(x+.63,.30,z-.24,.09,.60,.09,MAT.wood);meshBox(x-.63,.30,z+.24,.09,.60,.09,MAT.wood);meshBox(x+.63,.30,z+.24,.09,.60,.09,MAT.wood);solid(x,z,1.55,.72)}
+function addBed(x,z){meshBox(x,.35,z,1.72,.35,2.1,MAT.white);meshBox(x,.66,z-.83,1.68,.56,.11,MAT.metal);solid(x,z,1.72,2.1)}
 function addChair(x,z,rot=0){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;world.add(g);meshBox(0,.48,0,.62,.08,.62,MAT.wood,g);meshBox(0,.86,.27,.62,.76,.08,MAT.wood,g);for(const xx of[-.25,.25])for(const zz of[-.24,.24])meshBox(xx,.24,zz,.07,.48,.07,MAT.wood,g);solid(x,z,.7,.7);return g}
-function makeSign(text,x,y,z,rotY=0,w=1.1,h=.38){const cv=document.createElement('canvas');cv.width=512;cv.height=180;const c=cv.getContext('2d');c.fillStyle='#111';c.fillRect(0,0,512,180);c.fillStyle='#ddd';c.font='bold 58px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(text,256,90);const tex=new THREE.CanvasTexture(cv);tex.colorSpace=THREE.SRGBColorSpace;const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide}));m.position.set(x,y,z);m.rotation.y=rotY;world.add(m);return m}
+function makeSign(text,x,y,z,rotY=0,w=1.1,h=.36,fg='#ddd',bg='#111'){const cv=document.createElement('canvas');cv.width=512;cv.height=180;const c=cv.getContext('2d');c.fillStyle=bg;c.fillRect(0,0,512,180);c.fillStyle=fg;c.font='700 54px system-ui';c.textAlign='center';c.textBaseline='middle';c.fillText(text,256,90);const tex=new THREE.CanvasTexture(cv);tex.colorSpace=THREE.SRGBColorSpace;const mat=new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide});const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),mat);m.position.set(x,y,z);m.rotation.y=rotY;world.add(m);raycastables.push(m);return m}
+function addInteractSign(text,x,y,z,rotY,label,action){const s=makeSign(text,x,y,z,rotY,.75,.33);addInteract(s,label,action,1.65);return s}
 
-// ---------- Audio ----------
-const SFX={
+// ---------- WebAudio: real sourced sounds; all failures are non-fatal ----------
+const AUD={
  door:'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/15/Squeaky_door.ogg/Squeaky_door.ogg.mp3',
  phone:'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1c/Telephone.ogg/Telephone.ogg.mp3',
  knock:'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1c/Knocking_on_wood_or_door.ogg/Knocking_on_wood_or_door.ogg.mp3',
  cry:'https://upload.wikimedia.org/wikipedia/commons/transcoded/5/5f/Cry_of_woman.ogg/Cry_of_woman.ogg.mp3',
  scream:'https://upload.wikimedia.org/wikipedia/commons/e/e6/Nick121087_-_Demonic_Woman_Scream_%28cc0%29_%28freesound%29.mp3',
- shock:'https://upload.wikimedia.org/wikipedia/commons/transcoded/8/8d/Metal_drop_thump.ogg/Metal_drop_thump.ogg.mp3'
+ shock:'https://upload.wikimedia.org/wikipedia/commons/transcoded/8/8d/Metal_drop_thump.ogg/Metal_drop_thump.ogg.mp3',
+ steps:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Church_people_walking_steps_with_reverb.ogg',
+ hum:'https://commons.wikimedia.org/wiki/Special:Redirect/file/50Hz_hum_square.ogg',
+ buzz:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Aggressive_electric_buzzing.ogg',
+ heartbeat:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Heartbeat.ogg',
+ water:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Ambient_Noise.ogg'
 };
-const audio={map:new Map(),enabled:false,init(){this.enabled=true;for(const[k,u]of Object.entries(SFX)){const a=new Audio(u);a.preload='auto';a.crossOrigin='anonymous';this.map.set(k,a)}},play(k,v=.45){if(!this.enabled)return;const base=this.map.get(k);if(!base)return;try{const a=base.cloneNode();a.volume=v;a.play().catch(()=>{});}catch{}}};
+const Audio={ctx:null,master:null,buffers:new Map(),loops:new Map(),enabled:false,seq:0,
+ async unlock(){try{if(!this.ctx){this.ctx=new (window.AudioContext||window.webkitAudioContext)();this.master=this.ctx.createGain();this.master.gain.value=.78;this.master.connect(this.ctx.destination)}await this.ctx.resume();this.enabled=true;this.loadAll()}catch(e){console.warn('Audio unlock failed',e)}},
+ async loadOne(k,url){if(this.buffers.has(k)||!this.ctx)return;try{const r=await fetch(url,{mode:'cors'});if(!r.ok)throw new Error(r.status);const ab=await r.arrayBuffer();const b=await this.ctx.decodeAudioData(ab);this.buffers.set(k,b)}catch(e){console.warn('Audio load',k,e)}},
+ loadAll(){for(const [k,u] of Object.entries(AUD))this.loadOne(k,u)},
+ node(k,vol=.35,rate=1,pan=0,loop=false){if(!this.enabled||!this.ctx||!this.buffers.has(k))return null;const src=this.ctx.createBufferSource();src.buffer=this.buffers.get(k);src.playbackRate.value=rate;src.loop=loop;const gain=this.ctx.createGain();gain.gain.value=vol;let last=gain;if(this.ctx.createStereoPanner){const p=this.ctx.createStereoPanner();p.pan.value=clamp(pan,-1,1);gain.connect(p);last=p}src.connect(gain);last.connect(this.master);return{src,gain}},
+ play(k,vol=.35,rate=1,pan=0){const n=this.node(k,vol,rate,pan,false);if(!n)return;try{n.src.start()}catch{}},
+ loop(k,vol=.12,rate=1,pan=0){const n=this.node(k,vol,rate,pan,true);if(!n)return null;const id=++this.seq;this.loops.set(id,n);try{n.src.start()}catch{}return id},
+ stop(id,fade=.12){const n=this.loops.get(id);if(!n)return;this.loops.delete(id);try{const t=this.ctx.currentTime;n.gain.gain.cancelScheduledValues(t);n.gain.gain.setValueAtTime(n.gain.gain.value,t);n.gain.gain.linearRampToValueAtTime(0,t+fade);n.src.stop(t+fade+.03)}catch{}},
+ stopAll(){for(const id of [...this.loops.keys()])this.stop(id,.05)}
+};
 
-// ---------- 3D entities ----------
-function createParmis(){
- const g=new THREE.Group();g.name='PARMIS_3D';
- const skin=new THREE.MeshStandardMaterial({color:0x978f88,roughness:.82});
- const dress=new THREE.MeshStandardMaterial({color:0x171619,roughness:.95});
- const hair=new THREE.MeshStandardMaterial({color:0x050506,roughness:.92});
- const eye=new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:2.8,roughness:.2});
- const mouth=new THREE.MeshStandardMaterial({color:0x130004,roughness:.8});
- // dress/body
- const torso=new THREE.Mesh(new THREE.CylinderGeometry(.24,.38,.95,18),dress);torso.position.y=1.0;g.add(torso);
- const skirt=new THREE.Mesh(new THREE.ConeGeometry(.53,1.08,22),dress);skirt.position.y=.45;g.add(skirt);
- const neck=new THREE.Mesh(new THREE.CylinderGeometry(.105,.12,.22,14),skin);neck.position.y=1.52;g.add(neck);
- const head=new THREE.Mesh(new THREE.SphereGeometry(.24,24,18),skin);head.scale.set(.86,1.18,.82);head.position.y=1.78;g.add(head);
- // hair cap + strands
- const cap=new THREE.Mesh(new THREE.SphereGeometry(.265,18,12,0,Math.PI*2,0,Math.PI*.63),hair);cap.scale.set(1,1.12,.95);cap.position.set(0,1.86,-.01);g.add(cap);
- for(let i=0;i<14;i++){const a=(i/13-.5)*1.1;const s=new THREE.Mesh(new THREE.CylinderGeometry(.014,.025,.82,6),hair);s.position.set(a*.32,1.48,.03+Math.abs(a)*.02);s.rotation.z=a*.32;g.add(s)}
- // arms
- for(const side of[-1,1]){const arm=new THREE.Mesh(new THREE.CylinderGeometry(.065,.052,.95,10),skin);arm.position.set(side*.34,1.0,0);arm.rotation.z=side*.10;g.add(arm);const hand=new THREE.Mesh(new THREE.SphereGeometry(.075,10,8),skin);hand.position.set(side*.39,.51,0);hand.scale.y=1.55;g.add(hand)}
- // eyes sockets + white eyes
- for(const side of[-1,1]){const sock=new THREE.Mesh(new THREE.SphereGeometry(.052,12,8),MAT.black);sock.position.set(side*.087,1.81,.195);sock.scale.set(1.35,.75,.35);g.add(sock);const e=new THREE.Mesh(new THREE.SphereGeometry(.034,12,8),eye);e.position.set(side*.087,1.81,.223);e.scale.set(1.2,.67,.36);g.add(e)}
- // smile + teeth
- const lip=new THREE.Mesh(new THREE.TorusGeometry(.105,.019,7,20,Math.PI),mouth);lip.position.set(0,1.695,.218);lip.rotation.set(Math.PI,0,0);g.add(lip);
- for(let i=0;i<9;i++){const t=new THREE.Mesh(new THREE.ConeGeometry(.012,.07,6),MAT.white);t.position.set((i-4)*.022,1.68,.235);t.rotation.x=Math.PI;t.rotation.z=(i-4)*.03;g.add(t)}
- g.userData.baseY=0;return g;
-}
-function createWatcher(){const g=new THREE.Group();const m=new THREE.MeshStandardMaterial({color:0x060607,roughness:1});const body=new THREE.Mesh(new THREE.CylinderGeometry(.18,.31,1.55,10),m);body.position.y=.82;g.add(body);const head=new THREE.Mesh(new THREE.SphereGeometry(.17,12,9),m);head.scale.set(.78,1.45,.72);head.position.y=1.72;g.add(head);for(const s of[-1,1]){const arm=new THREE.Mesh(new THREE.CylinderGeometry(.035,.025,1.28,7),m);arm.position.set(s*.26,.9,0);g.add(arm)}return g}
-function createRunner(){const g=createWatcher();g.scale.set(.9,1.15,.9);g.traverse(o=>{if(o.material)o.material=o.material.clone(),o.material.color.set(0x10090b)});return g}
-function createParmisDistant(){
- if(!cc0Female)return createParmis();
- try{
-  const wrap=new THREE.Group(),model=cc0Female.clone(true);wrap.add(model);
-  model.traverse(o=>{if(o.isMesh){o.material=new THREE.MeshStandardMaterial({color:0x79716d,roughness:.88,metalness:0});o.castShadow=false;o.receiveShadow=false}});
-  let box=new THREE.Box3().setFromObject(model),h=Math.max(.01,box.max.y-box.min.y),s=1.76/h;model.scale.setScalar(s);box=new THREE.Box3().setFromObject(model);model.position.y-=box.min.y;
-  const dress=new THREE.Mesh(new THREE.ConeGeometry(.5,1.15,20),new THREE.MeshStandardMaterial({color:0x121114,roughness:.98}));dress.position.y=.58;wrap.add(dress);
-  const hair=new THREE.Mesh(new THREE.SphereGeometry(.28,18,12,0,Math.PI*2,0,Math.PI*.7),new THREE.MeshStandardMaterial({color:0x040405,roughness:.98}));hair.position.set(0,1.65,0);wrap.add(hair);
-  wrap.userData.assetBacked=true;return wrap;
- }catch{return createParmis()}
-}
-function parmisJumpscare(duration=520){return new Promise(async resolve=>{Game.lock=true;const p=createParmis();p.scale.set(1.28,1.28,1.28);scene.add(p);const f=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);const pos=camera.position.clone().add(f.multiplyScalar(.72));p.position.set(pos.x,camera.position.y-1.72,pos.z);p.rotation.y=Game.player.yaw+Math.PI;const red=new THREE.PointLight(0x8b0c16,95,2.4,2);red.position.copy(camera.position);scene.add(red);audio.play('scream',.74);audio.play('shock',.52);UI.flash.style.opacity='.72';await sleep(50);UI.flash.style.opacity='0';const t0=performance.now();while(performance.now()-t0<duration){const k=(performance.now()-t0)/duration;p.scale.setScalar(1.28+k*.58);await new Promise(requestAnimationFrame)}scene.remove(p,red);Game.lock=false;resolve()})}
-
-// Optional CC0 3D mannequin preload. Gameplay never depends on it; procedural 3D Parmis remains fallback.
+// ---------- Character assets ----------
 const MODEL_URL='https://raw.githubusercontent.com/NafisRayan/Animate-Rigged-Humanoid-No-Blender/5821923af517ac5fdc82505faa92a0d575fc1b1a/Universal%20Animation%20Library%202%5BStandard%5D/Universal%20Animation%20Library%202%5BStandard%5D/Female%20Mannequin/Unreal-Godot/Mannequin_F.glb';
-let cc0Female=null;new GLTFLoader().load(MODEL_URL,g=>{cc0Female=g.scene;UI.asset.textContent='3D CHARACTER READY • CC0';},undefined,()=>{UI.asset.textContent='3D FALLBACK READY • OFFLINE-SAFE';});
+let baseHumanoid=null,assetReady=false;
+new GLTFLoader().load(MODEL_URL,g=>{baseHumanoid=g.scene;assetReady=true;UI.asset.textContent='3D CHARACTER READY • PACK 1 V2'},undefined,()=>{assetReady=false;UI.asset.textContent='3D FALLBACK READY • OFFLINE-SAFE'});
+function fallbackHumanoid(style='parmis'){
+ const g=new THREE.Group();
+ const skin=new THREE.MeshStandardMaterial({color:style==='parmis'?0x9b928a:0x121215,roughness:.86});
+ const cloth=new THREE.MeshStandardMaterial({color:style==='parmis'?0x141316:0x050506,roughness:.98});
+ const torso=new THREE.Mesh(new THREE.CylinderGeometry(.23,.34,.94,14),cloth);torso.position.y=1.02;g.add(torso);
+ const skirt=new THREE.Mesh(new THREE.ConeGeometry(.48,1.0,16),cloth);skirt.position.y=.48;g.add(skirt);
+ const head=new THREE.Mesh(new THREE.SphereGeometry(.23,18,13),skin);head.scale.set(.84,1.14,.83);head.position.y=1.76;g.add(head);
+ for(const s of[-1,1]){const arm=new THREE.Mesh(new THREE.CylinderGeometry(.055,.045,.98,8),skin);arm.position.set(s*.31,1.0,0);arm.rotation.z=s*.08;g.add(arm)}
+ return g;
+}
+function character(style='parmis',soft=false){
+ let g;
+ if(baseHumanoid){try{g=skeletonClone(baseHumanoid);const box0=new THREE.Box3().setFromObject(g),h=Math.max(.01,box0.max.y-box0.min.y);const s=1.76/h;g.scale.setScalar(s);let box=new THREE.Box3().setFromObject(g);g.position.y-=box.min.y;g.traverse(o=>{if(o.isMesh){o.castShadow=false;o.receiveShadow=false;o.frustumCulled=true;o.material=new THREE.MeshStandardMaterial({color:style==='parmis'?(soft?0x8f847e:0x6e6663):0x08080a,roughness:.92,metalness:0})}})}catch{g=fallbackHumanoid(style)}}else g=fallbackHumanoid(style);
+ if(style==='parmis'){
+  const hairMat=new THREE.MeshStandardMaterial({color:0x030304,roughness:.98});
+  const hair=new THREE.Mesh(new THREE.SphereGeometry(.285,18,12,0,Math.PI*2,0,Math.PI*.72),hairMat);hair.position.set(0,1.68,0);hair.scale.set(.95,1.25,.9);g.add(hair);
+  const dress=new THREE.Mesh(new THREE.ConeGeometry(.47,1.12,18),new THREE.MeshStandardMaterial({color:soft?0x242127:0x101014,roughness:.99}));dress.position.y=.58;g.add(dress);
+  if(!soft){for(const side of[-1,1]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.028,10,7),new THREE.MeshStandardMaterial({color:0xf5f4f0,emissive:0xffffff,emissiveIntensity:2.2}));eye.position.set(side*.075,1.68,.22);g.add(eye)}}
+ }
+ return g;
+}
+function creature(style='watcher'){const g=character('dark',false);g.scale.set(style==='runner'?1.02:.96,style==='runner'?1.14:1.08,style==='runner'?.9:.86);g.traverse(o=>{if(o.isMesh&&o.material){o.material=o.material.clone();o.material.color.set(style==='runner'?0x12080a:0x050506);o.material.roughness=1}});return g}
+async function scare3D(duration=430){if(Game.lock)return;Game.lock=true;const p=character('parmis',false);scene.add(p);const f=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);const pos=camera.position.clone().add(f.multiplyScalar(.68));p.position.set(pos.x,camera.position.y-1.72,pos.z);p.rotation.y=P.yaw+Math.PI;redScareLight.intensity=85;Audio.play('scream',.68,1.03);Audio.play('shock',.42,.92);flashScreen(.32,45);const t0=performance.now();while(performance.now()-t0<duration&&Game.started){const k=(performance.now()-t0)/duration;p.scale.setScalar(1.05+k*.52);await new Promise(requestAnimationFrame)}scene.remove(p);redScareLight.intensity=0;Game.lock=false}
 
-// ---------- UI helpers ----------
-let subtitleTimer=0;function subtitle(t,ms=3200){UI.sub.textContent=t;UI.sub.style.opacity='1';clearTimeout(subtitleTimer);subtitleTimer=setTimeout(()=>UI.sub.style.opacity='0',ms)}
-function objective(t){UI.obj.textContent=t}
-function showNote(title,text){Game.modal=true;UI.noteTitle.textContent=title;UI.noteText.textContent=text;UI.note.classList.add('open')}
-UI.noteClose.onclick=()=>{UI.note.classList.remove('open');Game.modal=false};
-function chapter(en,fa){UI.chapterTitle.textContent=en;UI.chapterSub.textContent=fa;UI.chapter.classList.remove('show');void UI.chapter.offsetWidth;UI.chapter.classList.add('show')}
-async function blink(ms=150){UI.blackout.style.transition='none';UI.blackout.style.opacity='1';await sleep(ms);UI.blackout.style.opacity='0';}
-function shockFlash(){UI.flash.style.transition='none';UI.flash.style.opacity='.68';setTimeout(()=>UI.flash.style.opacity='0',65)}
-function showKeypad(expected,onSuccess,hint='Three digits. / سه رقم'){Game.modal=true;UI.keypad.classList.add('open');UI.keyHint.textContent=hint;let code='';UI.code.textContent='_ _ _';UI.keys.innerHTML='';for(let n=1;n<=9;n++)addKey(n);addKey(0,true);function addKey(n,zero=false){const b=document.createElement('button');b.textContent=n;if(zero)b.className='zero';b.onclick=()=>{if(code.length>=3)return;code+=n;UI.code.textContent=code.padEnd(3,'_').split('').join(' ');if(code.length===3){if(code===expected){audio.play('door',.35);setTimeout(()=>{UI.keypad.classList.remove('open');Game.modal=false;onSuccess();},220)}else{UI.code.textContent='X X X';navigator.vibrate?.(120);setTimeout(()=>{code='';UI.code.textContent='_ _ _'},500)}}};UI.keys.appendChild(b)}}
-UI.keyClose.onclick=()=>{UI.keypad.classList.remove('open');Game.modal=false};
-
-// ---------- Player/input ----------
-const P={pos:new THREE.Vector3(0,1.72,2.6),yaw:0,pitch:-.08,radius:.27,walk:2.65,run:5.25};camera.position.copy(P.pos);
-const input={joyX:0,joyY:0,run:false,keys:new Set(),lookId:null,lastX:0,lastY:0,joyId:null};
+// ---------- Player / input ----------
+const P={pos:new THREE.Vector3(0,1.72,2.6),yaw:0,pitch:-.08,radius:.27,walk:1.95,run:3.8};camera.position.copy(P.pos);
+const input={joyX:0,joyY:0,run:false,hold:false,keys:new Set(),lookId:null,lastX:0,lastY:0,joyId:null};
 function canMove(nx,nz){for(const c of colliders){if(!c.active)continue;if(Math.abs(nx-c.x)<c.hx+P.radius&&Math.abs(nz-c.z)<c.hz+P.radius)return false}return true}
 function movePlayer(dx,dz){let nx=P.pos.x+dx,nz=P.pos.z;if(canMove(nx,nz))P.pos.x=nx;nx=P.pos.x;nz=P.pos.z+dz;if(canMove(nx,nz))P.pos.z=nz}
 function resetPlayer(x=0,z=2.5,yaw=0){P.pos.set(x,1.72,z);P.yaw=yaw;P.pitch=-.08;camera.position.copy(P.pos);camera.rotation.set(P.pitch,P.yaw,0)}
-function look(dx,dy){P.yaw-=dx*.0032;P.pitch=clamp(P.pitch-dy*.0026,-1.18,1.05)}
-UI.joy.addEventListener('pointerdown',e=>{input.joyId=e.pointerId;UI.joy.setPointerCapture(e.pointerId);joyMove(e)});UI.joy.addEventListener('pointermove',e=>{if(e.pointerId===input.joyId)joyMove(e)});UI.joy.addEventListener('pointerup',e=>{if(e.pointerId===input.joyId){input.joyId=null;input.joyX=input.joyY=0;UI.stick.style.transform='translate(0,0)'}});
-function joyMove(e){const r=UI.joy.getBoundingClientRect(),x=e.clientX-(r.left+r.width/2),y=e.clientY-(r.top+r.height/2),m=Math.hypot(x,y)||1,rad=r.width*.32,k=Math.min(1,rad/m);input.joyX=x*k/rad;input.joyY=y*k/rad;UI.stick.style.transform=`translate(${x*k}px,${y*k}px)`}
-renderer.domElement.addEventListener('pointerdown',e=>{if(e.clientX<innerWidth*.36)return;input.lookId=e.pointerId;renderer.domElement.setPointerCapture(e.pointerId);input.lastX=e.clientX;input.lastY=e.clientY});renderer.domElement.addEventListener('pointermove',e=>{if(e.pointerId!==input.lookId)return;look(e.clientX-input.lastX,e.clientY-input.lastY);input.lastX=e.clientX;input.lastY=e.clientY});renderer.domElement.addEventListener('pointerup',e=>{if(e.pointerId===input.lookId)input.lookId=null});
+function look(dx,dy){P.yaw-=dx*.00315;P.pitch=clamp(P.pitch-dy*.00255,-1.18,1.05)}
+UI.joy.addEventListener('pointerdown',e=>{input.joyId=e.pointerId;UI.joy.setPointerCapture(e.pointerId);joyMove(e)});UI.joy.addEventListener('pointermove',e=>{if(e.pointerId===input.joyId)joyMove(e)});for(const ev of['pointerup','pointercancel'])UI.joy.addEventListener(ev,e=>{if(e.pointerId===input.joyId){input.joyId=null;input.joyX=input.joyY=0;UI.stick.style.transform='translate(0,0)'}});
+function joyMove(e){const r=UI.joy.getBoundingClientRect(),x=e.clientX-(r.left+r.width/2),y=e.clientY-(r.top+r.height/2),m=Math.hypot(x,y)||1,rad=r.width*.33,k=Math.min(1,rad/m);input.joyX=x*k/rad;input.joyY=y*k/rad;UI.stick.style.transform=`translate(${x*k}px,${y*k}px)`}
+renderer.domElement.addEventListener('pointerdown',e=>{if(e.clientX<innerWidth*.34)return;input.lookId=e.pointerId;renderer.domElement.setPointerCapture(e.pointerId);input.lastX=e.clientX;input.lastY=e.clientY});renderer.domElement.addEventListener('pointermove',e=>{if(e.pointerId!==input.lookId)return;look(e.clientX-input.lastX,e.clientY-input.lastY);input.lastX=e.clientX;input.lastY=e.clientY});for(const ev of['pointerup','pointercancel'])renderer.domElement.addEventListener(ev,e=>{if(e.pointerId===input.lookId)input.lookId=null});
 UI.run.addEventListener('pointerdown',e=>{input.run=true;e.preventDefault()});for(const ev of['pointerup','pointercancel','pointerleave'])UI.run.addEventListener(ev,()=>input.run=false);
-addEventListener('keydown',e=>{input.keys.add(e.code);if(e.code==='KeyE')interact();if(e.code==='KeyF')toggleLight()});addEventListener('keyup',e=>input.keys.delete(e.code));
+UI.hold.addEventListener('pointerdown',e=>{input.hold=true;e.preventDefault()});for(const ev of['pointerup','pointercancel','pointerleave'])UI.hold.addEventListener(ev,()=>input.hold=false);
+addEventListener('keydown',e=>{input.keys.add(e.code);if(e.code==='KeyE')interact();if(e.code==='KeyF')toggleLight();if(e.code==='ShiftLeft')input.run=true;if(e.code==='Space')input.hold=true});addEventListener('keyup',e=>{input.keys.delete(e.code);if(e.code==='ShiftLeft')input.run=false;if(e.code==='Space')input.hold=false});
 UI.use.onclick=()=>interact();UI.light.onclick=()=>toggleLight();
 function movementVector(){let x=input.joyX,y=-input.joyY;if(input.keys.has('KeyA'))x-=1;if(input.keys.has('KeyD'))x+=1;if(input.keys.has('KeyW'))y+=1;if(input.keys.has('KeyS'))y-=1;const m=Math.hypot(x,y);if(m>1){x/=m;y/=m}return{x,y,mag:Math.min(1,m)}}
-function nearestInteraction(){let best=null,bd=99;const f=new THREE.Vector3(-Math.sin(P.yaw),0,-Math.cos(P.yaw));for(const it of interactables){if(!it.enabled||!it.obj?.parent)continue;const wp=new THREE.Vector3();it.obj.getWorldPosition(wp);const dx=wp.x-P.pos.x,dz=wp.z-P.pos.z,dist=Math.hypot(dx,dz);if(dist>it.range||dist>=bd)continue;const dot=(dx*f.x+dz*f.z)/(dist||1);if(dot<.15)continue;best=it;bd=dist}return best}
-function interact(){if(Game.modal||Game.lock)return;const it=nearestInteraction();if(it){try{it.action(it)}catch(e){bootFail(e)}}}
+const raycaster=new THREE.Raycaster(),center=new THREE.Vector2(0,0),scratchV=new THREE.Vector3();
+let cachedInteraction=null,nextInteractionAt=0;
+function findInteraction(now=performance.now()){if(now<nextInteractionAt)return cachedInteraction;nextInteractionAt=now+90;cachedInteraction=null;raycaster.setFromCamera(center,camera);const hits=raycaster.intersectObjects(raycastables,true);for(const h of hits){if(h.distance>2.0)break;let o=h.object,it=null;while(o){if(o.userData?.interaction){it=o.userData.interaction;break}o=o.parent}if(it&&it.enabled&&h.distance<=it.range){cachedInteraction=it}break}return cachedInteraction}
+function interact(){if(Game.modal||Game.lock)return;const it=findInteraction(0);if(it){try{it.action(it)}catch(e){bootFail(e)}}}
 function toggleLight(){if(!Game.hasFlashlight||Game.flashlightDead)return;Game.flashlightOn=!Game.flashlightOn;updateLights()}
-function updateLights(){flashlight.intensity=(Game.flashlightOn&&!Game.flashlightDead)?290:0;spill.intensity=(Game.flashlightOn&&!Game.flashlightDead)?15:0;candleLight.intensity=Game.candle?22:0;UI.candle.style.display=Game.candle?'block':'none';UI.battery.parentElement.style.display=Game.hasFlashlight?'block':'none'}
+function updateLights(){flashlight.intensity=(Game.flashlightOn&&!Game.flashlightDead)?290:0;spill.intensity=(Game.flashlightOn&&!Game.flashlightDead)?15:0;candleLight.intensity=Game.candle?(input.hold?6:22):0;UI.candle.style.display=Game.candle?'block':'none';UI.battery.parentElement.style.display=Game.hasFlashlight?'block':'none'}
 
-// ---------- Stage manager ----------
-const Game={stage:0,started:false,modal:false,lock:false,hasFlashlight:false,flashlightOn:false,flashlightDead:false,battery:100,candle:false,local:{},update:null,player:P,checkpoint:1};
-function clearWorld(){while(world.children.length)world.remove(world.children[0]);colliders.length=0;interactables.length=0;animated.length=0;Game.update=null;Game.local={};Game.lock=false;Game.modal=false;UI.note.classList.remove('open');UI.keypad.classList.remove('open');UI.breathWrap.style.display='none';Game.candle=false;Game.speedMul=1;updateLights();scene.fog.color.set(0x050506);scene.fog.density=.055;renderer.toneMappingExposure=.92}
+// ---------- Lifecycle / stage manager ----------
+const timers=new Set();
+function later(fn,ms,stage=Game.stage){const id=setTimeout(()=>{timers.delete(id);if(Game.stage===stage)fn()},ms);timers.add(id);return id}
+function clearTimers(){for(const id of timers)clearTimeout(id);timers.clear()}
+function disposeWorld(){world.traverse(o=>{if(o.isMesh){if(o.geometry&&!SHARED_GEO.has(o.geometry))o.geometry.dispose?.();const mats=Array.isArray(o.material)?o.material:[o.material];for(const m of mats){if(m&&!SHARED_MATS.has(m)){m.map?.dispose?.();m.dispose?.()}}}})}
+function clearWorld(){clearTimers();Audio.stopAll();disposeWorld();while(world.children.length)world.remove(world.children[0]);colliders.length=0;raycastables.length=0;interactions.length=0;dynamic.length=0;cachedInteraction=null;Game.update=null;Game.local={};Game.lock=false;Game.moveLock=false;Game.modal=false;UI.note.classList.remove('open');UI.breathWrap.style.display='none';UI.staminaWrap.style.display='none';UI.hold.style.display='none';UI.underwater.style.display='none';Game.candle=false;Game.speedMul=1;Game.runEnabled=true;scene.fog.color.set(0x040405);scene.fog.density=.05;renderer.toneMappingExposure=.94;hemi.intensity=.36;flashlight.distance=10.5;flashlight.angle=rad(18);updateLights()}
+const Game={stage:0,started:false,modal:false,lock:false,moveLock:false,hasFlashlight:false,flashlightOn:false,flashlightDead:false,battery:100,candle:false,speedMul:1,runEnabled:true,local:{},update:null,checkpoint:1,stamina:100,breath:100};
 const STAGES={};
-Game.enter=function(n,save=true){if(!STAGES[n])return bootFail(new Error('Missing stage '+n));clearWorld();Game.stage=n;if(save){Game.checkpoint=n;localStorage.setItem('zdlb_pack1_checkpoint',String(n))}UI.room.textContent=`ROOM ${String(n).padStart(2,'0')}`;chapter(STAGES[n].name,STAGES[n].fa);STAGES[n].build();UI.blackout.style.transition='opacity .35s linear';UI.blackout.style.opacity='0'};
-Game.fail=async function(reason='YOU WERE FOUND.'){if(Game.lock)return;Game.lock=true;subtitle(bi(reason,'پیدات کرد.'),1200);UI.damage.style.opacity='.8';navigator.vibrate?.([80,50,120]);audio.play('shock',.55);await sleep(650);UI.blackout.style.opacity='1';await sleep(350);Game.enter(Game.stage,false);UI.damage.style.opacity='0';Game.lock=false};
-Game.next=function(){if(Game.stage>=10){finishPack();return}UI.blackout.style.opacity='1';setTimeout(()=>Game.enter(Game.stage+1),420)};
-function finishPack(){Game.lock=true;localStorage.setItem('zdlb_pack1_checkpoint','1');UI.endText.textContent=bi('Ten rooms. Ten fears. Samyar did not erase them — he walked through them. UNKNOWN is still on the line.','ده اتاق. ده ترس. سامیار آن‌ها را پاک نکرد؛ از میانشان عبور کرد. UNKNOWN هنوز پشت خط است.');UI.end.classList.add('open');Game.modal=true}
-UI.restart.onclick=()=>{localStorage.setItem('zdlb_pack1_checkpoint','1');location.href=location.pathname+'?v=pack1-final'};
+Game.enter=function(n,save=true){if(!STAGES[n])return bootFail(new Error('Missing stage '+n));clearWorld();Game.stage=n;if(save){Game.checkpoint=n;localStorage.setItem('zdlb_pack1_v2_checkpoint',String(n))}UI.room.textContent=`ROOM ${String(n).padStart(2,'0')}`;chapter(STAGES[n].name,STAGES[n].fa);STAGES[n].build();UI.blackout.style.transition='opacity .35s linear';UI.blackout.style.opacity='0'};
+Game.fail=async function(reason=bi('YOU WERE FOUND.','پیدات کرد.')){if(Game.lock)return;const s=Game.stage;Game.lock=true;subtitle(reason,1200);UI.damage.style.opacity='.82';Audio.play('shock',.52,.95);await sleep(620);if(Game.stage!==s)return;UI.blackout.style.opacity='1';await sleep(330);if(Game.stage!==s)return;Game.enter(s,false);UI.damage.style.opacity='0'};
+Game.next=function(){if(Game.stage>=10){finishPack();return}UI.blackout.style.opacity='1';later(()=>Game.enter(Game.stage+1),420,Game.stage)};
+function finishPack(){Game.lock=true;Game.modal=true;localStorage.setItem('zdlb_pack1_v2_checkpoint','1');UI.endText.textContent=bi('Ten rooms. Ten fears. Samyar did not erase them — he walked through them. UNKNOWN is still on the line.','ده اتاق. ده ترس. سامیار آن‌ها را پاک نکرد؛ از میانشان عبور کرد. UNKNOWN هنوز پشت خط است.');UI.end.classList.add('open')}
+UI.restart.onclick=()=>{localStorage.setItem('zdlb_pack1_v2_checkpoint','1');location.href=location.pathname+'?v=pack1-v2'};
+
+function playerForward(){return scratchV.set(-Math.sin(P.yaw),0,-Math.cos(P.yaw))}
+function facingPositiveZ(){const f=playerForward();return f.z>.78}
+function facingTargetXZ(x,z,cos=.82){const dx=x-P.pos.x,dz=z-P.pos.z,d=Math.hypot(dx,dz)||1,f=playerForward();return (dx*f.x+dz*f.z)/d>cos}
+function setFlashlightDead(v=true){Game.flashlightDead=v;if(v)Game.flashlightOn=false;updateLights()}
+function showStamina(v=true){UI.staminaWrap.style.display=v?'block':'none'}
+function showBreath(v=true){UI.breathWrap.style.display=v?'block':'none'}
 
 // ============================================================
 // PACK 1 — STAGE 01: WAKE UP
 // ============================================================
 STAGES[1]={name:'ROOM 01 — WAKE UP',fa:'اتاق ۱ — بیدار شو',build(){
- resetPlayer(0,2.6,0);Game.hasFlashlight=false;Game.flashlightOn=false;Game.flashlightDead=false;Game.battery=100;updateLights();
- floor(0,0,8.4,8.8);ceiling(0,0,8.4,8.8);wall(-4.2,1.45,0,.18,3,8.8,MAT.wall);wall(4.2,1.45,0,.18,3,8.8,MAT.wall);wall(0,1.45,4.4,8.4,3,.18,MAT.wall);wall(-2.5,1.45,-4.4,3.4,3,.18,MAT.wall);wall(2.5,1.45,-4.4,3.4,3,.18,MAT.wall);lamp(0,0,1.75,0xb9af9b,4.8);addBed(-2.25,1.65);addPropTable(2.25,1.7);addChair(2.25,2.55,Math.PI);const exit=createDoor(0,-4.36,'z','LOCKED • قفل');exit.collider.active=true;
- const phone=meshBox(2.25,.83,1.67,.28,.12,.42,MAT.black);
- const flashlightMat=new THREE.MeshStandardMaterial({color:0x596169,roughness:.5,metalness:.68,emissive:0x111820,emissiveIntensity:.7});
- const flashProp=meshBox(-1.25,.84,1.1,.13,.13,.58,flashlightMat);flashProp.rotation.x=.12;
- const flashGuide=new THREE.PointLight(0xb8c6d2,12,2.15,2);flashGuide.position.set(-1.25,1.05,1.1);world.add(flashGuide);
- makeSign('731?',-2.9,1.6,-4.28,0,.72,.28);
- const local=Game.local={notes:new Set(),phone:false,ring:false,ringAt:0,unlocked:false};
+ resetPlayer(0,2.65,0);Game.hasFlashlight=false;Game.flashlightOn=false;Game.flashlightDead=false;Game.battery=100;updateLights();
+ floor(0,0,8.4,8.8);ceiling(0,0,8.4,8.8);wall(-4.2,1.45,0,.18,3,8.8,MAT.plaster);wall(4.2,1.45,0,.18,3,8.8,MAT.plaster);wall(0,1.45,4.4,8.4,3,.18,MAT.plaster);wall(-2.5,1.45,-4.4,3.4,3,.18,MAT.plaster);wall(2.5,1.45,-4.4,3.4,3,.18,MAT.plaster);
+ lampFake(0,.2,1.4,0xb9ad95);addBed(-2.25,1.55);addPropTable(2.25,1.65);addChair(2.25,2.55,Math.PI);
+ const exit=createDoor(0,-4.36,'z',bi('KNOCK','در بزن'),{locked:true});
+ const phone=meshBox(2.25,.83,1.62,.28,.12,.42,MAT.black);
+ const fmat=new THREE.MeshStandardMaterial({color:0x596169,roughness:.48,metalness:.7,emissive:0x111820,emissiveIntensity:.7});
+ const flashProp=meshBox(-1.25,.84,1.08,.13,.13,.58,fmat);flashProp.rotation.x=.12;const guide=new THREE.PointLight(0xb8c6d2,12,2.15,2);guide.position.set(-1.25,1.05,1.08);world.add(guide);
+ const L=Game.local={notes:new Set(),phone:false,ring:false,ringAt:0,knocks:0,lastKnock:0,ready:false};
  objective(bi('Find a light.','یک نور پیدا کن.'));
- addInteract(flashProp,'TAKE FLASHLIGHT • چراغ‌قوه را بردار',it=>{it.enabled=false;flashProp.visible=false;Game.hasFlashlight=true;Game.flashlightOn=true;flashGuide.intensity=0;updateLights();local.ringAt=performance.now()+7500;objective(bi('Look around. Something in this room was left for you.','اطراف را بگرد. چیزی در این اتاق برای تو جا مانده.'));subtitle(bi('The battery is almost full.','باتری تقریباً پر است.'),1800)});
- addInteract(phone,'ANSWER • جواب بده',()=>{if(!local.ring){subtitle(bi('No signal.','هیچ سیگنالی نیست.'),1200);return}if(local.phone)return;local.phone=true;local.ring=false;subtitle(bi('UNKNOWN: “Samyar… don’t trust the room. Read what you wrote.”','UNKNOWN: «سامیار… به این اتاق اعتماد نکن. چیزهایی را که خودت نوشتی بخوان.»'),5200);checkReady()});
+ addInteract(flashProp,bi('TAKE FLASHLIGHT','چراغ‌قوه را بردار'),it=>{it.enabled=false;flashProp.visible=false;guide.intensity=0;Game.hasFlashlight=true;Game.flashlightOn=true;updateLights();L.ringAt=performance.now()+7200;objective(bi('Look around. Someone left a pattern here.','اطراف را بگرد. یک الگو اینجا جا مانده.'),5000)});
+ addInteract(phone,bi('ANSWER','جواب بده'),()=>{if(!L.ring){subtitle(bi('No signal.','هیچ سیگنالی نیست.'),1000);return}if(L.phone)return;L.phone=true;L.ring=false;subtitle(bi('UNKNOWN: “Samyar… read what you wrote. Then remember how you used to knock.”','UNKNOWN: «سامیار… چیزهایی که خودت نوشتی بخون. بعد یادت بیار چطور در می‌زدی.»'),5200);checkReady()});
  const notes=[
   {x:-2.55,z:-.45,t:'FRAGMENT I',s:bi('SEVEN nights. On the seventh reflection, you finally wrote her name: Parmis.','هفت شب. در انعکاس شب هفتم بالاخره اسمش را نوشتی: پارمیس.')},
   {x:.15,z:-1.75,t:'FRAGMENT II',s:bi('THREE knocks meant it was you. Two meant: do not open.','سه ضربه یعنی خودت بودی. دو ضربه یعنی: در را باز نکن.')},
   {x:2.55,z:-1.15,t:'FRAGMENT III',s:bi('The hospital map has no Room One. Still, you drew ONE door here every night.','روی نقشه بیمارستان اتاق یک وجود ندارد. با این حال هر شب اینجا یک در می‌کشیدی.')}
  ];
- notes.forEach((n,i)=>paper(n.x,n.z,n.t,n.s,()=>{local.notes.add(i);checkReady()}));
- const doorIt=exit.panel.userData.interaction;doorIt.label='USE KEYPAD • قفل را باز کن';doorIt.action=()=>{if(!local.phone||local.notes.size<3){subtitle(bi('Something is missing.','هنوز چیزی کم است.'),1300);return}showKeypad('731',()=>{local.unlocked=true;openDoor(exit);objective(bi('Leave Room One.','از اتاق یک خارج شو.'))},bi('I → II → III','I → II → III'))};
- function checkReady(){if(local.phone&&local.notes.size===3&&!local.unlocked)objective(bi('The three fragments hide the door code. I → II → III','سه تکه کد در را پنهان کرده‌اند. I → II → III'))}
- Game.update=(dt,now)=>{if(local.ringAt&&!local.ring&&now>=local.ringAt){local.ring=true;local.ringAt=0;audio.play('phone',.62);subtitle(bi('A phone is ringing.','یک تلفن زنگ می‌زند.'),1600)}if(exit.open&&P.pos.z<-4.72)Game.next()};
+ notes.forEach((n,i)=>paper(n.x,n.z,n.t,n.s,()=>{L.notes.add(i);checkReady()}));
+ const dit=exit.panel.userData.interaction;dit.action=()=>{
+  const now=performance.now();if(!L.ready){Audio.play('knock',.28,.95);subtitle(bi('The room does not answer.','اتاق جواب نمی‌دهد.'),900);return}
+  if(now-L.lastKnock>1800)L.knocks=0;L.lastKnock=now;L.knocks++;Audio.play('knock',.38,1.03);
+  if(L.knocks===2)later(()=>{if(L.knocks===2){Audio.play('knock',.18,.78);later(()=>Audio.play('knock',.18,.78),260)}},500);
+  if(L.knocks>=3){exit.locked=false;openDoor(exit);objective(bi('Leave Room One.','از اتاق یک خارج شو.'),3200);subtitle(bi('Three knocks. The lock releases.','سه ضربه. قفل آزاد می‌شود.'),1300);L.knocks=0}
+ };
+ function checkReady(){if(L.phone&&L.notes.size===3&&!L.ready){L.ready=true;objective(bi('No keypad. Use what the note taught you.','کیپدی وجود ندارد. از چیزی که یادداشت بهت یاد داد استفاده کن.'),5000)}}
+ Game.update=(dt,now)=>{if(L.ringAt&&!L.ring&&now>=L.ringAt){L.ring=true;L.ringAt=0;Audio.play('phone',.56);subtitle(bi('The phone rings behind you.','تلفن پشت سرت زنگ می‌زند.'),1500)}if(exit.open&&P.pos.z<-4.76)Game.next()};
 }};
 
 // ============================================================
 // PACK 1 — STAGE 02: THE HALLWAY
 // ============================================================
 STAGES[2]={name:'ROOM 02 — THE HALLWAY',fa:'اتاق ۲ — راهرو',build(){
- resetPlayer(0,1.2,0);Game.hasFlashlight=true;Game.flashlightOn=true;Game.flashlightDead=false;updateLights();
- // main hall z +2 to -22, right-side Door 3 room
- floor(0,-10,3.2,25);ceiling(0,-10,3.2,25);
- wall(-1.6,1.45,-10,.16,3,25,MAT.wallDark);
- // right wall segmented with Door 3 gap around z=-9
- wall(1.6,1.45,-2.9,.16,3,10.8,MAT.wallDark);wall(1.6,1.45,-16.1,.16,3,12.8,MAT.wallDark);
- wall(0,1.45,2.5,3.2,3,.18,MAT.wallDark);openGapWallZ(-22.5,3.2,1.25,MAT.wallDark);
- for(const z of[-2.2,-7,-12,-17,-21])lamp(0,z,z===-12?2.1:2.8,0xc4b9a2,4.1);
- makeSign('1',-1.45,1.8,-3.9,Math.PI/2,.3,.3);makeSign('2',-1.45,1.8,-6.4,Math.PI/2,.3,.3);makeSign('3',1.45,1.8,-9, -Math.PI/2,.3,.3);
- // Door 3 side room
- const d3=createDoor(1.55,-9,'x','OPEN DOOR 3 • در ۳ را باز کن');
- floor(3.3,-9,3.5,4);ceiling(3.3,-9,3.5,4);wall(5.05,1.45,-9,.16,3,4,MAT.wall);wall(3.3,1.45,-11,3.5,3,.16,MAT.wall);wall(3.3,1.45,-7,3.5,3,.16,MAT.wall);
- addPropTable(3.7,-9);const note=paper(3.7,-9,'DOOR 3',bi('417. You circled it three times. Under it: “Not a room number. A way out.”','۴۱۷. سه بار دورش خط کشیده‌ای. زیرش: «شماره اتاق نیست. راه خروج است.»'),()=>{local.codeKnown=true;objective(bi('Return to the final door. Use 417.','به در انتهای راهرو برگرد. ۴۱۷ را وارد کن.'))});
- const final=createDoor(0,-22.44,'z','USE KEYPAD • قفل');final.collider.active=true;const fi=final.panel.userData.interaction;fi.action=()=>{if(!local.codeKnown){subtitle(bi('The lock has three digits. You do not know them yet.','قفل سه رقمی است. هنوز کد را نمی‌دانی.'),1800);return}showKeypad('417',()=>{local.unlocked=true;openDoor(final);objective(bi('Go through the door.','از در عبور کن.'))},bi('A number from Door 3.','عددی از اتاق شماره ۳.'))};
- const local=Game.local={codeKnown:false,unlocked:false,knock:false};objective(bi('Find Door 3. The old knock pattern matters.','در شماره ۳ را پیدا کن. الگوی ضربه قدیمی مهم است.'));
- Game.update=(dt,now)=>{if(!local.knock&&P.pos.z<-6.5){local.knock=true;audio.play('knock',.42);setTimeout(()=>audio.play('knock',.38),330);setTimeout(()=>audio.play('knock',.35),660)}if(final.open&&P.pos.z<-22.8)Game.next()};
+ resetPlayer(0,2.0,0);Game.hasFlashlight=true;Game.flashlightOn=true;Game.flashlightDead=false;updateLights();scene.fog.density=.064;
+ corridor(0,-10.5,27,3.4,{wall:MAT.wallDark});wall(0,1.45,3.0,3.4,3,.18,MAT.wallDark);openGapWallZ(-24,3.4,1.25,MAT.wallDark);
+ for(const z of[.3,-4.5,-9.3,-14.1,-18.9,-23])lampFake(0,z,1.0,0xc3b79f);
+ const L=Game.local={wrong:0,nextRing:performance.now()+1200,correct:{x:1.53,z:-15.5},done:false};
+ const doorData=[];
+ const specs=[[-1.53,-3.5,'01'],[1.53,-7.5,'02'],[-1.53,-11.5,'03'],[1.53,-15.5,'04'],[-1.53,-19.2,'05'],[1.53,-22,'06']];
+ for(const [x,z,num] of specs){makeSign(num,x>0?1.43:-1.43,1.72,z,x>0?-Math.PI/2:Math.PI/2,.34,.24);const panel=meshBox(x,1.23,z,x>0?.12:.12,2.46,1.15,MAT.wood);const c=solid(x,z,.12,1.15);const it=addInteract(panel,bi('OPEN','باز کن'),()=>chooseDoor(x,z,panel,c),1.55);doorData.push({x,z,panel,c,it})}
+ const glow=lightPool(L.correct.x>0?1.18:-1.18,L.correct.z,.5,1.1,.07,0x9da9b3);
+ objective(bi('Do not trust the numbers. Listen.','به شماره‌ها اعتماد نکن. گوش بده.'),5200);
+ function chooseDoor(x,z,panel,c){if(L.done)return;if(Math.abs(x-L.correct.x)<.1&&Math.abs(z-L.correct.z)<.1){L.done=true;c.active=false;panel.rotation.y+=(x>0?-Math.PI/2:Math.PI/2);Audio.play('door',.48);subtitle(bi('The ringing is on the other side.','صدای زنگ از پشت همین در می‌آید.'),1500);later(()=>Game.next(),900);return}L.wrong++;Audio.play('door',.28,.85);subtitle(bi('Silence.','سکوت.'),900);Game.lock=true;later(async()=>{UI.blackout.style.opacity='1';await sleep(300);if(Game.stage!==2)return;resetPlayer(0,2.0,0);UI.blackout.style.opacity='0';Game.lock=false;if(L.wrong===2)subtitle(bi('The phone sounds closer near one door.','نزدیک یکی از درها صدای تلفن واضح‌تر است.'),2500)},250)}
+ Game.update=(dt,now)=>{if(now>=L.nextRing&&!L.done){L.nextRing=now+5700;const d=Math.hypot(P.pos.x-L.correct.x,P.pos.z-L.correct.z),v=clamp(.12+(18-d)/22,.14,.52),pan=clamp((L.correct.x-P.pos.x)/2.2,-1,1);Audio.play('phone',v,1,pan)}glow.material.opacity=.045+.025*Math.sin(now*.004)};
 }};
 
-function createMemoryParmis(){const g=createParmis();g.name='PARMIS_MEMORY_3D';g.traverse(o=>{if(o.isMesh&&o.material){o.material=o.material.clone();if(o.material.emissiveIntensity>1)o.material.emissiveIntensity=.15}}); // cover horror mouth/eyes with softer face details
- const soft=new THREE.MeshStandardMaterial({color:0xaaa19a,roughness:.8});const eyeM=new THREE.MeshStandardMaterial({color:0x27242a,roughness:.5});
- const face=new THREE.Mesh(new THREE.SphereGeometry(.245,24,18),soft);face.scale.set(.86,1.18,.83);face.position.set(0,1.78,.008);g.add(face);
- for(const s of[-1,1]){const e=new THREE.Mesh(new THREE.SphereGeometry(.026,10,8),eyeM);e.position.set(s*.083,1.81,.215);e.scale.set(1.15,.72,.38);g.add(e)}
- return g}
-
 // ============================================================
-// PACK 1 — STAGE 03: PARMIS / THE MEMORY LABYRINTH
+// PACK 1 — STAGE 03: PARMIS — DON'T LOOK BACK
 // ============================================================
-STAGES[3]={name:'ROOM 03 — PARMIS: THE LAST LIGHT',fa:'اتاق ۳ — پارمیس: آخرین نور',build(){
- resetPlayer(0,2.3,0);Game.hasFlashlight=true;Game.flashlightOn=true;Game.flashlightDead=false;Game.battery=Math.max(Game.battery,72);updateLights();scene.fog.density=.067;renderer.toneMappingExposure=.70;
- const L=Game.local={mem:new Set(),hallDoor:null,hallEvent:false,candleTaken:false,secondScare:false,stretched:false,obsDone:false,branchDone:false,ped:new Set(),ending:false,farParmis:null,farWall:null,wrongBranch:0};
- objective(bi('Find the three things Parmis left behind. 0/3','سه چیزی را که پارمیس جا گذاشته پیدا کن. ۰/۳'));
- // Starting memory room with opening in north wall
- floor(0,0,8,8);ceiling(0,0,8,8);wall(-4,1.45,0,.18,3,8,MAT.wallDark);wall(4,1.45,0,.18,3,8,MAT.wallDark);wall(0,1.45,4,8,3,.18,MAT.wallDark);wall(-2.45,1.45,-4,3.1,3,.18,MAT.wallDark);wall(2.45,1.45,-4,3.1,3,.18,MAT.wallDark);lamp(0,0,1.75,0xc9bca3,4.6);
- addBed(-2.35,.65);addPropTable(2.3,.7);addChair(-.1,-1.0,.35);
- const hallDoor=createDoor(0,-3.94,'z','IT WILL NOT OPEN • باز نمی‌شود');L.hallDoor=hallDoor;hallDoor.panel.userData.interaction.action=()=>{if(L.mem.size<3){subtitle(bi('The door feels heavier than it should.','در از چیزی که باید سنگین‌تر است.'),1500);return}openDoor(hallDoor)};
- function memoryItem(x,z,kind,label,text){let m;if(kind==='necklace'){m=new THREE.Mesh(new THREE.TorusGeometry(.12,.018,8,20),new THREE.MeshStandardMaterial({color:0x8c7752,metalness:.8,roughness:.3}));m.rotation.x=Math.PI/2;m.position.set(x,.84,z);world.add(m)}else if(kind==='letter'){m=new THREE.Mesh(GEO.paper,MAT.paper);m.rotation.x=-Math.PI/2;m.position.set(x,.83,z);world.add(m)}else{m=meshBox(x,.91,z,.44,.55,.05,MAT.wood)}
- addInteract(m,'TAKE • بردار',it=>{if(L.mem.has(kind))return;L.mem.add(kind);it.enabled=false;m.visible=false;showNote(label,text);objective(bi(`Find the three things Parmis left behind. ${L.mem.size}/3`,`سه چیزی را که پارمیس جا گذاشته پیدا کن. ${L.mem.size}/3`));if(L.mem.size===3){setTimeout(()=>{objective(bi('The door is open now.','حالا در باز می‌شود.'));openDoor(hallDoor);audio.play('cry',.24)},450)}});}
- memoryItem(-2.45,-1.8,'necklace','THE NECKLACE',bi('Samyar remembers buying it. He cannot remember the last time he saw Parmis wearing it.','سامیار یادش هست آن را خریده. آخرین باری که پارمیس آن را پوشیده بود یادش نمی‌آید.'));
- memoryItem(2.35,-1.45,'letter','THE UNSENT LETTER',bi('“You only remember me when you are afraid.” The sentence ends there.','«فقط وقتی می‌ترسی منو یادت میاد.» جمله همان‌جا تمام می‌شود.'));
- memoryItem(.4,1.25,'frame','THE EMPTY FRAME',bi('No photograph. Only a fingerprint under the glass.','هیچ عکسی نیست. فقط یک اثر انگشت زیر شیشه مانده.'));
- // Hall beyond memory room: no flat image; full 3D entity.
- corridor(-14,20,3.2,{wall:MAT.wallDark});for(const z of[-6.5,-10,-13.5,-17,-20.5])lamp(0,z,2.15,0xc8bda8,4.0);
- // stretchable end wall; initially closes hall near -22.8
- L.farWall=meshBox(0,1.45,-23.7,3.2,3,.18,MAT.wallDark);L.farWallCollider=solid(0,-23.7,3.2,.18);
- const far=createParmisDistant();far.position.set(0,0,-20.7);far.rotation.y=0;far.visible=false;world.add(far);L.farParmis=far;
- // candle altar halfway down hall, invisible until flashlight death
- const candleBody=meshBox(1.12,.62,-10.8,.06,.62,.06,new THREE.MeshStandardMaterial({color:0xddd0ad,roughness:.86}));candleBody.visible=false;const candleFlame=new THREE.PointLight(0xffaa55,0,2.9,2);candleFlame.position.set(1.12,1.02,-10.8);world.add(candleFlame);
- const candleIt=addInteract(candleBody,'TAKE CANDLE • شمع را بردار',async it=>{if(!Game.flashlightDead||L.candleTaken)return;L.candleTaken=true;it.enabled=false;candleBody.visible=false;candleFlame.intensity=0;Game.candle=true;updateLights();objective(bi('Keep moving. Do not trust the length of the corridor.','ادامه بده. به طول راهرو اعتماد نکن.'));subtitle(bi('For the first time, the light is warm.','برای اولین بار نور گرم است.'),1800);setTimeout(async()=>{if(Game.stage!==3||L.secondScare)return;L.secondScare=true;await parmisJumpscare(430);subtitle(bi('Nothing is behind you now. That is worse.','حالا چیزی پشت سرت نیست. همین بدتر است.'),1700)},1250);setTimeout(()=>stretchHall(),2350)},1.8);candleIt.enabled=false;
- function stretchHall(){if(L.stretched||Game.stage!==3)return;L.stretched=true;const startZ=L.farWall.position.z,target=-36,t0=performance.now();const tick=()=>{if(Game.stage!==3)return;const k=clamp((performance.now()-t0)/1800,0,1),e=k*k*(3-2*k);L.farWall.position.z=startZ+(target-startZ)*e;L.farWallCollider.z=L.farWall.position.z;if(k<1)requestAnimationFrame(tick);else{L.farWall.visible=false;L.farWallCollider.active=false;buildLabyrinth()}};tick()}
- function hallScare(){if(L.hallEvent)return;L.hallEvent=true;Game.lock=true;far.visible=true;objective(bi('Walk toward her.','به سمتش برو.'));subtitle('',10);setTimeout(async()=>{if(Game.stage!==3)return;await blink(115);far.visible=false;await parmisJumpscare(470);Game.flashlightDead=true;Game.flashlightOn=false;updateLights();candleBody.visible=true;candleFlame.intensity=20;candleIt.enabled=true;objective(bi('The flashlight is dead. Find another light.','چراغ‌قوه مرده. یک نور دیگر پیدا کن.'));Game.lock=false},1750)}
- function buildLabyrinth(){
-  // extension corridor and observation chamber
-  corridor(-30,13,3.2,{wall:MAT.wallDark});for(const z of[-25.5,-29.5,-33.5])lamp(0,z,.75,0x9b856f,3.5);
-  // observation room centered -39 with entrance/exit gaps
-  floor(0,-39,8,8,MAT.floor);ceiling(0,-39,8,8);wall(-4,1.45,-39,.18,3,8,MAT.wallDark);wall(4,1.45,-39,.18,3,8,MAT.wallDark);wall(-2.45,1.45,-35,3.1,3,.18,MAT.wallDark);wall(2.45,1.45,-35,3.1,3,.18,MAT.wallDark);wall(-2.45,1.45,-43,3.1,3,.18,MAT.wallDark);wall(2.45,1.45,-43,3.1,3,.18,MAT.wallDark);lamp(0,-39,1.05,0xb09e85,5);
-  const exitObs=createDoor(0,-42.94,'z','LOCKED • قفل');exitObs.panel.userData.interaction.action=()=>{if(L.obsDone)openDoor(exitObs);else subtitle(bi('The room wants you to notice something.','اتاق می‌خواهد چیزی را ببینی.'),1400)};
-  const a=addChair(-2.15,-39.8,.2),b=meshBox(0,.55,-39.9,.7,1.1,.4,MAT.metal),c=meshBox(2.15,.38,-39.9,.9,.76,.45,MAT.wood); // cabinet is subtly wrong: floating
-  c.position.y=.66;const ia=addInteract(a,'INSPECT • بررسی',()=>wrongObservation());const ib=addInteract(b,'INSPECT • بررسی',()=>wrongObservation());const ic=addInteract(c,'INSPECT • بررسی',()=>{if(L.obsDone)return;L.obsDone=true;ic.enabled=false;objective(bi('The cabinet has no weight. The next door opened.','کمد وزن ندارد. در بعدی باز شد.'));subtitle(bi('You noticed what the dream could not imitate.','چیزی را دیدی که خواب نتوانسته بود تقلید کند.'),2400);openDoor(exitObs)});
-  function wrongObservation(){if(L.obsDone)return;navigator.vibrate?.(70);shockFlash();subtitle(bi('No. That was here before.','نه. این قبلاً هم اینجا بود.'),1000)}
-  // branch chamber after obs
-  corridor(-47,8,7.8,{wall:MAT.wallDark});makeSign('I',-2.45,1.8,-48.3,0,.3,.3);makeSign('II',0,1.8,-48.3,0,.35,.3);makeSign('III',2.45,1.8,-48.3,0,.4,.3);
-  // three branch gates as interactable doors; center is true first, then left, then right through repeated illusion
-  const gates=[-2.45,0,2.45].map((x,i)=>{const p=meshBox(x,1.25,-49.0,1.35,2.5,.12,MAT.wood);return addInteract(p,'CHOOSE • انتخاب',()=>chooseBranch(i),1.9)});L.branchStep=0;const seq=[1,0,2];
-  function chooseBranch(i){if(L.branchDone)return;if(i===seq[L.branchStep]){L.branchStep++;audio.play('door',.24);shockFlash();P.pos.z=-45.6;P.pos.x=0;if(L.branchStep<3){objective(bi(`The corridor repeats. Choose again. ${L.branchStep}/3`,`راهرو تکرار شد. دوباره انتخاب کن. ${L.branchStep}/3`));subtitle(bi('The warm flame leans toward what is real.','شعله گرم به سمت چیزی خم می‌شود که واقعی است.'),1600)}else{L.branchDone=true;gates.forEach(g=>g.enabled=false);gates.forEach((g,j)=>g.obj.visible=false);objective(bi('The illusion broke. Carry the three memories forward.','توهم شکست. سه خاطره را با خودت ببر.'));buildPedestalRoom()}}else{L.wrongBranch++;navigator.vibrate?.([60,30,60]);blink(80);P.pos.set(0,1.72,-45.6);subtitle(bi('You returned to the same place.','دوباره به همان جا برگشتی.'),1100)}}
-  objective(bi('Something in this room is impossible. Find it.','یک چیز در این اتاق غیرممکن است. پیدایش کن.'));
+STAGES[3]={name:"ROOM 03 — DON'T LOOK BACK",fa:'اتاق ۳ — برنگرد',build(){
+ Game.hasFlashlight=true;Game.flashlightOn=true;Game.flashlightDead=false;Game.candle=false;Game.runEnabled=true;updateLights();scene.fog.density=.052;hemi.intensity=.24;
+ const L=Game.local={lap:1,phase:'corridor',candleProp:null,candleTaken:false,hum:null,nextLateStep:0,lastMoving:false,followerDist:14,lookCooldown:0,stretch:0,still:0,restraint:false,stepsLoop:null,finalStart:0,parmis:null,dialogue:false,finished:false};
+ function wipeGeometry(){disposeWorld();while(world.children.length)world.remove(world.children[0]);colliders.length=0;raycastables.length=0;interactions.length=0;dynamic.length=0;cachedInteraction=null}
+ function buildCorridor(lap){wipeGeometry();resetPlayer(0,2.3,0);scene.fog.density=lap>=2?.068:.052;floor(0,-10,3.2,27.2,MAT.floor);ceiling(0,-10,3.2,27.2,MAT.ceiling);wall(-1.6,1.45,-10,.16,3,27.2,MAT.wallDark);wall(1.6,1.45,-10,.16,3,27.2,MAT.wallDark);wall(0,1.45,3.6,3.2,3,.18,MAT.wallDark);wall(0,1.45,-23.6,3.2,3,.18,MAT.wallDark);
+  for(let i=1;i<=11;i++){const z=1.35-i*2.05;emissivePanel(0,2.91,z,.38,.045,.72,0xc3b79d,lap===1?2.8:1.2);lightPool(0,z,1.25,2.0,lap===1?.09:.035,0xd6c5a6);makeSign(String(i).padStart(2,'0'),-1.44,1.66,z,Math.PI/2,.30,.22,'#a8a8aa','#101013')}
+  makeSign('12',0,1.72,-23.48,0,.42,.26,'#ddd','#111');
+  if(lap===1){Game.candle=false;Game.flashlightDead=false;Game.flashlightOn=true;updateLights();objective(bi('Room 12.','اتاق ۱۲.'),3200);L.nextLateStep=performance.now()+3600}
+  else{Game.candle=true;Game.flashlightDead=true;Game.flashlightOn=false;updateLights();UI.hold.style.display=lap===3?'block':'none';UI.hold.innerHTML=lap===3?'CUP<small>شعله را بپوشان</small>':'HOLD<small>نگه دار</small>';objective(lap===2?bi('Keep walking.','راه برو.'):bi('The corridor refuses to end.','راهرو تمام نمی‌شود.'),3800);L.followerDist=lap===2?14:11;L.stretch=0;L.still=0;L.restraint=false}
  }
- function buildPedestalRoom(){
-  // final memory room farther north
-  floor(0,-56,8,10,MAT.floor);ceiling(0,-56,8,10);wall(-4,1.45,-56,.18,3,10,MAT.wallDark);wall(4,1.45,-56,.18,3,10,MAT.wallDark);wall(-2.45,1.45,-51,3.1,3,.18,MAT.wallDark);wall(2.45,1.45,-51,3.1,3,.18,MAT.wallDark);wall(-2.45,1.45,-61,3.1,3,.18,MAT.wallDark);wall(2.45,1.45,-61,3.1,3,.18,MAT.wallDark);lamp(0,-56,1.7,0xe3c59a,5.2);
-  const names=[['necklace',-2.1],['letter',0],['frame',2.1]];names.forEach(([k,x])=>{const p=pedestal(x,-56.4);const it=addInteract(p,'PLACE MEMORY • خاطره را بگذار',()=>{if(L.ped.has(k))return;L.ped.add(k);it.enabled=false;const token=new THREE.Mesh(k==='necklace'?new THREE.TorusGeometry(.13,.02,8,18):GEO.paper,k==='necklace'?new THREE.MeshStandardMaterial({color:0x9d8355,metalness:.7,roughness:.3}):MAT.paper);token.position.set(x,1.05,-56.4);if(k!=='necklace')token.rotation.x=-Math.PI/2;world.add(token);audio.play('door',.18);objective(bi(`Give the memories back. ${L.ped.size}/3`,`خاطره‌ها را پس بده. ${L.ped.size}/3`));if(L.ped.size===3)setTimeout(ending,650)},1.8)});
-  const endDoor=createDoor(0,-60.94,'z','WAIT • صبر کن');endDoor.panel.userData.interaction.enabled=false;L.endDoor=endDoor;
- }
- async function ending(){if(L.ending)return;L.ending=true;Game.lock=true;Game.candle=true;updateLights();objective(bi('Stay. Listen.','بمان. گوش بده.'));const m=createMemoryParmis();m.position.set(0,0,-59.1);m.rotation.y=0;world.add(m);await sleep(1300);subtitle(bi('PARMIS: “You keep remembering the moment you lost me…”','PARMIS: «تو فقط لحظه‌ای رو به یاد میاری که منو از دست دادی…»'),4300);await sleep(4400);subtitle(bi('PARMIS: “…and forgetting every moment you had me.”','PARMIS: «…ولی تمام لحظه‌هایی که منو داشتی فراموش کردی.»'),4300);await sleep(4300);subtitle(bi('PARMIS: “I was more than the worst memory of your life.”','PARMIS: «من فقط بدترین خاطره‌ی زندگیت نبودم.»'),4300);await sleep(4300);chapter('FEAR III — PARMIS','FACED. NOT FORGOTTEN. • با آن روبه‌رو شدی؛ نه اینکه فراموشش کنی.');
-  // fade her as a 3D object
-  m.traverse(o=>{if(o.isMesh){o.material=o.material.clone();o.material.transparent=true}});const t0=performance.now();while(performance.now()-t0<1700){const a=1-(performance.now()-t0)/1700;m.traverse(o=>{if(o.isMesh)o.material.opacity=a});await new Promise(requestAnimationFrame)}world.remove(m);openDoor(L.endDoor);objective(bi('Leave the memory.','از خاطره بیرون برو.'));Game.lock=false}
- Game.update=(dt,now)=>{
-  if(!L.hallEvent&&hallDoor.open&&P.pos.z<-5.5)hallScare();
-  if(L.candleTaken&&L.stretched&&!L.obsDone&&P.pos.z<-35.8)objective(bi('Something in this room is impossible. Find it.','یک چیز در این اتاق غیرممکن است. پیدایش کن.'));
-  if(L.endDoor?.open&&P.pos.z<-61.35)Game.next();
+ function spawnCandle(){const stand=meshBox(0,.13,-22.25,.08,.26,.08,MAT.metal);const wax=meshBox(0,.34,-22.25,.10,.34,.10,MAT.white);const flame=new THREE.Mesh(new THREE.SphereGeometry(.035,9,7),new THREE.MeshBasicMaterial({color:0xffc06a}));flame.position.set(0,.55,-22.25);world.add(flame);raycastables.push(wax);L.candleProp=wax;addInteract(wax,bi('TAKE CANDLE','شمع را بردار'),it=>{it.enabled=false;wax.visible=false;stand.visible=false;flame.visible=false;L.candleTaken=true;Game.candle=true;updateLights();subtitle(bi('The light only reaches a few steps.','نور فقط چند قدم جلوتر را می‌گیرد.'),1900);later(()=>{UI.blackout.style.opacity='1';later(()=>{L.lap=2;buildCorridor(2);UI.blackout.style.opacity='0'},300)},500)})}
+ function shadowBehind(){if(L.followerDist>10||L.lookCooldown>0)return;L.lookCooldown=8;L.followerDist=Math.max(2.7,L.followerDist-5.8);const s=character('parmis',false);world.add(s);s.position.set(P.pos.x,P.pos.y-1.72,Math.min(2.7,P.pos.z+Math.min(4.8,L.followerDist)));s.rotation.y=Math.PI;later(()=>world.remove(s),380);Audio.play('buzz',.16,.82);subtitle(bi('The hum stops.','صدای هوم قطع می‌شود.'),700)}
+ function followerTick(dt,moving){if(L.lap<2||L.phase!=='corridor')return;if(L.lookCooldown>0)L.lookCooldown-=dt;L.followerDist+=moving?dt*.25:-dt*1.45;if(L.lap===3)L.followerDist-=dt*.18;if(facingPositiveZ()&&L.followerDist<10&&L.lookCooldown<=0)shadowBehind();if(L.followerDist<.9&&!L.restraint)Game.fail(bi('She reached you.','بهت رسید.'))}
+ function beginFinalRoom(){L.phase='final';Audio.stop(L.stepsLoop);L.stepsLoop=null;UI.hold.style.display='none';wipeGeometry();Game.candle=true;Game.flashlightDead=true;updateLights();resetPlayer(0,2.6,0);roomShell(7.2,7.0,{wall:MAT.plaster,floor:MAT.floor});addBed(-1.65,-.45);addPropTable(1.65,-.55);const neck=meshBox(1.65,.79,-.55,.12,.035,.12,new THREE.MeshStandardMaterial({color:0x8e7650,metalness:.45,roughness:.45}));paper(1.25,-.8,'UNREAD',bi('There are eleven doors in the corridor. You walked past all of them because standing still felt worse.','در راهرو یازده در بود. از کنار همه‌شان رد شدی چون ایستادن سخت‌تر بود.'),()=>{});lampFake(0,-.2,.5,0xc9b187);L.finalStart=performance.now();objective(bi('Listen.','گوش بده.'),2600);L.parmis=null}
+ async function finalDialogue(){if(L.dialogue)return;L.dialogue=true;Game.lock=true;Game.moveLock=true;Audio.stopAll();await sleep(1200);if(Game.stage!==3)return;subtitle(bi('PARMIS: “You were so loud out there.”','پارمیس: «چقدر بیرون سر و صدا می‌کردی.»'),3300);await sleep(3600);subtitle(bi('SAMYAR: “…I couldn’t sit in there.”','سامیار: «…نمی‌تونستم اون تو بشینم.»'),3000);await sleep(3300);subtitle(bi('PARMIS: “I counted your steps. Eleven doors, back and forth. That is how I knew you had not left.”','پارمیس: «قدم‌هات رو می‌شمردم. یازده تا در، رفت و برگشت. برای همین می‌دونستم نرفتی.»'),5600);await sleep(5900);subtitle(bi('PARMIS: “You keep remembering the moment you lost me… and forgetting every moment you had me.”','پارمیس: «فقط لحظه‌ای رو به یاد میاری که منو از دست دادی… ولی تمام لحظه‌هایی که منو داشتی فراموش کردی.»'),6200);await sleep(6500);subtitle(bi('PARMIS: “You can stop walking now, Samyar.”','پارمیس: «دیگه می‌تونی وایسی، سامیار.»'),4700);await sleep(5000);if(Game.stage!==3)return;Game.candle=false;updateLights();UI.blackout.style.opacity='1';chapter('FEAR III — PARMIS',bi('FACED. NOT FORGOTTEN.','باهاش روبه‌رو شدی؛ فراموشش نکردی.'));L.finished=true;later(()=>Game.next(),2600)}
+ buildCorridor(1);L.hum=Audio.loop('hum',.035,.72);
+ Game.update=(dt,now,moveMag,running)=>{
+  if(L.phase==='corridor'){
+   const moving=moveMag>.08;
+   if(L.lap===1){if(now>=L.nextLateStep&&moving){L.nextLateStep=now+9000;Audio.play('steps',.055,1.08,.15);later(()=>Audio.play('steps',.035,.97,-.1),420)}if(P.pos.z<-20.7&&!L.candleProp){Game.lock=true;setFlashlightDead(true);Audio.play('buzz',.3,.72);UI.blackout.style.opacity='1';later(()=>{UI.blackout.style.opacity='0';Game.lock=false;spawnCandle();subtitle(bi('Something breathes in the dark.','چیزی توی تاریکی نفس می‌کشد.'),1700)},900)}}
+   else{
+    followerTick(dt,moving);
+    if(L.lap===2&&P.pos.z<-21.2){UI.blackout.style.opacity='1';L.lap=3;later(()=>{buildCorridor(3);UI.blackout.style.opacity='0';subtitle(bi('The same eleven doors. Again.','همان یازده در. دوباره.'),1600)},360)}
+    if(L.lap===3){
+     if(L.restraint){
+      const still=moveMag<.05&&!facingPositiveZ()&&input.hold;
+      if(still){L.still+=dt;L.followerDist=Math.max(1.4,L.followerDist-dt*.7);if(L.still>8.0){Audio.stop(L.stepsLoop);L.stepsLoop=null;L.restraint=false;Audio.play('cry',.08,.72);UI.blackout.style.opacity='1';later(()=>{beginFinalRoom();UI.blackout.style.opacity='0'},650)}}
+      else{L.restraint=false;L.still=0;Audio.stop(L.stepsLoop);L.stepsLoop=null;L.followerDist=Math.max(2.2,L.followerDist-2.2);subtitle(bi('It stops when you move.','وقتی تکان می‌خوری، می‌ایستد.'),1000)}
+     }else if(P.pos.z<-19){
+      if(L.stretch<2){L.stretch++;UI.blackout.style.opacity='1';later(()=>{P.pos.z=-7.0;camera.position.copy(P.pos);UI.blackout.style.opacity='0';if(L.stretch===2)subtitle(bi('Running is not making the end closer.','دویدن انتهای راهرو را نزدیک‌تر نمی‌کند.'),2200)},220)}
+      else{const still=moveMag<.05&&!facingPositiveZ()&&input.hold;if(still){L.restraint=true;L.still=0;L.stepsLoop=Audio.loop('steps',.085,.82);subtitle(bi('Do not move.','تکان نخور.'),1100)}else if(moveMag<.05&&!input.hold){subtitle(bi('The flame steadies when you cover it.','وقتی شعله رو می‌پوشونی آروم می‌شه.'),900)}}
+     }
+    }
+   }
+  }else if(L.phase==='final'){
+   const t=(now-L.finalStart)/1000;if(t>19&&!L.parmis){Audio.play('knock',.24,.82);later(()=>Audio.play('knock',.24,.82),330);later(()=>Audio.play('knock',.24,.82),660);Game.moveLock=true;L.parmis=character('parmis',true);world.add(L.parmis);L.parmis.position.set(0,0,2.05);L.parmis.rotation.y=Math.PI;subtitle(bi('Three knocks. Behind you.','سه ضربه. پشت سرت.'),1600)}if(L.parmis&&facingTargetXZ(L.parmis.position.x,L.parmis.position.z,.72))finalDialogue();
+  }
  };
 }};
 
 // ============================================================
-// PACK 1 — STAGE 04: THE KITCHEN
+// PACK 1 — STAGE 04: KITCHEN
 // ============================================================
 STAGES[4]={name:'ROOM 04 — THE KITCHEN',fa:'اتاق ۴ — آشپزخانه',build(){
- resetPlayer(0,4.6,0);Game.candle=true;Game.hasFlashlight=true;Game.flashlightDead=true;Game.flashlightOn=false;updateLights();scene.fog.density=.06;
- // Kitchen shell with north exit gap
- floor(0,0,10,12,MAT.floor);ceiling(0,0,10,12);wall(-5,1.45,0,.18,3,12,MAT.wall);wall(5,1.45,0,.18,3,12,MAT.wall);wall(0,1.45,6,10,3,.18,MAT.wall);wall(-3,1.45,-6,4,3,.18,MAT.wall);wall(3,1.45,-6,4,3,.18,MAT.wall);
- const exit=createDoor(0,-5.94,'z','LOCKED • قفل');exit.panel.userData.interaction.action=()=>{if(L.phoneDone)openDoor(exit);else subtitle(bi('The phone has not finished with you.','تلفن هنوز کارت دارد.'),1200)};
- lamp(-2.8,1.8,1.7,0xc5a56f,4.5);lamp(2.7,-2.2,1.3,0xb89465,4.2);
- // counters / island
- for(const z of[2.3,.8,-.7])meshBox(-4.2,.65,z,1.3,1.3,1.1,MAT.metal);solid(-4.2,.8,1.4,5.2);meshBox(2.4,.55,.2,2.6,1.1,1.05,MAT.wood);solid(2.4,.2,2.6,1.05);
- const L=Game.local={valves:new Set(),listener:null,phoneDone:false,phoneRinging:false,listenerActive:false,batteryTaken:false};
- objective(bi('The room smells of gas. Shut every valve. 0/3','بوی گاز می‌آید. همه شیرها را ببند. ۰/۳'));
- const valveMat=new THREE.MeshStandardMaterial({color:0x6f0f13,metalness:.35,roughness:.55});
- [[-3.9,2.2],[3.9,2.7],[3.9,-3.3]].forEach(([x,z],i)=>{const v=new THREE.Mesh(new THREE.TorusGeometry(.16,.045,7,14),valveMat);v.position.set(x,.95,z);v.rotation.y=Math.PI/2;world.add(v);addInteract(v,'TURN VALVE • شیر را ببند',it=>{if(L.valves.has(i))return;L.valves.add(i);it.enabled=false;v.rotation.z+=Math.PI/2;audio.play('door',.18);objective(bi(`Shut every valve. ${L.valves.size}/3`,`همه شیرها را ببند. ${L.valves.size}/3`));if(L.valves.size===1)wakeListener();if(L.valves.size===3)finishValves()})});
- function wakeListener(){L.listenerActive=true;const e=createWatcher();e.position.set(0,0,-3.8);e.scale.set(.92,1.05,.92);world.add(e);L.listener=e;subtitle(bi('Something in the kitchen hears running.','یک چیزی در آشپزخانه صدای دویدن را می‌شنود.'),2600)}
- function finishValves(){L.listenerActive=false;if(L.listener)L.listener.visible=false;L.phoneRinging=true;audio.play('phone',.62);objective(bi('Answer the phone.','تلفن را جواب بده.'))}
- const phone=meshBox(2.45,1.15,.2,.3,.12,.42,MAT.black);addInteract(phone,'ANSWER • جواب بده',()=>{if(!L.phoneRinging){subtitle(bi('Dead line.','خط مرده است.'),900);return}if(L.phoneDone)return;L.phoneDone=true;L.phoneRinging=false;subtitle(bi('UNKNOWN: “Your mother cooked for three after Parmis was gone. She said grief still deserved a plate.”','UNKNOWN: «مادرت بعد از رفتن پارمیس برای سه نفر غذا می‌پخت. می‌گفت غم هم یک بشقاب حق دارد.»'),5600);objective(bi('Take the emergency battery, then leave.','باتری اضطراری را بردار و خارج شو.'))});
- const bat=meshBox(3.15,1.15,.2,.18,.16,.34,MAT.yellow);addInteract(bat,'TAKE BATTERY • باتری را بردار',it=>{if(!L.phoneDone){subtitle(bi('Not yet. The phone is ringing for a reason.','هنوز نه. تلفن بی‌دلیل زنگ نمی‌زند.'),1200);return}if(L.batteryTaken)return;L.batteryTaken=true;it.enabled=false;bat.visible=false;Game.flashlightDead=false;Game.hasFlashlight=true;Game.flashlightOn=true;Game.battery=78;Game.candle=false;updateLights();openDoor(exit);objective(bi('Leave the kitchen.','از آشپزخانه خارج شو.'))});
- Game.update=(dt)=>{if(L.listenerActive&&L.listener){const mv=movementVector();const d=L.listener.position.distanceTo(new THREE.Vector3(P.pos.x,0,P.pos.z));if((input.run||input.keys.has('ShiftLeft'))&&mv.mag>.18){const dir=new THREE.Vector3(P.pos.x-L.listener.position.x,0,P.pos.z-L.listener.position.z).normalize();L.listener.position.addScaledVector(dir,dt*1.5)}else if(d<2.4){const dir=new THREE.Vector3(L.listener.position.x-P.pos.x,0,L.listener.position.z-P.pos.z).normalize();L.listener.position.addScaledVector(dir,dt*.25)}L.listener.lookAt(P.pos.x,1.25,P.pos.z);if(d<.78)Game.fail('IT HEARD YOU.')}if(exit.open&&P.pos.z<-6.35)Game.next()};
+ resetPlayer(0,3.1,0);Game.candle=true;Game.hasFlashlight=true;Game.flashlightDead=true;Game.flashlightOn=false;updateLights();scene.fog.density=.035;hemi.intensity=.48;
+ floor(0,0,9.4,8.2,MAT.tile);ceiling(0,0,9.4,8.2);wall(-4.7,1.45,0,.18,3,8.2,MAT.plaster);wall(4.7,1.45,0,.18,3,8.2,MAT.plaster);wall(0,1.45,4.1,9.4,3,.18,MAT.plaster);openGapWallZ(-4.1,9.4,1.5,MAT.plaster);addPropTable(0,.3);for(const x of[-3.3,-2.1,2.1,3.3])meshBox(x,.52,-2.8,1.0,1.02,.62,MAT.wood);const stove=meshBox(-2.65,.82,-2.25,1.25,.52,.85,MAT.metal);const sink=meshBox(2.85,.82,1.7,1.05,.55,.72,MAT.metal);const valve=meshBox(-3.5,1.1,2.45,.24,.34,.24,MAT.metal);const exit=createDoor(0,-4.02,'z',bi('OPEN','باز کن'),{locked:true});lampFake(0,0,.75,0xd2b88c);
+ const L=Game.local={candleOut:false,gasOff:false,danger:0,hiss:true,nextHiss:performance.now()+2600,entity:creature('watcher')};world.add(L.entity);L.entity.position.set(3.5,0,-3.2);L.entity.visible=false;
+ objective(bi('The room smells like gas.','اتاق بوی گاز می‌دهد.'),4300);subtitle(bi('UNKNOWN: “Do not carry fire through this room.”','UNKNOWN: «آتش رو توی این اتاق با خودت نبر.»'),3600);
+ addInteract(sink,bi('PUT OUT CANDLE','شمع را خاموش کن'),()=>{if(L.candleOut)return;L.candleOut=true;Game.candle=false;updateLights();Audio.play('water',.07,.9);subtitle(bi('The flame dies in the sink.','شعله توی سینک خاموش می‌شود.'),1400);objective(bi('Find the gas main. Move when the stove hisses.','شیر اصلی گاز را پیدا کن. وقتی اجاق هیس می‌کند حرکت کن.'),5200)});
+ addInteract(valve,bi('TURN GAS OFF','گاز را قطع کن'),()=>{if(!L.candleOut){Game.fail(bi('Fire meets gas.','آتش به گاز می‌رسد.'));return}if(L.gasOff)return;L.gasOff=true;exit.locked=false;openDoor(exit);setFlashlightDead(false);Game.flashlightOn=true;updateLights();subtitle(bi('The hiss stops. Your flashlight clicks back on.','صدای هیس قطع می‌شود. چراغ‌قوه دوباره روشن می‌شود.'),2400);objective(bi('Leave the kitchen.','از آشپزخانه خارج شو.'),2600)});
+ Game.update=(dt,now,moveMag,running)=>{if(now>=L.nextHiss&&!L.gasOff){L.hiss=!L.hiss;L.nextHiss=now+(L.hiss?2800:1800);if(L.hiss)Audio.play('buzz',.055,.48)}if(!L.candleOut&&P.pos.z<-.8&&Math.abs(P.pos.x+2.65)<2.2){Game.fail(bi('The gas catches.','گاز شعله‌ور می‌شود.'));return}if(L.candleOut&&!L.gasOff){const noisy=moveMag>.12&&(running||!L.hiss);L.danger=clamp(L.danger+(noisy?dt*1.2:-dt*.55),0,1.25);if(L.danger>.58)L.entity.visible=true;if(L.danger>1)Game.fail(bi('Something heard you.','یه چیزی صداتو شنید.'))}if(exit.open&&P.pos.z<-4.38)Game.next()};
 }};
 
 // ============================================================
 // PACK 1 — STAGE 05: MOM'S ROOM
 // ============================================================
-STAGES[5]={name:'ROOM 05 — MOM’S ROOM',fa:'اتاق ۵ — اتاق مامان',build(){
- resetPlayer(0,5.2,0);Game.candle=false;Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;updateLights();scene.fog.density=.072;
- floor(0,0,7.5,14,MAT.floor);ceiling(0,0,7.5,14);wall(-3.75,1.45,0,.18,3,14,MAT.wallDark);wall(3.75,1.45,0,.18,3,14,MAT.wallDark);wall(0,1.45,7,7.5,3,.18,MAT.wallDark);wall(-2.2,1.45,-7,3.1,3,.18,MAT.wallDark);wall(2.2,1.45,-7,3.1,3,.18,MAT.wallDark);
- const exit=createDoor(0,-6.94,'z','LOCKED • قفل');exit.panel.userData.interaction.action=()=>{if(L.tape)openDoor(exit);else subtitle(bi('You came here for something.','برای یک چیزی به اینجا آمدی.'),1100)};
- addBed(-2.25,.8);addPropTable(2.3,2.0);const wardrobe=meshBox(2.7,.95,-4.8,1.45,1.9,.75,MAT.wood);solid(2.7,-4.8,1.45,.75);const radio=meshBox(-2.45,.95,2.0,.55,.32,.3,MAT.black);const radioGlow=new THREE.PointLight(0x8ba1aa,2.5,1.5,2);radioGlow.position.set(-2.45,1.05,2.0);world.add(radioGlow);
- const L=Game.local={safe:true,cycle:0,danger:0,tape:false,lastSafe:true};objective(bi('The radio gives you cover. Move only when it is breathing. Find the cassette.','رادیو بهت پوشش می‌دهد. فقط وقتی نفس می‌کشد حرکت کن. نوار را پیدا کن.'));
- const tape=meshBox(2.7,1.16,-4.55,.34,.12,.22,MAT.black);addInteract(tape,'TAKE CASSETTE • نوار را بردار',it=>{if(L.tape)return;L.tape=true;it.enabled=false;tape.visible=false;subtitle(bi('MOM: “Samyar? If you hear this, you left again without saying goodbye.”','MOM: «سامیار؟ اگه اینو می‌شنوی، باز بدون خداحافظی رفتی.»'),4700);objective(bi('Return to the door. Keep listening to the radio.','به در برگرد. هنوز به رادیو گوش بده.'));openDoor(exit)});
- Game.update=(dt,now)=>{const phase=(now/1000)%7;L.safe=phase<3.8;radioGlow.intensity=L.safe?14:1.2;if(L.safe!==L.lastSafe){L.lastSafe=L.safe;subtitle(L.safe?bi('STATIC — MOVE','خش‌خش — حرکت کن'):bi('SILENCE — STOP','سکوت — وایسا'),900)}const mv=movementVector();if(!L.safe&&mv.mag>.16&&!Game.lock&&!Game.modal)L.danger+=dt*(input.run?2.2:1.25);else L.danger=Math.max(0,L.danger-dt*.55);if(L.danger>1.15)Game.fail('THE SILENCE HEARD YOU.');if(exit.open&&P.pos.z<-7.35)Game.next()};
+STAGES[5]={name:"ROOM 05 — MOM'S ROOM",fa:'اتاق ۵ — اتاق مامان',build(){
+ resetPlayer(0,2.7,0);Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;updateLights();scene.fog.density=.045;
+ floor(0,0,7.4,7.2,MAT.floor);ceiling(0,0,7.4,7.2);wall(-3.7,1.45,0,.18,3,7.2,MAT.wallDark);wall(3.7,1.45,0,.18,3,7.2,MAT.wallDark);wall(0,1.45,3.6,7.4,3,.18,MAT.wallDark);openGapWallZ(-3.6,7.4,1.5,MAT.wallDark);addBed(-1.9,-.8);addPropTable(1.8,-.6);addChair(1.7,.65,Math.PI);lampFake(0,-.2,.55,0xc5b592);const wardrobe=meshBox(2.8,1.15,2.0,1.05,2.3,.75,MAT.wood);solid(2.8,2.0,1.05,.75);const cassette=meshBox(1.8,.79,-.6,.44,.13,.28,MAT.black);const exit=createDoor(0,-3.55,'z',bi('OPEN','باز کن'),{locked:true});
+ const L=Game.local={started:false,hiding:false,breath:100,t:0,dangerWindow:false,passed:false,stepLoop:null};objective(bi('There is a cassette on the table.','یک نوار روی میز است.'),4000);
+ addInteract(cassette,bi('PLAY CASSETTE','نوار را پخش کن'),it=>{if(L.started)return;L.started=true;it.enabled=false;exit.locked=true;Audio.play('cry',.055,.63);subtitle(bi('MOM: “You left again without saying goodbye.”','مامان: «باز رفتی بدون اینکه خداحافظی کنی.»'),4300);later(()=>{Audio.play('knock',.25,.8);subtitle(bi('Someone is outside the room.','یکی پشت در اتاقه.'),1500);objective(bi('Hide.','قایم شو.'),2600)},2300)});
+ addInteract(wardrobe,bi('HIDE','قایم شو'),()=>{if(!L.started||L.passed)return;if(L.hiding)return;L.hiding=true;L.t=0;L.breath=100;Game.moveLock=true;UI.hold.style.display='block';UI.hold.innerHTML='HOLD BREATH<small>نفست رو نگه دار</small>';showBreath(true);P.pos.set(2.8,1.72,1.52);P.yaw=Math.PI;camera.position.copy(P.pos);camera.rotation.set(P.pitch,P.yaw,0);subtitle(bi('Do not let her hear you breathe.','نذار صدای نفست رو بشنوه.'),1400);L.stepLoop=Audio.loop('steps',.075,.72,-.2)});
+ Game.update=(dt,now,moveMag,running)=>{if(L.hiding&&!L.passed){L.t+=dt;L.dangerWindow=L.t>1.6&&L.t<8.2;if(input.hold)L.breath=Math.max(0,L.breath-dt*10.5);else if(!L.dangerWindow)L.breath=Math.min(100,L.breath+dt*18);UI.breathFill.style.width=L.breath+'%';if(L.dangerWindow&&!input.hold){Audio.stop(L.stepLoop);Game.fail(bi('She hears you breathe.','صدای نفست رو می‌شنوه.'));return}if(L.breath<=0){Audio.stop(L.stepLoop);Game.fail(bi('You gasp for air.','برای هوا نفس می‌کشی.'));return}if(L.t>=9.3){L.passed=true;L.hiding=false;Audio.stop(L.stepLoop);showBreath(false);UI.hold.style.display='none';Game.moveLock=false;P.pos.set(1.55,1.72,1.35);camera.position.copy(P.pos);exit.locked=false;openDoor(exit);subtitle(bi('The footsteps move away.','صدای قدم‌ها دور می‌شود.'),1600);objective(bi('Leave before they return.','قبل از برگشتن خارج شو.'),2600)}}if(exit.open&&P.pos.z<-3.9)Game.next()};
 }};
 
 // ============================================================
 // PACK 1 — STAGE 06: FIRST FALL
 // ============================================================
 STAGES[6]={name:'ROOM 06 — FIRST FALL',fa:'اتاق ۶ — اولین سقوط',build(){
- resetPlayer(0,3.6,0);Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;Game.candle=false;updateLights();scene.fog.density=.085;renderer.toneMappingExposure=.65;
- const len=46;corridor(-19.5,len,4.2,{wall:MAT.wallDark});wall(0,1.45,3.5,4.2,3,.18,MAT.wallDark);openGapWallZ(-42.5,4.2,1.4,MAT.wallDark);const exit=createDoor(0,-42.44,'z','PUSH • هل بده');exit.panel.userData.interaction.action=()=>openDoor(exit);
- for(const z of[1,-5,-11,-17,-23,-29,-35,-40])lamp((Math.abs(z)%2)*.2,z,1.25,0xa9a39a,3.7);
- // obstacles force weaving instead of a straight sprint
- [[-1.05,-7,1.45,1.15],[1.05,-14,1.45,1.15],[-1.05,-21,1.45,1.15],[1.05,-28,1.45,1.15],[-.9,-35,1.65,1.1]].forEach(([x,z,sx,sz])=>{meshBox(x,.72,z,sx,1.44,sz,MAT.metal);solid(x,z,sx,sz)});
- const dark=new THREE.Mesh(new THREE.PlaneGeometry(4.1,3),new THREE.MeshBasicMaterial({color:0x000000,side:THREE.DoubleSide}));dark.position.set(0,1.45,3.0);world.add(dark);
- const L=Game.local={darkZ:3.0,startedAt:performance.now(),warned:false};objective(bi('RUN. The darkness is taking the corridor.','بدو. تاریکی دارد راهرو را می‌بلعد.'));subtitle(bi('Do not stop. There is no creature to look at.','نایست. اینجا موجودی نیست که نگاهش کنی.'),2200);
- Game.update=(dt)=>{const speed=1.18+(Math.max(0,-P.pos.z)/42)*.28;L.darkZ-=dt*speed;dark.position.z=L.darkZ;if(!L.warned&&L.darkZ-P.pos.z<4){L.warned=true;subtitle(bi('It is close.','خیلی نزدیکه.'),900)}if(L.darkZ<P.pos.z+.72)Game.fail('THE DARKNESS CAUGHT UP.');if(exit.open&&P.pos.z<-42.9)Game.next()};
+ resetPlayer(0,2.2,0);Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;Game.runEnabled=true;Game.stamina=100;updateLights();showStamina(true);scene.fog.density=.058;hemi.intensity=.20;
+ floor(0,-17.5,4.6,44,MAT.floor);ceiling(0,-17.5,4.6,44,MAT.ceiling);wall(-2.3,1.45,-17.5,.16,3,44,MAT.wallDark);wall(2.3,1.45,-17.5,.16,3,44,MAT.wallDark);wall(0,1.45,4.5,4.6,3,.18,MAT.wallDark);openGapWallZ(-39.5,4.6,1.4,MAT.wallDark);
+ for(const z of[1,-5,-11,-17,-23,-29,-35,-39])lampFake(0,z,.62,0xc0b496);
+ // Alternating obstructions create real steering pressure without branching dead ends.
+ const barriers=[[-1.05,-6.2],[1.05,-12.5],[-1.0,-19.2],[1.0,-25.8],[-1.0,-32.2]];
+ for(const [x,z] of barriers){wall(x,1.25,z,2.3,2.5,.22,MAT.metal)}
+ const L=Game.local={darkZ:5.4,t:0,heartbeat:null};objective(bi('RUN. The dark is moving.','بدو. تاریکی حرکت می‌کند.'),2800);subtitle(bi('UNKNOWN: “Do not stop at the first fall.”','UNKNOWN: «توی اولین سقوط وای نستا.»'),2500);L.heartbeat=Audio.loop('heartbeat',.09,.96);
+ Game.update=(dt,now,moveMag,running)=>{L.t+=dt;const wantsRun=(input.run||moveMag>.88)&&Game.runEnabled;if(wantsRun&&moveMag>.08)Game.stamina=Math.max(0,Game.stamina-dt*18);else Game.stamina=Math.min(100,Game.stamina+dt*13);UI.staminaFill.style.width=Game.stamina+'%';const speed=2.2+Math.min(1.15,L.t*.032);L.darkZ-=speed*dt;if(L.darkZ<=P.pos.z+.62){Audio.stop(L.heartbeat);Game.fail(bi('The darkness reaches you.','تاریکی بهت می‌رسد.'));return}const gap=L.darkZ-P.pos.z;if(gap<4.2)UI.damage.style.opacity=String(clamp((4.2-gap)/4.2*.45,0,.45));else UI.damage.style.opacity='0';if(P.pos.z<-39.1){Audio.stop(L.heartbeat);UI.damage.style.opacity='0';Game.next()}};
 }};
 
 // ============================================================
 // PACK 1 — STAGE 07: LEVEL YELLOW
 // ============================================================
 STAGES[7]={name:'ROOM 07 — LEVEL YELLOW',fa:'اتاق ۷ — طبقه زرد',build(){
- resetPlayer(0,2.8,0);Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;Game.candle=false;Game.battery=Math.max(Game.battery,62);updateLights();scene.fog.color.set(0x0d0d08);scene.fog.density=.06;renderer.toneMappingExposure=.72;
- floor(0,-10,7.5,27,MAT.floor);ceiling(0,-10,7.5,27);wall(-3.75,1.45,-10,.18,3,27,MAT.wallDark);wall(3.75,1.45,-10,.18,3,27,MAT.wallDark);wall(0,1.45,3.5,7.5,3,.18,MAT.wallDark);wall(-2.15,1.45,-23.5,3.2,3,.18,MAT.wallDark);wall(2.15,1.45,-23.5,3.2,3,.18,MAT.wallDark);
- for(const z of[0,-5,-10,-15,-20])lamp(0,z,1.55,0xd0c65c,4.4);
- // ward beds and dividers
- for(const z of[-3,-8,-13,-18]){addBed(-2.45,z);meshBox(1.9,1.1,z,.08,2.2,2.5,MAT.white);solid(1.9,z,.08,2.5)}
- const exit=createDoor(0,-23.44,'z','LOCKED • قفل');exit.panel.userData.interaction.action=()=>{if(L.tags.size===2)openDoor(exit);else subtitle(bi('Two patient tags are missing.','دو تگ بیمار هنوز پیدا نشده.'),1200)};
- const L=Game.local={tags:new Set(),watcher:createWatcher(),hinted:false};L.watcher.position.set(.8,0,-11);world.add(L.watcher);
- objective(bi('Find two patient tags. Keep the Watcher inside the flashlight beam. 0/2','دو تگ بیمار را پیدا کن. Watcher را داخل نور چراغ‌قوه نگه دار. ۰/۲'));
- [[-2.55,-7.9],[2.75,-18.2]].forEach(([x,z],i)=>{const tag=meshBox(x,.95,z,.32,.04,.22,MAT.yellow);addInteract(tag,'TAKE TAG • تگ را بردار',it=>{if(L.tags.has(i))return;L.tags.add(i);it.enabled=false;tag.visible=false;objective(bi(`Find two patient tags. Keep watching it. ${L.tags.size}/2`,`دو تگ بیمار را پیدا کن. نگاهش را نگه دار. ${L.tags.size}/2`));if(L.tags.size===2){openDoor(exit);subtitle(bi('Both names are yours.','روی هر دو تگ اسم خودت نوشته شده.'),2400)}})});
- Game.update=(dt)=>{const e=L.watcher;const dx=e.position.x-P.pos.x,dz=e.position.z-P.pos.z,dist=Math.hypot(dx,dz);const forward=new THREE.Vector3(-Math.sin(P.yaw),0,-Math.cos(P.yaw));const to=new THREE.Vector3(dx,0,dz).normalize();const watched=Game.flashlightOn&&!Game.flashlightDead&&forward.dot(to)>.74&&dist<11;if(!watched){const dir=new THREE.Vector3(P.pos.x-e.position.x,0,P.pos.z-e.position.z).normalize();e.position.addScaledVector(dir,dt*(dist<4?1.05:.72))}else if(!L.hinted){L.hinted=true;subtitle(bi('It stops when the light reaches its face.','وقتی نور به صورتش می‌رسد می‌ایستد.'),1800)}e.lookAt(P.pos.x,1.25,P.pos.z);if(dist<.72)Game.fail('THE WATCHER REACHED YOU.');if(exit.open&&P.pos.z<-23.9)Game.next()};
+ resetPlayer(0,2.3,0);Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;updateLights();scene.fog.density=.061;hemi.intensity=.22;
+ floor(0,-11.8,5.0,30,MAT.floor);ceiling(0,-11.8,5.0,30,MAT.ceiling);wall(-2.5,1.45,-11.8,.16,3,30,MAT.yellow);wall(2.5,1.45,-11.8,.16,3,30,MAT.yellow);wall(0,1.45,3.2,5,3,.18,MAT.yellow);openGapWallZ(-26.8,5,1.4,MAT.yellow);
+ for(const z of[0,-5,-10,-15,-20,-25])lampFake(0,z,.9,0xd0c26d);
+ // Side alcoves make room to dodge figures after each blackout.
+ for(const z of[-6.5,-13.5,-20.5]){meshBox(-2.0,1.0,z,.9,2.0,1.6,MAT.wallDark);meshBox(2.0,1.0,z,.9,2.0,1.6,MAT.wallDark)}
+ const figs=[[-.7,-8],[.8,-15],[-.4,-22]].map(([x,z],i)=>{const c=creature('watcher');world.add(c);c.position.set(x,0,z);c.rotation.y=0;return c});
+ const tag=meshBox(0,1.15,-26.35,.54,.32,.05,MAT.paper);addInteract(tag,bi('READ PATIENT TAG','برچسب بیمار را بخوان'),()=>{showNote('PATIENT TAG',bi('PATIENT: SAMYAR T.\nOBSERVATION: “Does not remember entering Level Yellow.”','بیمار: سامیار ت.\nمشاهده: «یادش نمی‌آید چطور وارد طبقه زرد شده.»'));L.tagRead=true;objective(bi('Leave Level Yellow.','از طبقه زرد خارج شو.'),2500)},1.5);
+ const exit=createDoor(0,-26.76,'z',bi('OPEN','باز کن'),{locked:true});const L=Game.local={nextCut:performance.now()+4200,inCut:false,tagRead:false,cuts:0};objective(bi('Cross the ward before the next blackout.','قبل از خاموشی بعدی از بخش رد شو.'),4200);
+ function doCut(){if(L.inCut)return;L.inCut=true;L.cuts++;Audio.play('buzz',.22,.92);UI.blackout.style.transition='none';UI.blackout.style.opacity='.98';later(()=>{for(const f of figs){if(!f.parent)continue;const dz=P.pos.z-f.position.z;if(dz>0){f.position.z+=2.2+Math.random()*1.2;f.position.x=clamp(f.position.x+(Math.random()-.5)*1.4,-1.4,1.4)}else{f.position.z=P.pos.z-2.4-Math.random()*2.2;f.position.x=(Math.random()>.5?1:-1)*(0.45+Math.random()*.8)}}UI.blackout.style.opacity='0';L.inCut=false;L.nextCut=performance.now()+4300+Math.random()*2800},1050)}
+ Game.update=(dt,now)=>{if(now>=L.nextCut&&!L.inCut)doCut();for(const f of figs){if(Math.hypot(f.position.x-P.pos.x,f.position.z-P.pos.z)<.78){Game.fail(bi('It is standing where you were.','همون جایی ایستاده که تو بودی.'));return}}if(L.tagRead&&!exit.open){exit.locked=false;openDoor(exit)}if(exit.open&&P.pos.z<-27.15)Game.next()};
 }};
 
 // ============================================================
 // PACK 1 — STAGE 08: ROOM 237
 // ============================================================
 STAGES[8]={name:'ROOM 08 — 237',fa:'اتاق ۸ — ۲۳۷',build(){
- resetPlayer(0,3.0,0);Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;updateLights();scene.fog.color.set(0x070606);scene.fog.density=.05;renderer.toneMappingExposure=.76;
- const L=Game.local={second:false,solved:false,wrong:0};
- // Two near-identical motel rooms in sequence, connected by a short hall.
- function motel(z,second=false){floor(0,z,8,8,MAT.floor);ceiling(0,z,8,8);wall(-4,1.45,z,.18,3,8,MAT.wall);wall(4,1.45,z,.18,3,8,MAT.wall);if(second){wall(-2.45,1.45,z+4,3.1,3,.18,MAT.wall);wall(2.45,1.45,z+4,3.1,3,.18,MAT.wall)}else{wall(0,1.45,z+4,8,3,.18,MAT.wall)}wall(-2.45,1.45,z-4,3.1,3,.18,MAT.wall);wall(2.45,1.45,z-4,3.1,3,.18,MAT.wall);addBed(-2.35,z+.45);addPropTable(2.35,z+.8);addChair(2.15,z-1.3,second?Math.PI:0);lamp(0,z,1.65,0xbba27f,4.5);makeSign(second?'237':'236',0,2.1,z+3.88,Math.PI,1,.32)}
- motel(0,false);corridor(-6,4,3.1,{wall:MAT.wallDark});motel(-12,true);corridor(-18,4,3.1,{wall:MAT.wallDark});openGapWallZ(-20,3.1,1.35,MAT.wallDark);const exit=createDoor(0,-19.94,'z','LOCKED • قفل');exit.panel.userData.interaction.action=()=>{if(L.solved)openDoor(exit);else subtitle(bi('Room 237 is almost the same. Almost.','اتاق ۲۳۷ تقریباً همان اتاق است. تقریباً.'),1300)};
- // Mirror-like dark planes; in 237 one reflected silhouette is impossible.
- const mirror1=new THREE.Mesh(new THREE.PlaneGeometry(1.2,1.65),new THREE.MeshStandardMaterial({color:0x111419,metalness:.65,roughness:.18}));mirror1.position.set(0,1.45,-3.88);world.add(mirror1);
- const mirror2=mirror1.clone();mirror2.material=mirror1.material.clone();mirror2.position.set(0,1.45,-15.88);world.add(mirror2);
- const anomaly=meshBox(-.05,1.0,-14.1,.34,2.0,.26,MAT.black);anomaly.rotation.z=.09;addInteract(anomaly,'INSPECT • بررسی',()=>{if(L.solved)return;L.solved=true;subtitle(bi('There is a person in 237 who has no reflection.','یک نفر در ۲۳۷ هست که انعکاس ندارد.'),2400);shockFlash();setTimeout(async()=>{if(Game.stage!==8)return;const p=createParmisDistant();p.position.set(0,0,-10.2);p.rotation.y=Math.PI;world.add(p);await sleep(600);p.visible=false;openDoor(exit);objective(bi('Leave Room 237. Do not look for the reflection again.','از اتاق ۲۳۷ خارج شو. دوباره دنبال انعکاس نگرد.'))},380)});
- // decoy interactables punish guessing by looping the player to first room
- const decoyA=meshBox(2.35,.96,-11.2,.22,.18,.22,MAT.red);addInteract(decoyA,'INSPECT • بررسی',()=>wrong());const decoyB=meshBox(-2.35,.96,-11.7,.24,.18,.24,MAT.metal);addInteract(decoyB,'INSPECT • بررسی',()=>wrong());
- function wrong(){if(L.solved)return;L.wrong++;blink(95);P.pos.set(0,1.72,2.7);P.yaw=0;subtitle(bi('The room reset. You chose something that existed in both memories.','اتاق برگشت. چیزی را انتخاب کردی که در هر دو خاطره وجود داشت.'),2200)}
- objective(bi('Compare 236 and 237. Find the impossible difference.','اتاق ۲۳۶ و ۲۳۷ را مقایسه کن. تفاوت غیرممکن را پیدا کن.'));
- Game.update=()=>{if(exit.open&&P.pos.z<-20.35)Game.next()};
+ resetPlayer(0,2.6,0);Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;updateLights();scene.fog.density=.035;hemi.intensity=.42;
+ floor(0,0,8.0,7.2,MAT.floor);ceiling(0,0,8.0,7.2);wall(-4,1.45,0,.18,3,7.2,MAT.plaster);wall(4,1.45,0,.18,3,7.2,MAT.plaster);wall(0,1.45,3.6,8.0,3,.18,MAT.plaster);openGapWallZ(-3.6,8.0,1.5,MAT.plaster);lampFake(0,-.2,.62,0xc8b99b);makeSign('236',0,1.85,-3.48,0,.62,.30);
+ const chair=addChair(-2.1,-.5,.2),tableX=1.7;addPropTable(tableX,-.7);const cup=meshBox(1.55,.79,-.7,.14,.18,.14,MAT.white);const clock=makeSign('11:17',2.65,1.7,1.2,-Math.PI/2,.7,.27);const mirrorFrame=meshBox(-3.83,1.55,-.2,.08,1.65,1.15,MAT.wood);const mirrorMat=new THREE.MeshStandardMaterial({color:0x0b1013,metalness:.82,roughness:.15});const mirror=meshBox(-3.72,1.55,-.2,.025,1.45,.95,mirrorMat);
+ const exit=createDoor(0,-3.55,'z',bi('OPEN','باز کن'),{locked:true});const L=Game.local={phase:'memorize',shifted:false,wrong:0,mirrorChosen:false,started:performance.now()};objective(bi('Remember the room.','اتاق را به خاطر بسپار.'),3600);subtitle(bi('UNKNOWN: “Most changes are possible. One is not.”','UNKNOWN: «بیشتر تغییرها ممکنن. یکی‌شون نیست.»'),3800);
+ function shiftRoom(){if(L.shifted)return;L.shifted=true;L.phase='choose';UI.blackout.style.opacity='1';later(()=>{makeSign('237',0,1.85,-3.47,0,.62,.30);chair.position.x+=.65;chair.rotation.y+=.7;cup.position.set(2.05,.79,-.35);clock.material.map?.dispose?.();clock.material.dispose?.();const newClock=makeSign('11:19',2.65,1.7,1.2,-Math.PI/2,.7,.27);addInteract(newClock,bi('THIS CHANGED','این تغییر کرده'),()=>wrong('A clock can change. / ساعت می‌تواند تغییر کند.'));UI.blackout.style.opacity='0';objective(bi('Choose the impossible difference.','تغییر غیرممکن را انتخاب کن.'),0)},440)}
+ addInteract(chair.children?.[0]||chair,bi('THIS CHANGED','این تغییر کرده'),()=>wrong('The chair could have moved. / صندلی می‌توانست جابه‌جا شده باشد.'));
+ addInteract(cup,bi('THIS CHANGED','این تغییر کرده'),()=>wrong('The cup could have moved. / لیوان می‌توانست جابه‌جا شده باشد.'));
+ addInteract(clock,bi('THIS CHANGED','این تغییر کرده'),()=>wrong('A clock can change. / ساعت می‌تواند تغییر کند.'));
+ addInteract(mirror,bi('THIS IS WRONG','این اشتباهه'),()=>{if(L.phase!=='choose')return;L.mirrorChosen=true;showNote('THE MIRROR',bi('There is a room in the glass. You are not standing in it.','توی شیشه یک اتاق هست. ولی تو داخلش نیستی.'));exit.locked=false;openDoor(exit);objective(bi('Leave 237.','از ۲۳۷ خارج شو.'),2200)});
+ function wrong(msg){if(L.phase!=='choose')return;L.wrong++;subtitle(msg,1500);UI.blackout.style.opacity='1';later(()=>{UI.blackout.style.opacity='0';resetPlayer(0,2.6,0)},380)}
+ later(shiftRoom,10500);
+ Game.update=(dt,now)=>{if(exit.open&&P.pos.z<-3.9)Game.next()};
 }};
 
 // ============================================================
 // PACK 1 — STAGE 09: THE POOL
 // ============================================================
 STAGES[9]={name:'ROOM 09 — THE POOL',fa:'اتاق ۹ — استخر',build(){
- resetPlayer(0,5.2,0);Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;updateLights();scene.fog.color.set(0x07161d);scene.fog.density=.082;renderer.toneMappingExposure=.72;Game.speedMul=.73;UI.breathWrap.style.display='block';
- floor(0,-4,12,20,new THREE.MeshStandardMaterial({color:0x122128,roughness:.72}));ceiling(0,-4,12,20);wall(-6,1.45,-4,.18,3,20,MAT.wallDark);wall(6,1.45,-4,.18,3,20,MAT.wallDark);wall(0,1.45,6,12,3,.18,MAT.wallDark);wall(-3.35,1.45,-14,5.3,3,.18,MAT.wallDark);wall(3.35,1.45,-14,5.3,3,.18,MAT.wallDark);
- const waterMat=new THREE.MeshStandardMaterial({color:0x153d4c,transparent:true,opacity:.48,roughness:.22,metalness:.08});const water=meshBox(0,.42,-4,11.7,.05,19.6,waterMat);water.material.depthWrite=false;
- const exit=createDoor(0,-13.94,'z','DRAIN THE WATER • آب را خالی کن');exit.panel.userData.interaction.action=()=>{if(L.valves.size===3)openDoor(exit);else subtitle(bi('The pressure is holding the door.','فشار آب در را نگه داشته.'),1100)};
- for(const z of[2,-4,-10])lamp(0,z,1.35,0x6b9aac,5);
- const L=Game.local={breath:44,valves:new Set(),drained:false};objective(bi('Open all three drain valves before you run out of breath. 0/3','قبل از تمام شدن نفس هر سه شیر تخلیه را باز کن. ۰/۳'));
- const pts=[[-4.7,1.5],[4.7,-3.8],[-4.7,-10.5]];pts.forEach(([x,z],i)=>{const v=new THREE.Mesh(new THREE.TorusGeometry(.2,.052,8,16),new THREE.MeshStandardMaterial({color:0x7b1c1c,metalness:.45,roughness:.48}));v.position.set(x,.95,z);v.rotation.y=Math.PI/2;world.add(v);addInteract(v,'OPEN DRAIN • شیر تخلیه',it=>{if(L.valves.has(i))return;L.valves.add(i);it.enabled=false;v.rotation.z+=Math.PI/2;L.breath=Math.min(44,L.breath+4);audio.play('door',.18);objective(bi(`Open all three drain valves. ${L.valves.size}/3`,`هر سه شیر تخلیه را باز کن. ${L.valves.size}/3`));if(L.valves.size===3){L.drained=true;UI.breathWrap.style.display='none';Game.speedMul=1;const t0=performance.now();const startY=water.position.y;const drain=()=>{const k=clamp((performance.now()-t0)/1700,0,1);water.position.y=startY-k*1.2;water.material.opacity=.48*(1-k);if(k<1)requestAnimationFrame(drain);else water.visible=false};drain();scene.fog.density=.045;openDoor(exit);subtitle(bi('UNKNOWN: “You never drowned here, Samyar. You only remember the fear of sinking.”','UNKNOWN: «تو اینجا غرق نشدی، سامیار. فقط ترسِ فرو رفتن رو یادت مونده.»'),3200);objective(bi('Get out of the pool.','از استخر خارج شو.'))}})});
- Game.update=(dt)=>{if(!L.drained){L.breath-=dt;UI.breathFill.style.width=`${clamp(L.breath/44*100,0,100)}%`;if(L.breath<10&&Math.floor(L.breath*2)%2===0)UI.breathFill.style.opacity='.55';else UI.breathFill.style.opacity='1';if(L.breath<=0)Game.fail('NO AIR.')}if(exit.open&&P.pos.z<-14.35)Game.next()};
+ resetPlayer(0,2.5,0);Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;Game.breath=100;updateLights();showBreath(true);UI.underwater.style.display='block';scene.fog.color.set(0x09232e);scene.fog.density=.13;hemi.intensity=.24;flashlight.distance=4.8;flashlight.intensity=250;
+ floor(0,-14.5,4.2,35,MAT.tile);ceiling(0,-14.5,4.2,35,MAT.ceiling);wall(-2.1,1.45,-14.5,.16,3,35,MAT.tile);wall(2.1,1.45,-14.5,.16,3,35,MAT.tile);wall(0,1.45,3.0,4.2,3,.18,MAT.tile);openGapWallZ(-32,4.2,1.4,MAT.tile);
+ for(const z of[0,-7,-14,-21,-28]){emissivePanel(0,2.92,z,.32,.04,.65,0x6f9fb0,1.6);lightPool(0,z,1.1,2.0,.05,0x72a4b7)}
+ // Air pocket ceilings are brighter and slightly raised visually.
+ for(const z of[-9.0,-20.5]){meshBox(0,2.8,z,3.8,.12,3.0,MAT.white);lightPool(0,z,1.7,2.6,.11,0xaed4df)}
+ const far=creature('watcher');world.add(far);far.position.set(0,0,-28.5);far.scale.set(.86,1.12,.86);const L=Game.local={farGone:false,waterLoop:Audio.loop('water',.07,.82)};objective(bi('Reach the far side. Find air when you need it.','به سمت دیگر برس. وقتی لازم شد هوا پیدا کن.'),4400);
+ function inAirPocket(z){return (z<-7.6&&z>-10.4)||(z<-19.0&&z>-22.0)||z<-30.8}
+ Game.update=(dt,now,moveMag,running)=>{const air=inAirPocket(P.pos.z);if(air){Game.breath=Math.min(100,Game.breath+dt*27);UI.underwater.style.opacity='.22'}else{Game.breath=Math.max(0,Game.breath-dt*8.4);UI.underwater.style.opacity='1'}UI.breathFill.style.width=Game.breath+'%';if(Game.breath<=0){Audio.stop(L.waterLoop);Game.fail(bi('No air.','هوا تموم شد.'));return}if(!L.farGone&&P.pos.z<-24){L.farGone=true;UI.blackout.style.opacity='.65';later(()=>{world.remove(far);UI.blackout.style.opacity='0';subtitle(bi('There was someone at the end of the pool.','یه نفر انتهای استخر بود.'),1500)},260)}if(P.pos.z<-31.8){Audio.stop(L.waterLoop);UI.underwater.style.display='none';showBreath(false);Game.next()}};
 }};
 
 // ============================================================
 // PACK 1 — STAGE 10: MAINTENANCE / PACK FINALE
 // ============================================================
 STAGES[10]={name:'ROOM 10 — MAINTENANCE',fa:'اتاق ۱۰ — تعمیرات',build(){
- resetPlayer(0,4.2,0);Game.speedMul=1;Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;Game.battery=Math.max(Game.battery,45);updateLights();scene.fog.color.set(0x100405);scene.fog.density=.065;renderer.toneMappingExposure=.68;
- // main maintenance chamber
- floor(0,-4,12,18,MAT.floor);ceiling(0,-4,12,18);wall(-6,1.45,-4,.18,3,18,MAT.wallDark);wall(6,1.45,-4,.18,3,18,MAT.wallDark);wall(0,1.45,5,12,3,.18,MAT.wallDark);wall(-3.35,1.45,-13,5.3,3,.18,MAT.wallDark);wall(3.35,1.45,-13,5.3,3,.18,MAT.wallDark);
- for(const x of[-3.7,0,3.7])for(const z of[-1,-6,-10]){meshBox(x,.9,z,.52,1.8,.52,MAT.metal);solid(x,z,.52,.52)}
- for(const z of[2,-3,-8,-12])lamp(0,z,.85,0xc83737,5);
- const gate=createDoor(0,-12.94,'z','NO POWER • برق نیست');gate.panel.userData.interaction.action=()=>{if(L.breakers.size===3)openDoor(gate);else subtitle(bi('Three breakers. All of them.','سه بریکر. همه‌شان.'),1100)};
- const L=Game.local={breakers:new Set(),runner:null,runnerActive:false,chase:false,chaseStarted:false,finalDoor:null,lineDone:false};objective(bi('Restore all three breakers. If the Runner sees your light, turn it off. 0/3','هر سه بریکر را روشن کن. اگر Runner نور تو را دید، خاموشش کن. ۰/۳'));
- const pts=[[-4.8,2.2],[4.8,-4.5],[-4.8,-10.8]];pts.forEach(([x,z],i)=>{const b=meshBox(x,1.1,z,.42,.75,.22,MAT.metal);const lever=meshBox(x,1.15,z+.13,.09,.42,.08,MAT.red);addInteract(b,'FLIP BREAKER • بریکر',it=>{if(L.breakers.has(i))return;L.breakers.add(i);it.enabled=false;lever.rotation.z=-.65;audio.play('door',.2);shockFlash();objective(bi(`Restore all three breakers. ${L.breakers.size}/3`,`هر سه بریکر را روشن کن. ${L.breakers.size}/3`));if(L.breakers.size===1)spawnRunner();if(L.breakers.size===3){L.runnerActive=false;if(L.runner)L.runner.visible=false;openDoor(gate);objective(bi('POWER RESTORED. RUN THROUGH THE GATE.','برق برگشت. از در رد شو.'));subtitle(bi('UNKNOWN: “I can open the last door. I cannot make you walk through it.”','UNKNOWN: «می‌تونم در آخر رو باز کنم. نمی‌تونم مجبورت کنم ازش رد شی.»'),4300)}})});
- function spawnRunner(){L.runner=createRunner();L.runner.position.set(0,0,-8.7);world.add(L.runner);L.runnerActive=true;subtitle(bi('Do not feed it the flashlight.','نور چراغ‌قوه را بهش نده.'),1700)}
- // final chase corridor after powered gate
- corridor(-24,22,3.4,{wall:MAT.wallDark});for(const z of[-15.5,-20,-24.5,-29,-33.5])lamp(0,z,1.05,0x99151a,3.6);openGapWallZ(-35,3.4,1.35,MAT.wallDark);L.finalDoor=createDoor(0,-34.94,'z','OPEN • باز کن');L.finalDoor.panel.userData.interaction.action=()=>{if(L.chase)openDoor(L.finalDoor);else subtitle(bi('The handle will not move yet.','دستگیره هنوز تکان نمی‌خورد.'),900)};
- function startChase(){if(L.chaseStarted)return;L.chaseStarted=true;L.chase=true;const r=createRunner();r.position.set(0,0,-12.6);world.add(r);L.chaseRunner=r;objective(bi('RUN. DO NOT LOOK BACK.','بدو. پشت سرت را نگاه نکن.'));audio.play('shock',.5)}
- Game.update=(dt)=>{
-  if(L.runnerActive&&L.runner){const e=L.runner,dx=P.pos.x-e.position.x,dz=P.pos.z-e.position.z,dist=Math.hypot(dx,dz);const dir=new THREE.Vector3(P.pos.x-e.position.x,0,P.pos.z-e.position.z).normalize();const speed=Game.flashlightOn?1.55:.42;e.position.addScaledVector(dir,dt*speed);e.lookAt(P.pos.x,1.2,P.pos.z);if(dist<.8)Game.fail('THE RUNNER FOUND YOUR LIGHT.')}
-  if(gate.open&&P.pos.z<-13.45)startChase();
-  if(L.chase&&L.chaseRunner){const r=L.chaseRunner;const dir=new THREE.Vector3(P.pos.x-r.position.x,0,P.pos.z-r.position.z).normalize();r.position.addScaledVector(dir,dt*3.85);r.lookAt(P.pos.x,1.2,P.pos.z);if(r.position.distanceTo(new THREE.Vector3(P.pos.x,0,P.pos.z))<.76)Game.fail('DON’T STOP.');if(!L.lineDone&&P.pos.z<-28){L.lineDone=true;subtitle(bi('UNKNOWN: “Ten rooms were never the treatment, Samyar. They were the door.”','UNKNOWN: «این ده اتاق هیچ‌وقت درمان نبودن، سامیار. خودشون در بودن.»'),4200)}if(P.pos.z<-32.6&&!L.finalDoor.open)openDoor(L.finalDoor)}
-  if(L.finalDoor.open&&P.pos.z<-35.45){Game.lock=true;chapter('PACK 1 — FEARS 01–10','FACED. NOT ERASED. • روبه‌رو شدی، پاکشان نکردی.');setTimeout(()=>finishPack(),2300)}
- };
+ resetPlayer(0,2.3,0);Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;Game.stamina=100;Game.runEnabled=true;updateLights();showStamina(true);scene.fog.color.set(0x090809);scene.fog.density=.074;hemi.intensity=.16;
+ floor(0,-16,4.4,52,MAT.floor);ceiling(0,-16,4.4,52,MAT.ceiling);wall(-2.2,1.45,-16,.16,3,52,MAT.metal);wall(2.2,1.45,-16,.16,3,52,MAT.metal);wall(0,1.45,10,4.4,3,.18,MAT.metal);openGapWallZ(-42,4.4,1.45,MAT.metal);
+ for(const z of[4,-3,-10,-17,-24,-31,-38])lampFake(0,z,.48,0xb8a98c);
+ // Visual callbacks from earlier rooms.
+ makeSign('12',-1.86,1.72,-6,Math.PI/2,.32,.23);makeSign('237',1.86,1.72,-16,-Math.PI/2,.52,.24);makeSign('LEVEL YELLOW',0,1.8,-26,0,1.2,.28,'#d7cf76','#14130b');meshBox(1.25,.8,-34,.5,.25,.36,MAT.white);meshBox(-1.2,.8,-34,.45,.12,.28,MAT.black);
+ const exit=createDoor(0,-41.94,'z',bi('OPEN','باز کن'),{locked:false});exit.open=true;exit.collider.active=false;exit.panel.rotation.y=-Math.PI/2;
+ const runner=creature('runner');world.add(runner);runner.position.set(0,0,8.5);runner.rotation.y=Math.PI;const L=Game.local={runner,boost:0,started:performance.now(),lookPenalty:0,heartbeat:Audio.loop('heartbeat',.11,1.08)};objective(bi('Keep moving. Light helps you see — and helps it see you.','حرکت کن. نور کمکت می‌کنه ببینی — و اون هم تو رو ببینه.'),5200);subtitle(bi('UNKNOWN: “I can open the last door. I cannot make you walk through it.”','UNKNOWN: «می‌تونم در آخر رو باز کنم. نمی‌تونم مجبورت کنم ازش رد شی.»'),4500);
+ Game.update=(dt,now,moveMag,running)=>{const wantsRun=(input.run||moveMag>.88)&&Game.runEnabled;if(wantsRun&&moveMag>.08)Game.stamina=Math.max(0,Game.stamina-dt*17);else Game.stamina=Math.min(100,Game.stamina+dt*13.5);UI.staminaFill.style.width=Game.stamina+'%';if(facingTargetXZ(runner.position.x,runner.position.z,.74)&&Math.hypot(P.pos.x-runner.position.x,P.pos.z-runner.position.z)<13&&L.lookPenalty<=0){L.lookPenalty=2.3;L.boost=1.0;Audio.play('buzz',.18,1.12)}if(L.lookPenalty>0)L.lookPenalty-=dt;if(L.boost>0)L.boost=Math.max(0,L.boost-dt*.43);const speed=(Game.flashlightOn?3.35:1.82)+L.boost;const dx=P.pos.x-runner.position.x,dz=P.pos.z-runner.position.z,d=Math.hypot(dx,dz)||1;runner.position.x+=dx/d*speed*dt;runner.position.z+=dz/d*speed*dt;runner.rotation.y=Math.atan2(dx,dz);if(d<.78){Audio.stop(L.heartbeat);Game.fail(bi('The Runner catches you.','رانر بهت می‌رسه.'));return}if(P.pos.z<-41.55){Audio.stop(L.heartbeat);Game.lock=true;Game.moveLock=true;subtitle(bi('UNKNOWN: “Do not erase it. Face it.”','UNKNOWN: «پاکش نکن. باهاش روبه‌رو شو.»'),3000);later(()=>{chapter('PACK 1',bi('FACED, NOT ERASED','روبه‌رو شدی؛ پاکش نکردی'));later(()=>finishPack(),2200)},2100)}};
 }};
 
-// ---------- Main update / render ----------
-let last=performance.now(),fpsN=0,fpsT=last,fpsValue=60,frameGate=0;
-function frame(now){requestAnimationFrame(frame);if(isTouch&&now-frameGate<14.5)return;frameGate=now;const dt=Math.min(.033,(now-last)/1000||.016);last=now;
- if(Game.started){
-  const paused=Game.modal||Game.lock;
-  if(!paused){const mv=movementVector();if(mv.mag>.02){const sprint=input.run||input.keys.has('ShiftLeft')||input.keys.has('ShiftRight');const speed=(sprint?P.run:P.walk)*(Game.speedMul??1);const fx=-Math.sin(P.yaw),fz=-Math.cos(P.yaw),rx=Math.cos(P.yaw),rz=-Math.sin(P.yaw);movePlayer((fx*mv.y+rx*mv.x)*speed*dt,(fz*mv.y+rz*mv.x)*speed*dt)}
-   if(Game.hasFlashlight&&Game.flashlightOn&&!Game.flashlightDead){Game.battery=Math.max(0,Game.battery-dt*.035);if(Game.battery<=0){Game.flashlightDead=true;Game.flashlightOn=false;updateLights();subtitle(bi('The battery is dead.','باتری تمام شد.'),1200)}}
-  }
+// ---------- Runtime ----------
+function runtimeSelfCheck(){const missing=[];for(let i=1;i<=10;i++)if(!STAGES[i]?.build)missing.push(i);if(missing.length)throw new Error('Missing stages: '+missing.join(','));const ids=[...document.querySelectorAll('[id]')].map(n=>n.id);const dup=ids.filter((x,i)=>ids.indexOf(x)!==i);if(dup.length)throw new Error('Duplicate DOM ids: '+[...new Set(dup)].join(','));}
+try{runtimeSelfCheck();UI.asset.textContent=assetReady?'3D CHARACTER READY • PACK 1 V2':'PACK 1 V2 READY • 3D ASSET LOADING'}catch(e){bootFail(e)}
+
+const checkpoint=clamp(parseInt(localStorage.getItem('zdlb_pack1_v2_checkpoint')||'1',10)||1,1,10);if(checkpoint>1){UI.cont.style.display='inline-block';UI.cont.textContent=`CONTINUE ROOM ${String(checkpoint).padStart(2,'0')} • ادامه`}
+async function startAt(n){await Audio.unlock();Game.started=true;UI.intro.style.display='none';UI.hud.style.display='block';UI.blackout.style.opacity='1';Game.enter(n,true)}
+UI.start.onclick=()=>startAt(1);UI.cont.onclick=()=>startAt(checkpoint);
+
+let last=performance.now(),acc=0,frames=0,fpsT=last,lastPrompt='';
+function animate(now){requestAnimationFrame(animate);let raw=(now-last)/1000;last=now;if(document.hidden)return;const dt=Math.min(.034,raw||.016);acc+=dt;if(acc<.0145)return;const step=acc;acc=0;
+ if(Game.started&&!Game.modal){
+  const mv=movementVector();const autoRun=mv.mag>.90;const wantsRun=Game.runEnabled&&(input.run||autoRun)&&Game.stamina>1;let speed=wantsRun?P.run:P.walk;if(Game.stage===6||Game.stage===10){if(Game.stamina<=1)speed=P.walk}speed*=Game.speedMul||1;
+  if(!Game.lock&&!Game.moveLock&&mv.mag>.02){const forwardX=-Math.sin(P.yaw),forwardZ=-Math.cos(P.yaw),rightX=Math.cos(P.yaw),rightZ=-Math.sin(P.yaw);movePlayer((rightX*mv.x+forwardX*mv.y)*speed*step,(rightZ*mv.x+forwardZ*mv.y)*speed*step)}
   camera.position.copy(P.pos);camera.rotation.set(P.pitch,P.yaw,0);
-  if(Game.candle)candleLight.intensity=21.5+Math.sin(now*.017)*1.6+Math.sin(now*.041)*.8;
-  if(!paused&&Game.update){try{Game.update(dt,now)}catch(e){bootFail(e);Game.update=null}}
-  // subtle light instability, intentionally cheap and slow
-  for(const a of animated){if(a.type==='lamp'){a.light.intensity=a.base*(.93+.07*Math.sin(now*.003+a.seed));}else if(a.type==='door'&&!a.done){const k=clamp((now-a.start)/650,0,1),e=1-Math.pow(1-k,3);a.obj.rotation.y=a.base-e*1.38;if(k>=1)a.done=true}}
-  const it=paused?null:nearestInteraction();UI.prompt.textContent=it?it.label:'';
-  UI.battery.style.width=`${clamp(Game.battery,0,100)}%`;UI.battery.style.opacity=Game.battery<18?0.55:1;
-  if(DEBUG){fpsN++;if(now-fpsT>500){fpsValue=Math.round(fpsN*1000/(now-fpsT));fpsN=0;fpsT=now}UI.debug.textContent=`ROOM ${Game.stage} | FPS ${fpsValue} | x ${P.pos.x.toFixed(1)} z ${P.pos.z.toFixed(1)} | int ${interactables.length} col ${colliders.length}`}
+  if(Game.hasFlashlight&&Game.flashlightOn&&!Game.flashlightDead&&Game.stage!==3){Game.battery=Math.max(0,Game.battery-step*.10);if(Game.battery<=0)setFlashlightDead(true)}UI.battery.style.width=Game.battery+'%';
+  if(Game.candle){candleLight.intensity=(input.hold?6:21.5)+Math.sin(now*.017)*1.2+Math.sin(now*.043)*.55}else candleLight.intensity=0;
+  updateLights();
+  const it=findInteraction(now);const ptxt=it?it.label:'';if(ptxt!==lastPrompt){UI.prompt.textContent=ptxt;lastPrompt=ptxt}
+  try{Game.update?.(step,now,mv.mag,wantsRun)}catch(e){bootFail(e);Game.update=null}
  }
- renderer.render(scene,camera);
+ for(let i=dynamic.length-1;i>=0;i--){const a=dynamic[i];if(a.type==='door'){a.t+=step;const k=Math.min(1,a.t/.62);a.obj.rotation.y=a.base+(a.axis==='z'?-1:1)*Math.PI*.5*(1-Math.pow(1-k,3));if(k>=1)dynamic.splice(i,1)}}
+ if(DEBUG&&Game.started){frames++;if(now-fpsT>500){const fps=Math.round(frames*1000/(now-fpsT));frames=0;fpsT=now;UI.debug.textContent=`FPS ${fps}\nSTAGE ${Game.stage}\npos ${P.pos.x.toFixed(1)}, ${P.pos.z.toFixed(1)}\nflash ${Game.flashlightOn?'ON':'OFF'} battery ${Game.battery.toFixed(0)}\nlights ${renderer.info.render.calls} calls`;}}
+ renderer.render(scene,camera)
 }
-requestAnimationFrame(frame);
+requestAnimationFrame(animate);
 
-// ---------- Resize / boot ----------
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false)});
-const saved=clamp(parseInt(localStorage.getItem('zdlb_pack1_checkpoint')||'1',10)||1,1,10);if(saved>1){UI.cont.style.display='inline-block';UI.cont.textContent=`CONTINUE ROOM ${String(saved).padStart(2,'0')} • ادامه`}
-async function begin(stage=1){try{audio.init();Game.started=true;Game.speedMul=1;UI.intro.style.display='none';UI.hud.style.display='block';UI.blackout.style.opacity='1';await sleep(120);Game.enter(stage);setTimeout(()=>UI.blackout.style.opacity='0',180)}catch(e){bootFail(e)}}
-UI.start.onclick=()=>begin(clamp(parseInt(new URLSearchParams(location.search).get('stage')||'1',10)||1,1,10));UI.cont.onclick=()=>begin(saved);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){Audio.ctx?.suspend?.()}else if(Game.started){Audio.ctx?.resume?.()}});
+renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();bootFail(new Error('WebGL context lost. Reload the page. / گرافیک مرورگر متوقف شد؛ صفحه را دوباره باز کن.'))});
+renderer.domElement.addEventListener('webglcontextrestored',()=>location.reload());
 
-// Red-team self-check: all stage builders exist, all critical UI nodes exist.
-(function selfCheck(){const missing=[];for(let i=1;i<=10;i++)if(!STAGES[i]||typeof STAGES[i].build!=='function')missing.push('stage '+i);for(const id of['game','hud','objectiveText','roomName','joy','runBtn','useBtn','lightBtn','notePanel','keypad','endPanel'])if(!document.getElementById(id))missing.push('#'+id);if(missing.length)throw new Error('SELF-CHECK FAILED: '+missing.join(', '));console.info('Z PACK 1 SELF-CHECK PASS: 10/10 stages registered.');})();
+// Direct stage test: ?stage=6&debug (kept out of normal UI)
+const testStage=parseInt(new URLSearchParams(location.search).get('stage')||'0',10);if(testStage>=1&&testStage<=10){UI.asset.textContent=`TEST READY • ROOM ${String(testStage).padStart(2,'0')}`;UI.start.textContent=`START ROOM ${String(testStage).padStart(2,'0')} TEST`;UI.start.onclick=()=>startAt(testStage)}
 </script>
 </body>
 </html>
