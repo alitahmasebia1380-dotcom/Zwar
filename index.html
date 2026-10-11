@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — PACK 1 • ROOM 0.11 • STORY PASS + ROOM 03</title>
+<title>Z: DON'T LOOK BACK — PACK 1 • ROOM 0.11.1 • NOTE SCROLL + QUIET STEPS</title>
 <style>
 :root{--fg:#e9e9e9;--muted:#9b9b9b;--red:#a60e16;--glass:rgba(8,8,10,.56)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -44,6 +44,11 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 #lightBtn{right:max(106px,calc(env(safe-area-inset-right) + 106px));bottom:max(34px,env(safe-area-inset-bottom));width:62px;height:62px;font-size:22px}
 #runBtn{left:auto;right:max(22px,env(safe-area-inset-right));bottom:max(118px,calc(env(safe-area-inset-bottom) + 118px));width:68px;height:68px;font-size:18px;line-height:1.05;flex-direction:column;gap:2px}#runBtn small{font-size:8px;letter-spacing:.12em}
 #keypad,#notePanel,#endPanel{position:fixed;inset:0;z-index:75;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(5px);padding:20px}
+#notePanel{padding:16px;overflow:hidden;overscroll-behavior:none;touch-action:none}
+#notePanel .panel{width:min(420px,94vw);height:min(82dvh,680px);max-height:calc(100dvh - 32px);display:flex;flex-direction:column;overflow:hidden;touch-action:auto}
+#notePanel .panel h2{flex:0 0 auto;margin-bottom:10px}
+#noteText{flex:1 1 auto;min-height:0;overflow-y:scroll!important;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y!important;padding:2px 8px 18px 2px;margin:0;pointer-events:auto}
+#noteClose{flex:0 0 auto;margin-top:10px;position:relative;z-index:2}
 .panel{width:min(420px,92vw);background:#09090b;border:1px solid #26262b;border-radius:8px;padding:20px;box-shadow:0 24px 80px rgba(0,0,0,.7)}
 .panel h2{margin:0 0 10px;font-size:18px;letter-spacing:.14em}
 .panel p{color:#a9a9a9;line-height:1.65;font-size:13px}
@@ -51,8 +56,8 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 #keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .key{padding:15px 0;background:#111115;color:#ddd;border:1px solid #29292f;border-radius:4px;font-size:16px}
 .key:active{background:#24242b}
-#noteText{font-family:Georgia,"Noto Naskh Arabic",serif;font-size:17px!important;color:#d9d2c5!important;white-space:pre-line;line-height:1.8}
-.closeBtn{width:100%;margin-top:15px;padding:12px;background:#141418;border:1px solid #2a2a30;color:#ddd;border-radius:4px;font-weight:700}
+#noteText{font-family:Georgia,"Noto Naskh Arabic",serif;font-size:17px!important;color:#d9d2c5!important;white-space:pre-line;line-height:1.8;user-select:text;-webkit-user-select:text;touch-action:pan-y}
+.closeBtn{width:100%;margin-top:15px;padding:12px;background:#141418;border:1px solid #2a2a30;color:#ddd;border-radius:4px;font-weight:700;position:sticky;bottom:0;z-index:2}
 #endPanel .panel{text-align:center}
 #endPanel h2{font-size:26px;color:#ddd}
 #fps{position:absolute;right:12px;bottom:8px;font:10px ui-monospace,monospace;color:#444}
@@ -85,7 +90,7 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 <body>
 <div id="game"></div><div id="grain"></div><div id="vignette"></div><div id="blackout"></div><div id="flash"></div>
 <div id="bootError"></div>
-<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 01 — WAKE UP • اتاق ۱ — بیدار شو</div><p>You wake with one name in your head: Samyar. Everything else is missing.<br><span dir="rtl">با یک اسم در ذهنت بیدار می‌شوی: سامیار. بقیه چیزها یادت نیست.</span></p><p>Headphones recommended. Every sound can mean something.<br><span dir="rtl">هدفون پیشنهاد می‌شود. هر صدا ممکن است معنایی داشته باشد.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">PACK 1 • ROOM 0.11 • STORY PASS + ROOM 03</div></div></div>
+<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 01 — WAKE UP • اتاق ۱ — بیدار شو</div><p>You wake with one name in your head: Samyar. Everything else is missing.<br><span dir="rtl">با یک اسم در ذهنت بیدار می‌شوی: سامیار. بقیه چیزها یادت نیست.</span></p><p>Headphones recommended. Every sound can mean something.<br><span dir="rtl">هدفون پیشنهاد می‌شود. هر صدا ممکن است معنایی داشته باشد.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">PACK 1 • ROOM 0.11.1 • NOTE SCROLL + QUIET STEPS</div></div></div>
 <div id="orientationLock"><div><b>PORTRAIT MODE • حالت عمودی</b>Rotate your phone upright to continue.<br><span dir="rtl">برای ادامه گوشی را عمودی نگه دار.</span></div></div>
 <div id="hud"><div id="objective"><small>OBJECTIVE • هدف</small><span id="objectiveText">Find a light.
 یک نور پیدا کن.</span></div><div id="battery">FLASHLIGHT<div id="batteryBar"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="hint"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">🏃<small>RUN • بدو</small></button><button class="ctrl" id="lightBtn">◉</button><button class="ctrl" id="useBtn">USE<br>استفاده</button><div id="fps"></div><div id="guide"></div><div id="pickupArrow">↓</div><div id="portraitTag">PORTRAIT • NIGHTMARE</div></div>
@@ -775,7 +780,8 @@ function whisper(){/* synthetic speech intentionally disabled */}
 function setObjective(t){state.objective=t;$('objectiveText').textContent=t}
 let subtitleTimer=0;function subtitle(t,ms=2800){clearTimeout(subtitleTimer);$('subtitle').textContent=t;$('subtitle').style.opacity=1;subtitleTimer=setTimeout(()=>$('subtitle').style.opacity=0,ms)}
 function hint(t,ms=2600){$('hint').textContent=t;$('hint').style.opacity=1;setTimeout(()=>$('hint').style.opacity=0,ms)}
-function showNote(text,onClose){state.modal=true;$('noteText').textContent=text;$('notePanel').style.display='flex';$('noteClose').onclick=()=>{$('notePanel').style.display='none';state.modal=false;onClose?.()}}
+function showNote(text,onClose){state.modal=true;const nt=$('noteText');nt.textContent=text;$('notePanel').style.display='flex';requestAnimationFrame(()=>{nt.scrollTop=0});$('noteClose').onclick=()=>{$('notePanel').style.display='none';state.modal=false;onClose?.()}}
+let noteTouchY=null;const noteScrollEl=$('noteText');noteScrollEl.addEventListener('touchstart',e=>{if(e.touches.length===1)noteTouchY=e.touches[0].clientY},{passive:true});noteScrollEl.addEventListener('touchmove',e=>{if(noteTouchY===null||e.touches.length!==1)return;const y=e.touches[0].clientY;noteScrollEl.scrollTop+=noteTouchY-y;noteTouchY=y;e.preventDefault();e.stopPropagation()},{passive:false});noteScrollEl.addEventListener('touchend',()=>{noteTouchY=null},{passive:true});noteScrollEl.addEventListener('touchcancel',()=>{noteTouchY=null},{passive:true});
 
 // Difficulty curve note: later rooms use chained clues, stateful multi-room logic, non-bruteforce constraints and expert-level deduction.
 // Keypad
@@ -927,7 +933,7 @@ function update(dt,t){if(!state.started)return;
    if(t>state.nextHallBlackout){state.hallBlackoutUntil=t+.10+Math.random()*.24;state.nextHallBlackout=t+4.0+Math.random()*7.0}
    const blackout=t<state.hallBlackoutUntil;
    if(t>=state.nextHallLightTick){state.nextHallLightTick=t+.07;hallLamp.intensity=blackout?0:(.50+Math.max(0,Math.sin(t*8.1))*.82);hallLamp2.intensity=blackout?0:(.26+Math.max(0,Math.sin(t*5.7+1.4))*.50);for(let i=0;i<hallCeilingLights.length;i++){const l=hallCeilingLights[i],f=.55+.45*Math.max(0,Math.sin(t*(5.4+i*.73)+i*1.9)),drop=Math.random()<.010?0:1;l.intensity=blackout?0:l.userData.base*f*drop;if(l.userData.tube)l.userData.tube.material.opacity=blackout?.025:.10+.20*f*drop}}
-   if(!state.modal){const moved=Math.hypot(player.pos.x-stepAnchor.x,player.pos.z-stepAnchor.z),need=state.running?.62:.82;if(moved>need&&t>state.nextStepAt){playSfx('step',state.running?.12:.085,.90+Math.random()*.16);stepAnchor.copy(player.pos);state.nextStepAt=t+(state.running?.22:.34)}}
+   if(!state.modal){const moved=Math.hypot(player.pos.x-stepAnchor.x,player.pos.z-stepAnchor.z),need=state.running?.62:.82;if(moved>need&&t>state.nextStepAt){playSfx('step',state.running?.050:.032,.96+Math.random()*.10);stepAnchor.copy(player.pos);state.nextStepAt=t+(state.running?.22:.34)}}
    if(!state.hallDoor3KnockPlayed&&player.pos.z<-14.8&&player.pos.z>-19.2)hallKnockCue();
    const forwardZ=-Math.cos(player.yaw);if(player.pos.z<-11&&forwardZ>.28)state.hallLookedBack=true;
    if(state.hallLookedBack&&!state.hallShifted&&forwardZ<-.30){state.hallShifted=true;if(hallChair){hallChair.position.x=-.82;hallChair.position.z=-18.3;hallChair.rotation.y=.68}hallFrame.position.z=-12.6;hallFrame.rotation.z=.09}
@@ -939,7 +945,7 @@ function update(dt,t){if(!state.started)return;
  // ROOM 03 — footsteps + chase. No random screams; the scream belongs to the authored jumpscare.
  if(state.room3Active&&!state.room3Completed){
    const inRoom3=player.pos.z<-26.15;
-   if(inRoom3&&!state.modal){const moved=Math.hypot(player.pos.x-stepAnchor.x,player.pos.z-stepAnchor.z),need=state.running?.60:.80;if(moved>need&&t>state.nextStepAt){playSfx('step',state.running?.13:.09,.90+Math.random()*.14);stepAnchor.copy(player.pos);state.nextStepAt=t+(state.running?.20:.32)}}
+   if(inRoom3&&!state.modal){const moved=Math.hypot(player.pos.x-stepAnchor.x,player.pos.z-stepAnchor.z),need=state.running?.60:.80;if(moved>need&&t>state.nextStepAt){playSfx('step',state.running?.052:.034,.96+Math.random()*.10);stepAnchor.copy(player.pos);state.nextStepAt=t+(state.running?.20:.32)}}
    room3Light.intensity=.22+.10*Math.max(0,Math.sin(t*4.7));room3ColdLight.intensity=.16+.07*Math.max(0,Math.sin(t*2.9+1.2));room3Bulb.material.opacity=.11+.08*Math.max(0,Math.sin(t*5.3));
    if(state.room3Chase&&!state.room3CatchLock&&entity&&entity.visible){
      const dx=player.pos.x-entity.position.x,dz=player.pos.z-entity.position.z,d=Math.hypot(dx,dz);const chaseSpeed=3.55;if(d>.001){entity.position.x+=dx/d*chaseSpeed*dt;entity.position.z+=dz/d*chaseSpeed*dt;entity.lookAt(player.pos.x,1.30,player.pos.z)}if(d<.72)room3Caught()
