@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — ROOM 0.8 • HALLWAY PARANOIA</title>
+<title>Z: DON'T LOOK BACK — ROOM 0.8.1 • START HOTFIX</title>
 <style>
 :root{--fg:#e9e9e9;--muted:#9b9b9b;--red:#a60e16;--glass:rgba(8,8,10,.56)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -23,7 +23,7 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 #logo span{color:#9b111e}
 #chapter{margin:10px 0 28px;color:#777;letter-spacing:.34em;font-size:12px}
 #intro p{font-size:14px;color:#aaa;line-height:1.65;margin:8px auto;max-width:560px}
-#startBtn{margin-top:26px;min-width:180px;padding:15px 28px;align-items:center;justify-content:center;border:1px solid #303030;background:#0b0b0d;color:#eee;font-weight:800;letter-spacing:.2em;border-radius:4px;font-size:14px}
+#startBtn{margin-top:26px;min-width:180px;padding:15px 28px;align-items:center;justify-content:center;border:1px solid #303030;background:#0b0b0d;color:#eee;font-weight:800;letter-spacing:.2em;border-radius:4px;font-size:14px;pointer-events:auto;touch-action:manipulation;-webkit-user-select:none;user-select:none;position:relative;z-index:130}
 #startBtn:active{transform:scale(.98);background:#17171a}
 #loading{margin-top:14px;color:#555;font-size:11px;letter-spacing:.15em;min-height:16px}
 #hud{position:fixed;inset:0;z-index:40;pointer-events:none;display:none}
@@ -86,7 +86,7 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 </head>
 <body>
 <div id="game"></div><div id="grain"></div><div id="vignette"></div><div id="blackout"></div><div id="flash"></div>
-<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP • اتاق صفر — بیدار شو</div><p>You wake up somewhere you do not remember.<br><span dir="rtl">جایی بیدار می‌شوی که یادت نمی‌آید.</span></p><p>Headphones recommended. Darkness is part of the gameplay.<br><span dir="rtl">هدفون پیشنهاد می‌شود. تاریکی بخشی از بازی است.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">ROOM 0.8 • HALLWAY PARANOIA</div></div></div>
+<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP • اتاق صفر — بیدار شو</div><p>You wake up somewhere you do not remember.<br><span dir="rtl">جایی بیدار می‌شوی که یادت نمی‌آید.</span></p><p>Headphones recommended. Darkness is part of the gameplay.<br><span dir="rtl">هدفون پیشنهاد می‌شود. تاریکی بخشی از بازی است.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">ROOM 0.8.1 • START HOTFIX</div></div></div>
 <div id="orientationLock"><div><b>LANDSCAPE MODE • حالت افقی</b>Rotate your phone sideways to continue.<br><span dir="rtl">برای ادامه گوشی را افقی کن.</span></div></div>
 <div id="hud"><div id="objective"><small>OBJECTIVE • هدف</small><span id="objectiveText">Find a light.
 یک نور پیدا کن.</span></div><div id="battery">FLASHLIGHT<div id="batteryBar"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="hint"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">RUN<br>بدو</button><button class="ctrl" id="lightBtn">◉</button><button class="ctrl" id="useBtn">USE<br>استفاده</button><div id="fps"></div><div id="guide"></div><div id="pickupArrow">↓</div><div id="portraitTag">LANDSCAPE • NIGHTMARE</div></div>
@@ -492,8 +492,25 @@ let lookId=null,lastLook=null;renderer.domElement.addEventListener('pointerdown'
 let joyId=null,jx=0,jy=0;const joy=$('joy'),stick=$('stick');function joyMove(e){const r=joy.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,m=Math.hypot(dx,dy),lim=r.width*.34,k=m>lim?lim/m:1;jx=dx*k/lim;jy=dy*k/lim;stick.style.transform=`translate(${dx*k}px,${dy*k}px)`}joy.addEventListener('pointerdown',e=>{joyId=e.pointerId;joy.setPointerCapture(e.pointerId);joyMove(e)});joy.addEventListener('pointermove',e=>{if(e.pointerId===joyId)joyMove(e)});joy.addEventListener('pointerup',e=>{if(e.pointerId===joyId){joyId=null;jx=jy=0;stick.style.transform=''}});joy.addEventListener('pointercancel',()=>{joyId=null;jx=jy=0;stick.style.transform=''});
 $('useBtn').addEventListener('pointerdown',e=>{e.preventDefault();useObject()});$('lightBtn').addEventListener('pointerdown',e=>{e.preventDefault();setFlashlight(!state.flashlight)});$('runBtn').addEventListener('pointerdown',e=>{e.preventDefault();state.running=true});$('runBtn').addEventListener('pointerup',()=>state.running=false);$('runBtn').addEventListener('pointercancel',()=>state.running=false);
 
-function startGame(){if(innerWidth<innerHeight){$('orientationLock').style.display='flex';return}audioInit();if(actx.state==='suspended')actx.resume();startDrone();state.started=true;$('intro').style.display='none';$('hud').style.display='block';$('orientationLock').style.display='none';$('blackout').style.transition='opacity 1.5s ease';requestAnimationFrame(()=>$('blackout').style.opacity=.0);$('guide').innerHTML=isTouch?'<b>WAKE UP • بیدار شو</b><br>MOVE = left circle • حرکت = دایره چپ<br>LOOK = drag center/right • نگاه = وسط/راست را بکش<br>Find the weak warm glow and tap <b>USE</b>.<br>نور گرم ضعیف را پیدا کن و <b>USE</b> را بزن.':'<b>WAKE UP • بیدار شو</b><br>WASD = MOVE • Mouse = LOOK • E = USE';$('guide').style.opacity=1;$('pickupArrow').style.opacity=.9;setTimeout(()=>{$('guide').style.opacity=0},5600);setTimeout(()=>{subtitle(bi('Samyar wakes up on the floor.','سامیار روی زمین بیدار می‌شود.'));hint(bi('The weak warm light is the flashlight.','نور گرم ضعیف، چراغ‌قوه است.'),4300)},700)}
-$('startBtn').onclick=startGame;setInterval(()=>{if(state.started&&!state.hasFlashlight&&!state.modal){const d=Math.hypot(player.pos.x-.35,player.pos.z-1.0);if(d<2.7){$('prompt').textContent=bi('USE — TAKE FLASHLIGHT','USE — چراغ‌قوه را بردار');$('prompt').style.opacity=1}}},500);
+let startLocked=false;
+function startGame(){
+ if(state.started||startLocked)return;
+ startLocked=true;
+ // iOS Safari can report stale innerWidth/innerHeight for a moment after rotation.
+ // Do not abort the tap. CSS still keeps portrait mode blocked visually.
+ try{audioInit();if(actx&&actx.state==='suspended')actx.resume().catch(()=>{});startDrone()}catch(err){console.warn('Audio init skipped:',err)}
+ state.started=true;
+ $('intro').style.display='none';$('hud').style.display='block';$('orientationLock').style.display='none';
+ $('blackout').style.transition='opacity 1.5s ease';requestAnimationFrame(()=>$('blackout').style.opacity=.0);
+ $('guide').innerHTML=isTouch?'<b>WAKE UP • بیدار شو</b><br>MOVE = left circle • حرکت = دایره چپ<br>LOOK = drag center/right • نگاه = وسط/راست را بکش<br>Find the weak warm glow and tap <b>USE</b>.<br>نور گرم ضعیف را پیدا کن و <b>USE</b> را بزن.':'<b>WAKE UP • بیدار شو</b><br>WASD = MOVE • Mouse = LOOK • E = USE';
+ $('guide').style.opacity=1;$('pickupArrow').style.opacity=.9;
+ setTimeout(()=>{$('guide').style.opacity=0},5600);
+ setTimeout(()=>{subtitle(bi('Samyar wakes up on the floor.','سامیار روی زمین بیدار می‌شود.'));hint(bi('The weak warm light is the flashlight.','نور گرم ضعیف، چراغ‌قوه است.'),4300)},700);
+}
+const startButton=$('startBtn');
+startButton.onclick=e=>{e?.preventDefault?.();startGame()};
+startButton.addEventListener('pointerup',e=>{e.preventDefault();startGame()},{passive:false});
+startButton.addEventListener('touchend',e=>{e.preventDefault();startGame()},{passive:false});setInterval(()=>{if(state.started&&!state.hasFlashlight&&!state.modal){const d=Math.hypot(player.pos.x-.35,player.pos.z-1.0);if(d<2.7){$('prompt').textContent=bi('USE — TAKE FLASHLIGHT','USE — چراغ‌قوه را بردار');$('prompt').style.opacity=1}}},500);
 
 let perfAcc=0,frames=0,lastPerf=performance.now(),dynamicPR=Math.min(devicePixelRatio,1.25);
 function adaptPerformance(dt){perfAcc+=dt;frames++;if(perfAcc>2.5){const fps=frames/perfAcc;$('fps').textContent=`${fps.toFixed(0)} FPS`;if(isTouch){if(fps<46&&dynamicPR>.72){dynamicPR=Math.max(.72,dynamicPR-.1);renderer.setPixelRatio(dynamicPR)}else if(fps>57&&dynamicPR<1.15){dynamicPR=Math.min(1.15,dynamicPR+.05);renderer.setPixelRatio(dynamicPR)}}perfAcc=0;frames=0}}
@@ -548,7 +565,7 @@ function update(dt,t){if(!state.started)return;
 }
 function loop(){const dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;update(dt,t);renderer.render(scene,camera);requestAnimationFrame(loop)}loop();
 
-function syncOrientationUI(){const bad=innerWidth<innerHeight;$('orientationLock').style.display=bad?'flex':'none';if(!state.started)$('intro').style.display='flex';$('startBtn').style.display='inline-flex';}
+function syncOrientationUI(){const bad=matchMedia('(orientation:portrait)').matches&&innerHeight>innerWidth;$('orientationLock').style.display=(!state.started&&bad)?'flex':'none';if(!state.started){$('intro').style.display='flex';$('startBtn').style.display='inline-flex'}}
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.fov=64;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);syncOrientationUI();setTimeout(syncOrientationUI,180)});
 addEventListener('orientationchange',()=>{setTimeout(()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);syncOrientationUI()},260)});
 // Prevent iOS double tap zoom/context menu
