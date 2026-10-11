@@ -7,8 +7,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="mobile-web-app-capable" content="yes" />
-<title>Z WAR — V14 • CINEMATIC GRAPHICS PASS</title>
-<!-- Z WAR V14 Cinematic Graphics Pass. V13 gameplay foundation preserved; upgraded terrain, sky, water, bases, soldiers, weapons, vehicle, atmosphere and effects. -->
+<title>Z WAR — V15 • ASSET-DRIVEN GRAPHICS</title>
+<!-- Z WAR V15 Asset-Driven Graphics Pass. V13 gameplay foundation preserved; CC0 Kenney environment assets, CC0 FPS weapons, official Three.js Sky, mobile-safe instancing. -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
@@ -83,14 +83,14 @@ canvas{display:block}button,select{font:inherit}button{color:#fff}
 <div id="app"><div id="renderHost"></div><div id="vignette"></div><div id="scopeOverlay"><div id="scopeDot"></div></div><div id="nvgOverlay"></div><div id="damageFlash"></div><div id="suppression"></div><div id="cinemaGrade"></div><div id="filmGrain"></div>
 <div id="hud">
 <div id="topbar"><div id="statsL">HP <span id="hp">100</span> • ARM <span id="armor">50</span><br><span id="roleBadge">ASSAULT</span></div><div id="brand">Z WAR</div><div id="statsR"><span id="ammo">PICKAXE</span><br>BAT <span id="battery">100</span>%</div></div>
-<div id="compass">N • NE • E • SE • S • SW • W • NW</div><div id="objective">OBJECTIVE: ELIMINATE THE ENEMY COMMANDER</div><div id="baseStatus">BLUE BASE ◀  •  RED BASE ▶</div><div id="powerBadge">POWER 0 / 0</div><div id="buildVersion">BUILD V14.0 • GRAPHICS PASS</div><div id="crosshair"></div><div id="hitmarker"></div><div id="notice"></div><div id="contextPrompt">LOOK AT GROUND + ATTACK = DIG</div>
+<div id="compass">N • NE • E • SE • S • SW • W • NW</div><div id="objective">OBJECTIVE: ELIMINATE THE ENEMY COMMANDER</div><div id="baseStatus">BLUE BASE ◀  •  RED BASE ▶</div><div id="powerBadge">POWER 0 / 0</div><div id="buildVersion">BUILD V15.0 • ASSET GRAPHICS</div><div id="crosshair"></div><div id="hitmarker"></div><div id="notice"></div><div id="contextPrompt">LOOK AT GROUND + ATTACK = DIG</div>
 <div id="inventory"><span>WOOD <b id="wood">40</b></span><span>METAL <b id="metal">30</b></span><span>STONE <b id="stone">30</b></span></div><div id="weaponName">PICKAXE</div>
 <div id="joystick" class="control" data-hud="joystick"><div id="joyKnob"></div></div><button id="sprintBtn" class="control" data-hud="sprintBtn">SPRINT</button><button id="radioBtn" class="control" data-hud="radioBtn">RADIO</button><div id="radioStatus">PTT • TEAM</div>
 <button id="fireBtn" class="control" data-hud="fireBtn">ATTACK</button><button id="adsBtn" class="control" data-hud="adsBtn">ADS</button><button id="jumpBtn" class="control" data-hud="jumpBtn">JUMP</button><button id="stanceBtn" class="control" data-hud="stanceBtn">STANCE</button><button id="reloadBtn" class="control" data-hud="reloadBtn">RELOAD</button><button id="swapBtn" class="control" data-hud="swapBtn">SWAP</button><button id="useBtn" class="control" data-hud="useBtn">USE</button><button id="tacticalBtn" class="control">TACT</button><div id="quickTools"><button id="quickPick">PICK</button><button id="quickBuild">BUILD</button><button id="quickMap">MAP</button></div>
 <div id="utilityTray"><button id="buildBtn">BUILD</button><button id="craftBtn">CRAFT</button><button id="mapBtn">MAP</button><button id="lightBtn">LIGHT</button><button id="nvgBtn">NVG</button><button id="radioModeBtn">RADIO: TEAM</button><button id="cctvBtn">CCTV</button><button id="vehicleBtn">VEHICLE</button><button id="hudBtn">HUD EDIT</button><button id="rallyBtn">RALLY</button><button id="nightBtn">TEST NIGHT</button><select id="quality"><option value="balanced">BALANCED</option><option value="low">LOW</option><option value="ultra">ULTRA</option></select></div>
 <div id="buildActions"><button id="placeBuild" class="smallRect">PLACE</button><button id="rotateBuild" class="smallRect">ROTATE</button><button id="buildUp" class="smallRect">UP</button><button id="buildDown" class="smallRect">DOWN</button><button id="cancelBuild" class="smallRect">CANCEL</button></div><div id="cctvLabel">CCTV FEED</div>
 </div><div id="tutorial"><b>FIELD TRAINING</b><br><span id="tMove">① LEFT STICK: move • push forward = sprint</span><br><span id="tTool">② PICKAXE: hit ground to dig • hit resources to gather</span><br><span id="tCombat">③ FIRE: hold + drag to aim • sniper fires on release</span><br><span id="tBuild">④ BUILD: place fortifications • generator → wire → devices</span><br><span id="tRadio">⑤ RADIO: hold PTT • TEAM / PROX / COMMAND</span></div>
-<div id="mainMenu"><div class="menuBox"><div class="menuTitle"><h1>Z WAR</h1><h3>TACTICAL SURVIVAL WARFARE • V14 CINEMATIC GRAPHICS</h3><p>Two permanent fortified headquarters: BLUE and RED. Start with a pickaxe, dig persistent trenches, harvest wood/stone/metal, craft weapons, snap-build defenses, upgrade your home base, connect generators/wires/devices, use CCTV/searchlights, revive allies, raid supplies and hunt the hidden enemy commander. FIRE supports drag-to-aim; sniper scopes while held and shoots on release. RADIO raises into your hand. Enemy deaths now include hit reactions, downed bleeding, blood bursts/pools and temporary bodies. Multiplayer voice/network sync still requires a future server.</p><button id="deployBtn" class="deploy">DEPLOY</button><p id="commanderHint">Each team has exactly one hidden commander.</p></div><div><div style="font-size:9px;letter-spacing:2px;margin-bottom:7px;color:#9fafba">SELECT ROLE</div><div id="roleGrid"></div></div></div></div>
+<div id="mainMenu"><div class="menuBox"><div class="menuTitle"><h1>Z WAR</h1><h3>TACTICAL SURVIVAL WARFARE • V15 ASSET GRAPHICS</h3><p>Two permanent fortified headquarters: BLUE and RED. Start with a pickaxe, dig persistent trenches, harvest wood/stone/metal, craft weapons, snap-build defenses, upgrade your home base, connect generators/wires/devices, use CCTV/searchlights, revive allies, raid supplies and hunt the hidden enemy commander. FIRE supports drag-to-aim; sniper scopes while held and shoots on release. RADIO raises into your hand. Enemy deaths now include hit reactions, downed bleeding, blood bursts/pools and temporary bodies. Multiplayer voice/network sync still requires a future server.</p><button id="deployBtn" class="deploy">DEPLOY</button><p id="commanderHint">Each team has exactly one hidden commander.</p></div><div><div style="font-size:9px;letter-spacing:2px;margin-bottom:7px;color:#9fafba">SELECT ROLE</div><div id="roleGrid"></div></div></div></div>
 <div id="buildPanel" class="panel"><button class="close" data-close="buildPanel">✕</button><h2>BUILD SYSTEM</h2><p>Destructible fortifications. Generators power cable chains, lamps, searchlights and CCTV. Engineers build cheaper.</p><div id="buildGrid" class="grid"></div></div>
 <div id="craftPanel" class="panel"><button class="close" data-close="craftPanel">✕</button><h2>WORKSHOP</h2><p>Craft weapons, ammunition, armor and medical supplies at your BLUE base or a workshop.</p><div id="craftGrid" class="grid"></div></div>
 <div id="basePanel" class="panel"><button class="close" data-close="basePanel">✕</button><h2>BLUE BASE COMMAND</h2><p id="baseInfo">LEVEL 1</p><div class="baseMeter"><i id="baseHpFill"></i></div><div class="baseActions"><button id="upgradeBaseBtn">UPGRADE BASE<small id="upgradeBaseCost">cost</small></button><button id="repairBaseBtn">REPAIR HQ<small>Stone + metal</small></button><button id="resupplyBaseBtn">RESUPPLY<small>Ammo • armor • health</small></button><button id="reinforceBaseBtn">REINFORCE<small>Walls • sandbags • lights</small></button></div></div>
@@ -103,6 +103,7 @@ canvas{display:block}button,select{font:inherit}button{color:#fff}
 <script type="module">
 import * as THREE from "three";
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
+import {Sky} from "three/addons/objects/Sky.js";
 const $=id=>document.getElementById(id),clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),rand=(a,b)=>a+Math.random()*(b-a),d2=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x8ba1ad);scene.fog=new THREE.FogExp2(0x8ba1ad,.0067);
 const camera=new THREE.PerspectiveCamera(74,innerWidth/innerHeight,.06,620);camera.rotation.order="YXZ";
@@ -112,7 +113,7 @@ const mats=new Map();function mat(c,r=.9,m=0,extra={}){const k=`${c}-${r}-${m}-$
 function addBox(p,w,h,d,x,y,z,m,cast=true){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=cast;o.receiveShadow=true;p.add(o);return o}function addCyl(p,rt,rb,h,s,x,y,z,m){const o=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,s),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;p.add(o);return o}
 
 /* ================================================================
-   V14 CINEMATIC GRAPHICS LAYER
+   V15 ASSET-DRIVEN GRAPHICS FOUNDATION
    Visual-only systems. Gameplay, collision, economy and match rules remain V13.
    ================================================================ */
 const GFX={clouds:[],smoke:[],baseLights:[],quality:"balanced",wind:new THREE.Vector2(.7,.28),time:0};
@@ -555,7 +556,7 @@ const WEAPONS={pickaxe:{name:"PICKAXE",damage:35,rate:520,range:3.2,mag:0,spread
 const ws={unlocked:new Set(["pickaxe"]),order:["pickaxe"],current:"pickaxe",ammo:{rifle:30,smg:32,sniper:5,rpg:1},reserve:{rifle:90,smg:96,sniper:15,rpg:3},lastShot:0,reloading:false,reloadToken:0,reloadWeapon:null};
 
 const viewRig=new THREE.Group();camera.add(viewRig);scene.add(camera);const weaponGroup=new THREE.Group(),radioRig=new THREE.Group();viewRig.add(weaponGroup,radioRig);const gunDark=mat(0x171e20,.36,.72),gunMetal=mat(0x2a3436,.32,.8),woodMat=mat(0x694934,.8,.05),skin=mat(0xb58f74,.8,.05);let recoilVisual=0,muzzleT=0,swingT=0,radioBlend=0,camRecoilPitch=0,camRecoilYaw=0,reloadStart=0,reloadMs=0;
-function rebuildWeapon(){weaponGroup.clear();const id=ws.current;if(id==="pickaxe"){const h=new THREE.Mesh(new THREE.BoxGeometry(.08,.08,1),woodMat);h.rotation.z=-.48;h.position.set(.33,-.38,-.88);weaponGroup.add(h);const head=new THREE.Mesh(new THREE.BoxGeometry(.58,.08,.12),gunMetal);head.rotation.z=-.48;head.position.set(.48,-.15,-1.18);weaponGroup.add(head)}else{const L=id==="sniper"?.95:id==="rpg"?1.1:.72;addBox(weaponGroup,.18,.18,L,.28,-.25,-.65,gunMetal);addBox(weaponGroup,.1,.1,L*.72,.28,-.18,-1.15,gunDark);addBox(weaponGroup,.1,.32,.16,.28,-.47,-.64,gunDark);if(id==="sniper"){addCyl(weaponGroup,.08,.08,.36,10,.28,-.08,-.62,gunDark);weaponGroup.children.at(-1).rotation.x=Math.PI/2}else if(id!=="rpg")addBox(weaponGroup,.22,.07,.26,.28,-.12,-.44,gunDark)}decorateWeaponVisual(id)}rebuildWeapon();
+function rebuildWeapon(){weaponGroup.clear();const id=ws.current;if(id==="pickaxe"){const h=new THREE.Mesh(new THREE.BoxGeometry(.08,.08,1),woodMat);h.rotation.z=-.48;h.position.set(.33,-.38,-.88);weaponGroup.add(h);const head=new THREE.Mesh(new THREE.BoxGeometry(.58,.08,.12),gunMetal);head.rotation.z=-.48;head.position.set(.48,-.15,-1.18);weaponGroup.add(head)}else{const L=id==="sniper"?.95:id==="rpg"?1.1:.72;addBox(weaponGroup,.18,.18,L,.28,-.25,-.65,gunMetal);addBox(weaponGroup,.1,.1,L*.72,.28,-.18,-1.15,gunDark);addBox(weaponGroup,.1,.32,.16,.28,-.47,-.64,gunDark);if(id==="sniper"){addCyl(weaponGroup,.08,.08,.36,10,.28,-.08,-.62,gunDark);weaponGroup.children.at(-1).rotation.x=Math.PI/2}else if(id!=="rpg")addBox(weaponGroup,.22,.07,.26,.28,-.12,-.44,gunDark)}decorateWeaponVisual(id);if(globalThis.ZWAR_V15_READY)setTimeout(()=>applyV15WeaponAsset(id),0)}rebuildWeapon();
 function buildRadio(){radioRig.clear();const fore=new THREE.Mesh(new THREE.CylinderGeometry(.105,.13,.58,8),skin);fore.rotation.z=-.28;fore.position.set(-.27,-.34,-.62);radioRig.add(fore);const hand=new THREE.Mesh(new THREE.BoxGeometry(.2,.22,.17),skin);hand.rotation.z=-.18;hand.position.set(-.37,-.11,-.75);radioRig.add(hand);addBox(radioRig,.26,.44,.13,-.42,.08,-.82,mat(0x1d2528,.5,.55));addBox(radioRig,.20,.08,.015,-.42,.16,-.89,mat(0x6ab0a4,.28,.35));for(let i=0;i<4;i++)addBox(radioRig,.13,.015,.015,-.42,.02-i*.035,-.89,mat(0x0f1517,.8,.15));const knob=addCyl(radioRig,.035,.035,.07,8,-.50,.325,-.82,mat(0x111719,.5,.6));knob.rotation.x=Math.PI/2;addCyl(radioRig,.018,.022,.32,7,-.47,.47,-.82,mat(0x111719,.7,.3));radioRig.position.set(-.12,-.24,.1);radioRig.rotation.set(.12,.12,.06);radioRig.visible=false}buildRadio();
 
 // Optional CC0 visual enhancement from Kenney Survival Kit. Gameplay never depends on these downloads.
@@ -563,7 +564,7 @@ const gltfLoader=new GLTFLoader(),assetCache=new Map(),KENNEY="https://cdn.jsdel
 async function loadAsset(file){if(assetCache.has(file))return assetCache.get(file);const promise=new Promise((resolve,reject)=>gltfLoader.load(KENNEY+file,g=>resolve(g.scene),undefined,reject));assetCache.set(file,promise);return promise}
 function fitAsset(o,target=2){const box=new THREE.Box3().setFromObject(o),size=new THREE.Vector3();box.getSize(size);const m=Math.max(size.x,size.y,size.z)||1;o.scale.multiplyScalar(target/m);box.setFromObject(o);const center=new THREE.Vector3();box.getCenter(center);o.position.x-=center.x;o.position.z-=center.z;o.position.y-=box.min.y;return o}
 async function placeCC0(file,x,z,target=2,rot=0,parent=scene,yOff=0){try{const src=await loadAsset(file),o=fitAsset(src.clone(true),target);o.rotation.y=rot;o.position.x+=x;o.position.z+=z;o.position.y+=H(x,z)+yOff;o.traverse(n=>{if(n.isMesh){n.castShadow=false;n.receiveShadow=true}});parent.add(o);return o}catch{return null}}
-async function enhanceCC0(){await Promise.allSettled([placeCC0("tent.glb",BASES.blue.x-15,BASES.blue.z-3,5,.4),placeCC0("workbench.glb",BASES.blue.x-9,BASES.blue.z+9,2.4,.8),placeCC0("tent.glb",BASES.red.x+15,BASES.red.z+3,5,-2.7),placeCC0("workbench.glb",BASES.red.x+9,BASES.red.z-9,2.4,-2.3),placeCC0("resource-wood.glb",BASES.blue.x+14,BASES.blue.z-7,2.2),placeCC0("resource-stone.glb",BASES.blue.x+17,BASES.blue.z-9,2.2)]);try{const src=await loadAsset("tool-pickaxe.glb");if(ws.current==="pickaxe"){const o=fitAsset(src.clone(true),.72);weaponGroup.clear();o.position.set(.3,-.54,-1.0);o.rotation.set(-.35,.35,-.65);o.traverse(n=>{if(n.isMesh){n.castShadow=false}});weaponGroup.add(o)}}catch{}}
+async function enhanceCC0(){await initV15Assets()}
 
 const muzzle=new THREE.PointLight(0xffa64e,0,6);muzzle.position.set(.28,-.2,-1.4);camera.add(muzzle);const muzzleFlash=new THREE.Mesh(new THREE.ConeGeometry(.08,.28,6),new THREE.MeshBasicMaterial({color:0xffd37a,transparent:true,opacity:0}));muzzleFlash.rotation.x=-Math.PI/2;muzzleFlash.position.set(.28,-.2,-1.42);camera.add(muzzleFlash);const flashlight=new THREE.SpotLight(0xe6f0ff,0,44,Math.PI/7,.42,1.2);flashlight.position.set(.15,-.05,-.15);flashlight.target.position.set(0,-.05,-18);camera.add(flashlight,flashlight.target);
 let audioCtx=null,noiseBuffer=null;function ensureAudio(){if(audioCtx)return;audioCtx=new(window.AudioContext||window.webkitAudioContext)();noiseBuffer=audioCtx.createBuffer(1,Math.floor(audioCtx.sampleRate*.12),audioCtx.sampleRate);const d=noiseBuffer.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length)}let lastStepAt=0;
@@ -572,6 +573,134 @@ function gunSound(id){try{ensureAudio();const t=audioCtx.currentTime,src=audioCt
 function footstepSound(run=false){try{ensureAudio();const t=audioCtx.currentTime,src=audioCtx.createBufferSource(),gain=audioCtx.createGain(),f=audioCtx.createBiquadFilter();src.buffer=noiseBuffer;f.type="lowpass";f.frequency.value=run?900:650;gain.gain.setValueAtTime(run?.025:.017,t);gain.gain.exponentialRampToValueAtTime(.001,t+.055);src.connect(f);f.connect(gain);gain.connect(audioCtx.destination);src.playbackRate.value=rand(.72,.94);src.start(t)}catch{}}
 function crate(x,z,team){const g=new THREE.Group();g.position.set(x,H(x,z),z);scene.add(g);addBox(g,2,1.1,1.3,0,.55,0,team==="blue"?mat(0x355f76):mat(0x73383d));return{kind:"crate",team,root:g,loot:100}}const blueCrate=crate(BASES.blue.x+11,BASES.blue.z-8,"blue"),redCrate=crate(BASES.red.x-11,BASES.red.z+8,"red");
 function jeep(){const g=new THREE.Group();g.position.set(BASES.blue.x+20,H(BASES.blue.x+20,BASES.blue.z+3),BASES.blue.z+3);scene.add(g);const ref={kind:"worldStructure",root:g,hp:480,maxHp:480,dead:false};addBox(g,4.2,.9,2.1,0,.75,0,mat(0x43534a,.75,.25));addBox(g,2.2,.8,1.85,-.2,1.55,0,mat(0x2f3a36,.75,.25));for(const sx of[-1,1])for(const sz of[-1,1]){const w=new THREE.Mesh(new THREE.CylinderGeometry(.5,.5,.35,12),mat(0x111516));w.rotation.z=Math.PI/2;w.position.set(sx*1.45,.52,sz*1.08);g.add(w)}decorateJeepVisual(g);g.userData.ref=ref;g.traverse(o=>{if(o.isMesh){o.userData.ref=ref;occluders.push(o);rayTargets.push(o)}});worldStructures.push(ref);vehicleColliders.push({root:g,w:4.6,d:2.5,ref});return g}const jeepObj=jeep();
+
+
+/* ================================================================
+   V15 READY-MADE ASSET PASS
+   - Kenney Nature/Car/Blaster assets: CC0
+   - Flat Guns FPS models: CC0
+   - Three.js Sky: official addon
+   All gameplay/collision objects remain authoritative and unchanged.
+   ================================================================ */
+const V15_ASSET_ROOT="https://cdn.jsdelivr.net/gh/Hidencod/tge-assets@main/";
+const V15_FPS_ROOT="https://raw.githubusercontent.com/petroulacl/fps-asset-kit/main/weapons/flat_guns_west/Flat%20Guns%20West/GLB/";
+const V15_PICKAXE_URL="https://cdn.jsdelivr.net/gh/shorepine/kenney@main/3d/survival/tool-pickaxe.glb";
+const V15={group:new THREE.Group(),cache:new Map(),ready:false,loading:false,trees:[],foliage:[],rocks:[],props:[],sky:null,assetErrors:0};
+V15.group.name="V15_CC0_ASSET_WORLD";scene.add(V15.group);
+
+function v15LoadURL(url){
+ if(V15.cache.has(url))return V15.cache.get(url);
+ const p=new Promise((resolve,reject)=>gltfLoader.load(url,g=>resolve(g.scene),undefined,e=>{V15.assetErrors++;reject(e)}));
+ V15.cache.set(url,p);return p;
+}
+function v15Asset(path){return v15LoadURL(V15_ASSET_ROOT+path)}
+function v15FPS(file){return v15LoadURL(V15_FPS_ROOT+file)}
+function cloneMaterial(m){if(Array.isArray(m))return m.map(x=>x.clone());return m?.clone?m.clone():m}
+function v15PreparedParts(root){
+ root.updateMatrixWorld(true);
+ const raw=[];const box=new THREE.Box3();
+ root.traverse(o=>{if(o.isMesh&&o.geometry){const g=o.geometry.clone();g.applyMatrix4(o.matrixWorld);g.computeBoundingBox();if(g.boundingBox)box.union(g.boundingBox);raw.push({g,m:o.material})}});
+ if(!raw.length||box.isEmpty())return {parts:[],height:1};
+ const size=new THREE.Vector3();box.getSize(size);const h=Math.max(.001,size.y);const cx=(box.min.x+box.max.x)*.5,cz=(box.min.z+box.max.z)*.5;
+ for(const p of raw){p.g.translate(-cx,-box.min.y,-cz);p.g.scale(1/h,1/h,1/h);p.g.computeVertexNormals()}
+ return {parts:raw,height:h};
+}
+function v15Instanced(root,placements,parent=V15.group){
+ const prep=v15PreparedParts(root);if(!prep.parts.length||!placements.length)return [];
+ const made=[];const q=new THREE.Quaternion(),m4=new THREE.Matrix4(),up=new THREE.Vector3(0,1,0);
+ for(const part of prep.parts){
+   const mesh=new THREE.InstancedMesh(part.g,cloneMaterial(part.m),placements.length);mesh.castShadow=false;mesh.receiveShadow=true;mesh.frustumCulled=true;
+   placements.forEach((p,i)=>{q.setFromAxisAngle(up,p.rot||0);m4.compose(new THREE.Vector3(p.x,p.y,p.z),q,new THREE.Vector3(p.h,p.h,p.h));mesh.setMatrixAt(i,m4)});
+   mesh.instanceMatrix.needsUpdate=true;parent.add(mesh);made.push(mesh);
+ }
+ return made;
+}
+function v15Rand(seed){let x=seed|0;return()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return((x>>>0)%100000)/100000}}
+function v15ValidScenery(x,z){return Math.abs(x-riverX(z))>10&&Math.hypot(x-BLUE_X,z-BLUE_Z)>30&&Math.hypot(x-RED_X,z-RED_Z)>30&&H(x,z)<17}
+
+function initV15Sky(){
+ try{
+  skyDome.visible=false;mountainGroup.visible=false;
+  const sky=new Sky();sky.name="V15_THREE_SKY";sky.scale.setScalar(410);sky.position.copy(camera.position);scene.add(sky);V15.sky=sky;
+  const u=sky.material.uniforms;u.turbidity.value=7.5;u.rayleigh.value=2.1;u.mieCoefficient.value=.006;u.mieDirectionalG.value=.82;
+  const sunPos=new THREE.Vector3();const phi=THREE.MathUtils.degToRad(68),theta=THREE.MathUtils.degToRad(225);sunPos.setFromSphericalCoords(1,phi,theta);u.sunPosition.value.copy(sunPos);
+ }catch(e){console.warn("V15 Sky fallback",e)}
+}
+
+async function initV15Vegetation(){
+ grassMesh.visible=false; bushes.visible=false;
+ const treeFiles=[
+  "packs/nature-kit/tree-pinetalla-detailed.glb",
+  "packs/nature-kit/tree-pinetallb-detailed.glb",
+  "packs/nature-kit/tree-pineroundf.glb"
+ ];
+ try{
+  const trees=await Promise.all(treeFiles.map(v15Asset));
+  const buckets=[[],[],[]];
+  treeColliders.forEach((t,i)=>{const h=7.8+((i*37)%53)/10;buckets[i%3].push({x:t.x,y:groundSurface(t.x,t.z),z:t.z,h,rot:(i*1.618)%6.283})});
+  trees.forEach((root,i)=>V15.trees.push(...v15Instanced(root,buckets[i])));
+  trunks.visible=false;crowns.visible=false;crowns2.visible=false;
+ }catch(e){console.warn("V15 tree assets failed; procedural trees retained",e)}
+ try{
+  const grassRoot=await v15Asset("packs/nature-kit/grass-large.glb");
+  const grassPlaces=[];for(let i=0;i<grassData.length;i+=5){const d=grassData[i];grassPlaces.push({x:d.x,y:H(d.x,d.z)+.01,z:d.z,h:d.tall?.72:.44,rot:d.rot})}
+  V15.foliage.push(...v15Instanced(grassRoot,grassPlaces));
+ }catch(e){console.warn("V15 grass asset failed",e)}
+ try{
+  const bushRoot=await v15Asset("packs/nature-kit/plant-bushdetailed.glb");
+  const bushPlaces=[];const zones=[...bushHideZones,...grassHideZones];
+  zones.forEach((b,i)=>bushPlaces.push({x:b.x,y:H(b.x,b.z),z:b.z,h:1.05+(i%7)*.09,rot:(i*.91)%6.283}));
+  V15.foliage.push(...v15Instanced(bushRoot,bushPlaces));
+ }catch(e){console.warn("V15 bush asset failed",e)}
+}
+
+async function initV15RocksAndProps(){
+ const rr=v15Rand(1515),placesA=[],placesB=[];
+ let guard=0;while(placesA.length+placesB.length<85&&guard++<2000){const x=-165+rr()*330,z=-165+rr()*330;if(!v15ValidScenery(x,z))continue;const p={x,y:H(x,z),z,h:.75+rr()*1.9,rot:rr()*6.283};((placesA.length+placesB.length)%2?placesA:placesB).push(p)}
+ try{const [a,b]=await Promise.all([v15Asset("packs/nature-kit/rock-largea.glb"),v15Asset("packs/nature-kit/rock-largec.glb")]);V15.rocks.push(...v15Instanced(a,placesA),...v15Instanced(b,placesB))}catch(e){console.warn("V15 rock assets failed",e)}
+ try{
+  const crateRoot=await v15Asset("packs/blaster-kit/crate-wide.glb");
+  const cratePlaces=[];
+  for(const base of [BASES.blue,BASES.red])for(let i=0;i<7;i++)cratePlaces.push({x:base.x-11+(i%4)*2.4,y:groundSurface(base.x-11+(i%4)*2.4,base.z-10+Math.floor(i/4)*2.4),z:base.z-10+Math.floor(i/4)*2.4,h:1.25,rot:(i%2)*Math.PI/2});
+  V15.props.push(...v15Instanced(crateRoot,cratePlaces));
+ }catch(e){console.warn("V15 crate assets failed",e)}
+}
+
+async function initV15Vehicle(){
+ try{
+  const src=await v15Asset("packs/car-kit/suv.glb");const model=fitAsset(src.clone(true),4.25);
+  for(const c of jeepObj.children)c.visible=false;
+  model.rotation.y=Math.PI/2;model.position.y=.02;model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.userData.ref=jeepObj.userData.ref}});jeepObj.add(model);model.visible=true;
+ }catch(e){console.warn("V15 SUV asset failed",e)}
+}
+
+const V15_WEAPON_FILES={rifle:"Rifle_Assault_West.glb",smg:"SMG_Full_West.glb",sniper:"Sniper_Rifle_West.glb"};
+let v15WeaponToken=0;
+async function applyV15WeaponAsset(id){
+ const token=++v15WeaponToken;
+ if(id==="rpg")return;
+ try{
+  const src=id==="pickaxe"?await v15LoadURL(V15_PICKAXE_URL):V15_WEAPON_FILES[id]?await v15FPS(V15_WEAPON_FILES[id]):null;
+  if(!src||token!==v15WeaponToken||ws.current!==id)return;
+  const model=fitAsset(src.clone(true),id==="pickaxe"?.92:id==="sniper"?1.08:.9);
+  weaponGroup.clear();
+  if(id==="pickaxe"){
+   model.position.set(.30,-.52,-.98);model.rotation.set(-.34,.34,-.66);
+  }else{
+   model.position.set(.28,-.34,-.92);model.rotation.set(-.08,Math.PI,.02);
+  }
+  model.traverse(o=>{if(o.isMesh){o.castShadow=false;o.receiveShadow=false}});weaponGroup.add(model);
+  const glove=new THREE.MeshStandardMaterial({color:0x171d1f,roughness:.78});
+  if(id==="pickaxe"){visualBox(weaponGroup,.18,.23,.24,.28,-.42,-.68,glove,false)}
+  else{visualBox(weaponGroup,.18,.22,.24,.18,-.36,-.54,glove,false);visualBox(weaponGroup,.18,.22,.24,.38,-.33,-.58,glove,false)}
+ }catch(e){console.warn("V15 ready-made weapon fallback",id,e)}
+}
+
+async function initV15Assets(){
+ if(V15.ready||V15.loading)return;V15.loading=true;initV15Sky();grassMesh.visible=false;
+ await Promise.allSettled([initV15Vegetation(),initV15RocksAndProps(),initV15Vehicle()]);
+ V15.ready=true;V15.loading=false;globalThis.ZWAR_V15_READY=true;applyV15WeaponAsset(ws.current);notify(V15.assetErrors?"V15 ASSETS LOADED • SOME FALLBACKS":"V15 CC0 ASSETS LOADED");
+}
 
 const BUILD={wall:{name:"WALL",cost:{wood:20,stone:8},hp:220,size:[4,2.6,.35],mat:"wood"},floor:{name:"FLOOR",cost:{wood:16},hp:160,size:[4,.25,4],mat:"wood"},roof:{name:"ROOF",cost:{wood:16},hp:160,size:[4,.25,4],mat:"wood"},stairs:{name:"STAIRS",cost:{wood:18},hp:170,size:[3,1.5,4],mat:"wood"},ramp:{name:"RAMP",cost:{wood:18},hp:170,size:[3,.35,4],mat:"wood"},ladder:{name:"LADDER",cost:{wood:12},hp:100,size:[1.2,3.2,.25],mat:"wood"},door:{name:"DOOR",cost:{wood:12,metal:4},hp:150,size:[1.4,2.6,.25],mat:"wood"},sandbag:{name:"SANDBAG",cost:{stone:10},hp:180,size:[3,1,.8],mat:"earth"},gate:{name:"GATE",cost:{wood:18,metal:8},hp:240,size:[4,2.7,.4],mat:"metal"},bunker:{name:"BUNKER",cost:{stone:35,metal:16},hp:520,size:[5,2.5,5],mat:"fortified"},wire:{name:"POWER POLE",cost:{metal:9},hp:80,size:[.35,3,.35],mat:"metal"},tower:{name:"TOWER",cost:{wood:35,metal:12},hp:330,size:[3,6,3],mat:"wood"},generator:{name:"GENERATOR",cost:{metal:35,stone:12},hp:200,size:[2,1.5,1.5],mat:"metal",output:20},lamp:{name:"LAMP",cost:{metal:10},hp:80,size:[.4,3,.4],mat:"metal",demand:1,priority:4},searchlight:{name:"SEARCHLIGHT",cost:{metal:18},hp:100,size:[.8,2.3,.8],mat:"metal",demand:3,priority:3},camera:{name:"CCTV",cost:{metal:14},hp:70,size:[.5,2.2,.5],mat:"metal",demand:2,priority:2},workshop:{name:"WORKSHOP",cost:{wood:30,metal:25,stone:15},hp:280,size:[4,2.7,4],mat:"fortified",demand:4,priority:1},medstation:{name:"MED STATION",cost:{wood:18,metal:18},hp:200,size:[3,2.2,3],mat:"fortified",demand:4,priority:0}};
 Object.entries(BUILD).forEach(([id,d])=>{const b=document.createElement("button");b.className="card";b.innerHTML=`<strong>${d.name}</strong><small>${Object.entries(d.cost).map(([k,v])=>`${v} ${k}`).join(" • ")}</small>`;b.onclick=()=>{startBuild(id);closePanel("buildPanel")};$("buildGrid").appendChild(b)});
@@ -843,11 +972,11 @@ return "MIDFIELD"
 }
 function objective(){$("objective").textContent=`${night()?"NIGHT":"DAY"} • ${zoneName(player.x,player.z)} • HUNT ENEMY COMMANDER • RED SUPPLY ${redCrate.loot}`}
 function quality(){const q=$("quality").value;
-if(q==="low"){GFX.quality="low";renderer.setPixelRatio(1);renderer.shadowMap.enabled=false;scene.fog.density=.0082;cloudGroup.visible=false;dustField.visible=false;mountainGroup.visible=true;grassMesh.count=Math.min(2200,grassData.length);trunks.count=crowns.count=crowns2.count=Math.min(280,TREE_COUNT);bushes.count=Math.min(170,bi)}
-else if(q==="ultra"){GFX.quality="ultra";renderer.setPixelRatio(Math.min(devicePixelRatio,1.45));renderer.shadowMap.enabled=true;scene.fog.density=.0055;cloudGroup.visible=true;dustField.visible=true;mountainGroup.visible=true;grassMesh.count=Math.min(5500,grassData.length);trunks.count=crowns.count=crowns2.count=TREE_COUNT;bushes.count=Math.min(280,bi)}
-else{GFX.quality="balanced";renderer.setPixelRatio(Math.min(devicePixelRatio,1.18));renderer.shadowMap.enabled=true;scene.fog.density=.0064;cloudGroup.visible=true;dustField.visible=true;mountainGroup.visible=true;grassMesh.count=Math.min(4200,grassData.length);trunks.count=crowns.count=crowns2.count=Math.min(420,TREE_COUNT);bushes.count=Math.min(240,bi)}
+if(q==="low"){GFX.quality="low";renderer.setPixelRatio(1);renderer.shadowMap.enabled=false;scene.fog.density=.0082;cloudGroup.visible=false;dustField.visible=false;mountainGroup.visible=!V15.ready;grassMesh.visible=false;bushes.visible=false;grassMesh.count=0;trunks.count=crowns.count=crowns2.count=Math.min(280,TREE_COUNT);bushes.count=0}
+else if(q==="ultra"){GFX.quality="ultra";renderer.setPixelRatio(Math.min(devicePixelRatio,1.38));renderer.shadowMap.enabled=true;scene.fog.density=.0055;cloudGroup.visible=true;dustField.visible=true;mountainGroup.visible=!V15.ready;grassMesh.visible=false;bushes.visible=false;grassMesh.count=0;trunks.count=crowns.count=crowns2.count=TREE_COUNT;bushes.count=0}
+else{GFX.quality="balanced";renderer.setPixelRatio(Math.min(devicePixelRatio,1.16));renderer.shadowMap.enabled=true;scene.fog.density=.0064;cloudGroup.visible=true;dustField.visible=true;mountainGroup.visible=!V15.ready;grassMesh.visible=false;bushes.visible=false;grassMesh.count=0;trunks.count=crowns.count=crowns2.count=Math.min(420,TREE_COUNT);bushes.count=0}
 resizeGame()}$("quality").onchange=quality;
-const clock=new THREE.Clock();let uiTick=0,mapTick=0,fpsFrames=0,fpsClock=performance.now(),lowFpsStrikes=0;function loop(time){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.045);if(grassMat.userData.shader)grassMat.userData.shader.uniforms.uTime.value=time*.001;fpsFrames++;if(time-fpsClock>2500){const fps=fpsFrames*1000/(time-fpsClock);fpsFrames=0;fpsClock=time;lowFpsStrikes=fps<24?lowFpsStrikes+1:Math.max(0,lowFpsStrikes-1);if(lowFpsStrikes>=2&&$("quality").value==="ultra"){$("quality").value="balanced";quality();notify("AUTO PERFORMANCE: BALANCED");lowFpsStrikes=0}else if(lowFpsStrikes>=3&&$("quality").value==="balanced"){$("quality").value="low";quality();notify("AUTO PERFORMANCE: LOW");lowFpsStrikes=0}}dayNight(dt);updateGraphicsFX(dt,time);updateGhost();move(dt);weapon(dt);updateProjectiles(dt);updateBodies(dt);ai(dt);cctv();searchlights(time);updateDown();identify();updateTutorial();if(++uiTick%4===0)updateContext();if(uiTick%12===0){hud();compass();objective()}if($("mapPanel").style.display==="block"&&++mapTick%20===0)drawMap();renderer.render(scene,camera)}function resizeGame(){const host=$("renderHost");const r=host.getBoundingClientRect();const w=Math.max(2,Math.round(r.width||window.visualViewport?.width||innerWidth));const h=Math.max(2,Math.round(r.height||window.visualViewport?.height||innerHeight));camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);renderer.domElement.style.width="100%";renderer.domElement.style.height="100%"}addEventListener("resize",resizeGame);addEventListener("orientationchange",()=>{setTimeout(resizeGame,120);setTimeout(resizeGame,420);setTimeout(resizeGame,900)});window.visualViewport?.addEventListener("resize",resizeGame);new ResizeObserver(()=>resizeGame()).observe($("renderHost"));const SAVE_KEY="zwar-v14-graphics-1";let restoringState=false;
+const clock=new THREE.Clock();let uiTick=0,mapTick=0,fpsFrames=0,fpsClock=performance.now(),lowFpsStrikes=0;function loop(time){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.045);if(grassMat.userData.shader)grassMat.userData.shader.uniforms.uTime.value=time*.001;fpsFrames++;if(time-fpsClock>2500){const fps=fpsFrames*1000/(time-fpsClock);fpsFrames=0;fpsClock=time;lowFpsStrikes=fps<24?lowFpsStrikes+1:Math.max(0,lowFpsStrikes-1);if(lowFpsStrikes>=2&&$("quality").value==="ultra"){$("quality").value="balanced";quality();notify("AUTO PERFORMANCE: BALANCED");lowFpsStrikes=0}else if(lowFpsStrikes>=3&&$("quality").value==="balanced"){$("quality").value="low";quality();notify("AUTO PERFORMANCE: LOW");lowFpsStrikes=0}}dayNight(dt);updateGraphicsFX(dt,time);if(V15.sky)V15.sky.position.copy(camera.position);updateGhost();move(dt);weapon(dt);updateProjectiles(dt);updateBodies(dt);ai(dt);cctv();searchlights(time);updateDown();identify();updateTutorial();if(++uiTick%4===0)updateContext();if(uiTick%12===0){hud();compass();objective()}if($("mapPanel").style.display==="block"&&++mapTick%20===0)drawMap();renderer.render(scene,camera)}function resizeGame(){const host=$("renderHost");const r=host.getBoundingClientRect();const w=Math.max(2,Math.round(r.width||window.visualViewport?.width||innerWidth));const h=Math.max(2,Math.round(r.height||window.visualViewport?.height||innerHeight));camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h,false);renderer.domElement.style.width="100%";renderer.domElement.style.height="100%"}addEventListener("resize",resizeGame);addEventListener("orientationchange",()=>{setTimeout(resizeGame,120);setTimeout(resizeGame,420);setTimeout(resizeGame,900)});window.visualViewport?.addEventListener("resize",resizeGame);new ResizeObserver(()=>resizeGame()).observe($("renderHost"));const SAVE_KEY="zwar-v15-assets-1";let restoringState=false;
 function serializeState(){const digs=[];for(let i=0;i<digGrid.length;i++){const v=digGrid[i];if(Math.abs(v)>.025)digs.push([i,Math.round(v*1000)/1000])}const builds=structures.filter(st=>st.playerBuilt&&!st.dead&&st.hp>0).map(st=>({type:st.type,x:+st.root.position.x.toFixed(2),z:+st.root.position.z.toFixed(2),rot:+st.root.rotation.y.toFixed(3),yOffset:+(st.root.position.y-H(st.root.position.x,st.root.position.z)).toFixed(2),hp:Math.round(st.hp)}));return{v:2,digs,builds,base:{level:BASES.blue.level,supply:BASES.blue.supply,powerCap:BASES.blue.powerCap,hp:BASES.blue.command.ref.hp,maxHp:BASES.blue.command.ref.maxHp},inv:{wood:player.wood,metal:player.metal,stone:player.stone,armor:player.armor},weapons:{unlocked:[...ws.unlocked],order:ws.order,ammo:ws.ammo,reserve:ws.reserve}}}
 function saveState(){if(restoringState)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify(serializeState()))}catch{}}
 function restoreState(){let raw;try{raw=JSON.parse(localStorage.getItem(SAVE_KEY)||"null")}catch{return}if(!raw||raw.v!==2)return;restoringState=true;try{for(const q of raw.digs||[]){const i=q[0]|0;if(i>=0&&i<digGrid.length)digGrid[i]=+q[1]||0}refreshTerrain();const b=raw.base||{};BASES.blue.level=clamp(+b.level||1,1,6);BASES.blue.supply=clamp(+b.supply||100,0,200);BASES.blue.powerCap=Math.max(24,+b.powerCap||24);if(Number.isFinite(+b.maxHp))BASES.blue.command.ref.maxHp=+b.maxHp;if(Number.isFinite(+b.hp))BASES.blue.command.ref.hp=clamp(+b.hp,1,BASES.blue.command.ref.maxHp);if(BASES.blue.level>1)reinforceBaseVisual(BASES.blue.level);for(const q of raw.builds||[]){if(!BUILD[q.type])continue;const st=structure(q.type,+q.x,+q.z,+q.rot||0,+q.yOffset||0);st.hp=clamp(+q.hp||st.hp,1,st.maxHp)}const inv=raw.inv||{};for(const k of["wood","metal","stone","armor"]){if(Number.isFinite(+inv[k]))player[k]=+inv[k]}const w=raw.weapons||{};if(Array.isArray(w.unlocked)){ws.unlocked=new Set(w.unlocked.filter(x=>WEAPONS[x]))}if(Array.isArray(w.order)){ws.order=w.order.filter(x=>WEAPONS[x]);if(!ws.order.includes("pickaxe"))ws.order.unshift("pickaxe")}if(w.ammo)Object.assign(ws.ammo,w.ammo);if(w.reserve)Object.assign(ws.reserve,w.reserve);powerUpdate();hud()}finally{restoringState=false}}
@@ -855,11 +984,11 @@ setInterval(()=>{if(player.playing)saveState()},7000);document.addEventListener(
 function cameraSanity(){if(!Number.isFinite(player.y)||player.y<groundSurface(player.x,player.z)+.3){player.y=groundSurface(player.x,player.z)+eye()}camera.position.set(player.x,player.y,player.z)}
 function bootIntegrityCheck(){
   const samples=[[-160,-160],[BLUE_X,BLUE_Z],[0,0],[RED_X,RED_Z],[160,-40]];
-  for(const [x,z] of samples){const r=riverX(z),b=baseH(x,z),h=H(x,z);if(!Number.isFinite(r)||!Number.isFinite(b)||!Number.isFinite(h))throw new Error(`Z WAR V14 integrity failure at ${x},${z}`)}
-  for(const o of obstacles){for(const k of ["x","z","w","d","h","y","rot"])if(!Number.isFinite(o[k]))throw new Error(`Z WAR V14 invalid collider ${k}`)}
-  console.info("Z WAR V14 GRAPHICS OK",{obstacles:obstacles.length,trees:treeColliders.length,vehicles:vehicleColliders.length});
+  for(const [x,z] of samples){const r=riverX(z),b=baseH(x,z),h=H(x,z);if(!Number.isFinite(r)||!Number.isFinite(b)||!Number.isFinite(h))throw new Error(`Z WAR V15 integrity failure at ${x},${z}`)}
+  for(const o of obstacles){for(const k of ["x","z","w","d","h","y","rot"])if(!Number.isFinite(o[k]))throw new Error(`Z WAR V15 invalid collider ${k}`)}
+  console.info("Z WAR V15 ASSET GRAPHICS OK",{obstacles:obstacles.length,trees:treeColliders.length,vehicles:vehicleColliders.length});
 }
-bootIntegrityCheck();restoreState();cameraSanity();hud();quality();resizeGame();loop(0);
+bootIntegrityCheck();restoreState();cameraSanity();hud();quality();resizeGame();initV15Assets();loop(0);
 </script>
 </body>
 </html>
