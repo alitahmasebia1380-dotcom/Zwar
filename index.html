@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — PACK 1 • ROOMS 01–10 • RED-TEAM BUILD 1.0</title>
+<title>Z: DON'T LOOK BACK — PACK 1 • ROOMS 01–10 • RED-TEAM BUILD 1.1 • MOBILE LIGHTING FIX</title>
 <style>
 :root{--fg:#ececec;--muted:#8e8e93;--blood:#7e0c16;--panel:rgba(8,8,10,.92)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -87,12 +87,12 @@ const scene=new THREE.Scene();scene.background=new THREE.Color(0x030304);scene.f
 const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,.04,70);camera.rotation.order='YXZ';
 const isTouch=matchMedia('(pointer:coarse)').matches;
 const renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:'high-performance',alpha:false,stencil:false});
-const renderScale=Math.min(devicePixelRatio||1,isTouch?.82:1.15);renderer.setPixelRatio(renderScale);renderer.setSize(innerWidth,innerHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.78;renderer.shadowMap.enabled=false;UI.game.appendChild(renderer.domElement);
-const hemi=new THREE.HemisphereLight(0x1b1d24,0x080605,.25);scene.add(hemi);
+const renderScale=Math.min(devicePixelRatio||1,isTouch?.82:1.15);renderer.setPixelRatio(renderScale);renderer.setSize(innerWidth,innerHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.92;renderer.shadowMap.enabled=false;UI.game.appendChild(renderer.domElement);
+const hemi=new THREE.HemisphereLight(0x242834,0x0a0807,.42);scene.add(hemi);
 const world=new THREE.Group();scene.add(world);
-const flashlight=new THREE.SpotLight(0xfff4de,7.6,13,Math.PI/7,.78,1.65);flashlight.castShadow=false;camera.add(flashlight);scene.add(camera);const fTarget=new THREE.Object3D();fTarget.position.set(0,-.04,-5);camera.add(fTarget);flashlight.target=fTarget;flashlight.position.set(.04,-.02,.02);
-const spill=new THREE.PointLight(0xd7d0c5,.42,2.4,2);camera.add(spill);spill.position.set(0,-.15,-.2);
-const candleLight=new THREE.PointLight(0xffa64a,0,3.2,2);camera.add(candleLight);candleLight.position.set(.22,-.42,-.32);
+const flashlight=new THREE.SpotLight(0xfff4de,145,13,Math.PI/7,.78,1.65);flashlight.castShadow=false;camera.add(flashlight);scene.add(camera);const fTarget=new THREE.Object3D();fTarget.position.set(0,-.04,-5);camera.add(fTarget);flashlight.target=fTarget;flashlight.position.set(.04,-.02,.02);
+const spill=new THREE.PointLight(0xd7d0c5,7.5,2.7,2);camera.add(spill);spill.position.set(0,-.15,-.2);
+const candleLight=new THREE.PointLight(0xffa64a,0,3.4,2);camera.add(candleLight);candleLight.position.set(.22,-.42,-.32);
 
 // ---------- Shared materials ----------
 const MAT={wall:new THREE.MeshStandardMaterial({color:0x3a3938,roughness:.96,metalness:.02}),wallDark:new THREE.MeshStandardMaterial({color:0x17171a,roughness:.98}),floor:new THREE.MeshStandardMaterial({color:0x242322,roughness:.9}),ceiling:new THREE.MeshStandardMaterial({color:0x292827,roughness:1}),wood:new THREE.MeshStandardMaterial({color:0x321e14,roughness:.88}),metal:new THREE.MeshStandardMaterial({color:0x252a2d,roughness:.66,metalness:.7}),paper:new THREE.MeshStandardMaterial({color:0xb9b09a,roughness:1}),blood:new THREE.MeshStandardMaterial({color:0x3e0208,roughness:.75}),white:new THREE.MeshStandardMaterial({color:0xbcb8ae,roughness:.9}),black:new THREE.MeshStandardMaterial({color:0x050506,roughness:.95}),yellow:new THREE.MeshStandardMaterial({color:0x7d6a19,roughness:.9}),blue:new THREE.MeshStandardMaterial({color:0x1b2830,roughness:.82}),red:new THREE.MeshStandardMaterial({color:0x43080d,roughness:.9}),green:new THREE.MeshStandardMaterial({color:0x183321,roughness:.9})};
@@ -103,7 +103,7 @@ function solid(x,z,sx,sz){const c={x,z,hx:sx/2,hz:sz/2,active:true};colliders.pu
 function wall(x,y,z,sx,sy,sz,mat=MAT.wall){const m=meshBox(x,y,z,sx,sy,sz,mat);solid(x,z,sx,sz);return m}
 function floor(x,z,sx,sz,mat=MAT.floor){return meshBox(x,-.08,z,sx,.16,sz,mat)}
 function ceiling(x,z,sx,sz){return meshBox(x,3.05,z,sx,.12,sz,MAT.ceiling)}
-function lamp(x,z,intensity=3.2,color=0xd6cdb8,range=5){const bulb=meshBox(x,2.82,z,.26,.07,.26,new THREE.MeshStandardMaterial({color:0xddd6c6,emissive:color,emissiveIntensity:1.6}));const l=new THREE.PointLight(color,intensity,range,2);l.position.set(x,2.65,z);world.add(l);animated.push({type:'lamp',light:l,base:intensity,seed:Math.random()*20});return {bulb,light:l}}
+function lamp(x,z,intensity=3.2,color=0xd6cdb8,range=5){const calibrated=intensity*70;const bulb=meshBox(x,2.82,z,.26,.07,.26,new THREE.MeshStandardMaterial({color:0xddd6c6,emissive:color,emissiveIntensity:3.2}));const l=new THREE.PointLight(color,calibrated,range,2);l.position.set(x,2.65,z);world.add(l);animated.push({type:'lamp',light:l,base:calibrated,seed:Math.random()*20});return {bulb,light:l}}
 function roomShell(w,d,opts={}){const z=opts.z||0,x=opts.x||0;floor(x,z,w,d,opts.floor||MAT.floor);ceiling(x,z,w,d);wall(x-w/2,1.45,z,.18,3,d,opts.wall||MAT.wall);wall(x+w/2,1.45,z,.18,3,d,opts.wall||MAT.wall);wall(x,1.45,z-d/2,w,3,.18,opts.wall||MAT.wall);wall(x,1.45,z+d/2,w,3,.18,opts.wall||MAT.wall)}
 function corridor(zCenter,length,width=3,opts={}){floor(0,zCenter,width,length,opts.floor||MAT.floor);ceiling(0,zCenter,width,length);wall(-width/2,1.45,zCenter,.16,3,length,opts.wall||MAT.wall);wall(width/2,1.45,zCenter,.16,3,length,opts.wall||MAT.wall)}
 function openGapWallZ(z,w,gap=1.3,mat=MAT.wall){const side=(w-gap)/2;wall(-(gap/2+side/2),1.45,z,side,3,.18,mat);wall((gap/2+side/2),1.45,z,side,3,.18,mat)}
@@ -166,7 +166,7 @@ function createParmisDistant(){
   wrap.userData.assetBacked=true;return wrap;
  }catch{return createParmis()}
 }
-function parmisJumpscare(duration=520){return new Promise(async resolve=>{Game.lock=true;const p=createParmis();p.scale.set(1.28,1.28,1.28);scene.add(p);const f=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);const pos=camera.position.clone().add(f.multiplyScalar(.72));p.position.set(pos.x,camera.position.y-1.72,pos.z);p.rotation.y=Game.player.yaw+Math.PI;const red=new THREE.PointLight(0x8b0c16,5.5,2.2,2);red.position.copy(camera.position);scene.add(red);audio.play('scream',.74);audio.play('shock',.52);UI.flash.style.opacity='.72';await sleep(50);UI.flash.style.opacity='0';const t0=performance.now();while(performance.now()-t0<duration){const k=(performance.now()-t0)/duration;p.scale.setScalar(1.28+k*.58);await new Promise(requestAnimationFrame)}scene.remove(p,red);Game.lock=false;resolve()})}
+function parmisJumpscare(duration=520){return new Promise(async resolve=>{Game.lock=true;const p=createParmis();p.scale.set(1.28,1.28,1.28);scene.add(p);const f=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);const pos=camera.position.clone().add(f.multiplyScalar(.72));p.position.set(pos.x,camera.position.y-1.72,pos.z);p.rotation.y=Game.player.yaw+Math.PI;const red=new THREE.PointLight(0x8b0c16,95,2.4,2);red.position.copy(camera.position);scene.add(red);audio.play('scream',.74);audio.play('shock',.52);UI.flash.style.opacity='.72';await sleep(50);UI.flash.style.opacity='0';const t0=performance.now();while(performance.now()-t0<duration){const k=(performance.now()-t0)/duration;p.scale.setScalar(1.28+k*.58);await new Promise(requestAnimationFrame)}scene.remove(p,red);Game.lock=false;resolve()})}
 
 // Optional CC0 3D mannequin preload. Gameplay never depends on it; procedural 3D Parmis remains fallback.
 const MODEL_URL='https://raw.githubusercontent.com/NafisRayan/Animate-Rigged-Humanoid-No-Blender/5821923af517ac5fdc82505faa92a0d575fc1b1a/Universal%20Animation%20Library%202%5BStandard%5D/Universal%20Animation%20Library%202%5BStandard%5D/Female%20Mannequin/Unreal-Godot/Mannequin_F.glb';
@@ -200,11 +200,11 @@ function movementVector(){let x=input.joyX,y=-input.joyY;if(input.keys.has('KeyA
 function nearestInteraction(){let best=null,bd=99;const f=new THREE.Vector3(-Math.sin(P.yaw),0,-Math.cos(P.yaw));for(const it of interactables){if(!it.enabled||!it.obj?.parent)continue;const wp=new THREE.Vector3();it.obj.getWorldPosition(wp);const dx=wp.x-P.pos.x,dz=wp.z-P.pos.z,dist=Math.hypot(dx,dz);if(dist>it.range||dist>=bd)continue;const dot=(dx*f.x+dz*f.z)/(dist||1);if(dot<.15)continue;best=it;bd=dist}return best}
 function interact(){if(Game.modal||Game.lock)return;const it=nearestInteraction();if(it){try{it.action(it)}catch(e){bootFail(e)}}}
 function toggleLight(){if(!Game.hasFlashlight||Game.flashlightDead)return;Game.flashlightOn=!Game.flashlightOn;updateLights()}
-function updateLights(){flashlight.intensity=(Game.flashlightOn&&!Game.flashlightDead)?7.6:0;spill.intensity=(Game.flashlightOn&&!Game.flashlightDead)?0.42:0;candleLight.intensity=Game.candle?2.55:0;UI.candle.style.display=Game.candle?'block':'none';UI.battery.parentElement.style.display=Game.hasFlashlight?'block':'none'}
+function updateLights(){flashlight.intensity=(Game.flashlightOn&&!Game.flashlightDead)?145:0;spill.intensity=(Game.flashlightOn&&!Game.flashlightDead)?7.5:0;candleLight.intensity=Game.candle?22:0;UI.candle.style.display=Game.candle?'block':'none';UI.battery.parentElement.style.display=Game.hasFlashlight?'block':'none'}
 
 // ---------- Stage manager ----------
 const Game={stage:0,started:false,modal:false,lock:false,hasFlashlight:false,flashlightOn:false,flashlightDead:false,battery:100,candle:false,local:{},update:null,player:P,checkpoint:1};
-function clearWorld(){while(world.children.length)world.remove(world.children[0]);colliders.length=0;interactables.length=0;animated.length=0;Game.update=null;Game.local={};Game.lock=false;Game.modal=false;UI.note.classList.remove('open');UI.keypad.classList.remove('open');UI.breathWrap.style.display='none';Game.candle=false;Game.speedMul=1;updateLights();scene.fog.color.set(0x050506);scene.fog.density=.055;renderer.toneMappingExposure=.78}
+function clearWorld(){while(world.children.length)world.remove(world.children[0]);colliders.length=0;interactables.length=0;animated.length=0;Game.update=null;Game.local={};Game.lock=false;Game.modal=false;UI.note.classList.remove('open');UI.keypad.classList.remove('open');UI.breathWrap.style.display='none';Game.candle=false;Game.speedMul=1;updateLights();scene.fog.color.set(0x050506);scene.fog.density=.055;renderer.toneMappingExposure=.92}
 const STAGES={};
 Game.enter=function(n,save=true){if(!STAGES[n])return bootFail(new Error('Missing stage '+n));clearWorld();Game.stage=n;if(save){Game.checkpoint=n;localStorage.setItem('zdlb_pack1_checkpoint',String(n))}UI.room.textContent=`ROOM ${String(n).padStart(2,'0')}`;chapter(STAGES[n].name,STAGES[n].fa);STAGES[n].build();UI.blackout.style.transition='opacity .35s linear';UI.blackout.style.opacity='0'};
 Game.fail=async function(reason='YOU WERE FOUND.'){if(Game.lock)return;Game.lock=true;subtitle(bi(reason,'پیدات کرد.'),1200);UI.damage.style.opacity='.8';navigator.vibrate?.([80,50,120]);audio.play('shock',.55);await sleep(650);UI.blackout.style.opacity='1';await sleep(350);Game.enter(Game.stage,false);UI.damage.style.opacity='0';Game.lock=false};
@@ -217,12 +217,15 @@ UI.restart.onclick=()=>{localStorage.setItem('zdlb_pack1_checkpoint','1');locati
 // ============================================================
 STAGES[1]={name:'ROOM 01 — WAKE UP',fa:'اتاق ۱ — بیدار شو',build(){
  resetPlayer(0,2.6,0);Game.hasFlashlight=false;Game.flashlightOn=false;Game.flashlightDead=false;Game.battery=100;updateLights();
- floor(0,0,8.4,8.8);ceiling(0,0,8.4,8.8);wall(-4.2,1.45,0,.18,3,8.8,MAT.wall);wall(4.2,1.45,0,.18,3,8.8,MAT.wall);wall(0,1.45,4.4,8.4,3,.18,MAT.wall);wall(-2.5,1.45,-4.4,3.4,3,.18,MAT.wall);wall(2.5,1.45,-4.4,3.4,3,.18,MAT.wall);lamp(0,0,1.25,0xb9af9b,4.2);addBed(-2.25,1.65);addPropTable(2.25,1.7);addChair(2.25,2.55,Math.PI);const exit=createDoor(0,-4.36,'z','LOCKED • قفل');exit.collider.active=true;
- const phone=meshBox(2.25,.83,1.67,.28,.12,.42,MAT.black);const flashProp=meshBox(-1.25,.84,1.1,.13,.13,.58,MAT.metal);flashProp.rotation.x=.12;
+ floor(0,0,8.4,8.8);ceiling(0,0,8.4,8.8);wall(-4.2,1.45,0,.18,3,8.8,MAT.wall);wall(4.2,1.45,0,.18,3,8.8,MAT.wall);wall(0,1.45,4.4,8.4,3,.18,MAT.wall);wall(-2.5,1.45,-4.4,3.4,3,.18,MAT.wall);wall(2.5,1.45,-4.4,3.4,3,.18,MAT.wall);lamp(0,0,1.75,0xb9af9b,4.8);addBed(-2.25,1.65);addPropTable(2.25,1.7);addChair(2.25,2.55,Math.PI);const exit=createDoor(0,-4.36,'z','LOCKED • قفل');exit.collider.active=true;
+ const phone=meshBox(2.25,.83,1.67,.28,.12,.42,MAT.black);
+ const flashlightMat=new THREE.MeshStandardMaterial({color:0x596169,roughness:.5,metalness:.68,emissive:0x111820,emissiveIntensity:.7});
+ const flashProp=meshBox(-1.25,.84,1.1,.13,.13,.58,flashlightMat);flashProp.rotation.x=.12;
+ const flashGuide=new THREE.PointLight(0xb8c6d2,12,2.15,2);flashGuide.position.set(-1.25,1.05,1.1);world.add(flashGuide);
  makeSign('731?',-2.9,1.6,-4.28,0,.72,.28);
  const local=Game.local={notes:new Set(),phone:false,ring:false,ringAt:0,unlocked:false};
  objective(bi('Find a light.','یک نور پیدا کن.'));
- addInteract(flashProp,'TAKE FLASHLIGHT • چراغ‌قوه را بردار',it=>{it.enabled=false;flashProp.visible=false;Game.hasFlashlight=true;Game.flashlightOn=true;updateLights();local.ringAt=performance.now()+7500;objective(bi('Look around. Something in this room was left for you.','اطراف را بگرد. چیزی در این اتاق برای تو جا مانده.'));subtitle(bi('The battery is almost full.','باتری تقریباً پر است.'),1800)});
+ addInteract(flashProp,'TAKE FLASHLIGHT • چراغ‌قوه را بردار',it=>{it.enabled=false;flashProp.visible=false;Game.hasFlashlight=true;Game.flashlightOn=true;flashGuide.intensity=0;updateLights();local.ringAt=performance.now()+7500;objective(bi('Look around. Something in this room was left for you.','اطراف را بگرد. چیزی در این اتاق برای تو جا مانده.'));subtitle(bi('The battery is almost full.','باتری تقریباً پر است.'),1800)});
  addInteract(phone,'ANSWER • جواب بده',()=>{if(!local.ring){subtitle(bi('No signal.','هیچ سیگنالی نیست.'),1200);return}if(local.phone)return;local.phone=true;local.ring=false;subtitle(bi('UNKNOWN: “Samyar… don’t trust the room. Read what you wrote.”','UNKNOWN: «سامیار… به این اتاق اعتماد نکن. چیزهایی را که خودت نوشتی بخوان.»'),5200);checkReady()});
  const notes=[
   {x:-2.55,z:-.45,t:'FRAGMENT I',s:bi('SEVEN nights. On the seventh reflection, you finally wrote her name: Parmis.','هفت شب. در انعکاس شب هفتم بالاخره اسمش را نوشتی: پارمیس.')},
@@ -285,10 +288,10 @@ STAGES[3]={name:'ROOM 03 — PARMIS: THE LAST LIGHT',fa:'اتاق ۳ — پار�
  L.farWall=meshBox(0,1.45,-23.7,3.2,3,.18,MAT.wallDark);L.farWallCollider=solid(0,-23.7,3.2,.18);
  const far=createParmisDistant();far.position.set(0,0,-20.7);far.rotation.y=0;far.visible=false;world.add(far);L.farParmis=far;
  // candle altar halfway down hall, invisible until flashlight death
- const candleBody=meshBox(1.12,.62,-10.8,.06,.62,.06,new THREE.MeshStandardMaterial({color:0xddd0ad,roughness:.86}));candleBody.visible=false;const candleFlame=new THREE.PointLight(0xffaa55,0,2.6,2);candleFlame.position.set(1.12,1.02,-10.8);world.add(candleFlame);
+ const candleBody=meshBox(1.12,.62,-10.8,.06,.62,.06,new THREE.MeshStandardMaterial({color:0xddd0ad,roughness:.86}));candleBody.visible=false;const candleFlame=new THREE.PointLight(0xffaa55,0,2.9,2);candleFlame.position.set(1.12,1.02,-10.8);world.add(candleFlame);
  const candleIt=addInteract(candleBody,'TAKE CANDLE • شمع را بردار',async it=>{if(!Game.flashlightDead||L.candleTaken)return;L.candleTaken=true;it.enabled=false;candleBody.visible=false;candleFlame.intensity=0;Game.candle=true;updateLights();objective(bi('Keep moving. Do not trust the length of the corridor.','ادامه بده. به طول راهرو اعتماد نکن.'));subtitle(bi('For the first time, the light is warm.','برای اولین بار نور گرم است.'),1800);setTimeout(async()=>{if(Game.stage!==3||L.secondScare)return;L.secondScare=true;await parmisJumpscare(430);subtitle(bi('Nothing is behind you now. That is worse.','حالا چیزی پشت سرت نیست. همین بدتر است.'),1700)},1250);setTimeout(()=>stretchHall(),2350)},1.8);candleIt.enabled=false;
  function stretchHall(){if(L.stretched||Game.stage!==3)return;L.stretched=true;const startZ=L.farWall.position.z,target=-36,t0=performance.now();const tick=()=>{if(Game.stage!==3)return;const k=clamp((performance.now()-t0)/1800,0,1),e=k*k*(3-2*k);L.farWall.position.z=startZ+(target-startZ)*e;L.farWallCollider.z=L.farWall.position.z;if(k<1)requestAnimationFrame(tick);else{L.farWall.visible=false;L.farWallCollider.active=false;buildLabyrinth()}};tick()}
- function hallScare(){if(L.hallEvent)return;L.hallEvent=true;Game.lock=true;far.visible=true;objective(bi('Walk toward her.','به سمتش برو.'));subtitle('',10);setTimeout(async()=>{if(Game.stage!==3)return;await blink(115);far.visible=false;await parmisJumpscare(470);Game.flashlightDead=true;Game.flashlightOn=false;updateLights();candleBody.visible=true;candleFlame.intensity=2.9;candleIt.enabled=true;objective(bi('The flashlight is dead. Find another light.','چراغ‌قوه مرده. یک نور دیگر پیدا کن.'));Game.lock=false},1750)}
+ function hallScare(){if(L.hallEvent)return;L.hallEvent=true;Game.lock=true;far.visible=true;objective(bi('Walk toward her.','به سمتش برو.'));subtitle('',10);setTimeout(async()=>{if(Game.stage!==3)return;await blink(115);far.visible=false;await parmisJumpscare(470);Game.flashlightDead=true;Game.flashlightOn=false;updateLights();candleBody.visible=true;candleFlame.intensity=20;candleIt.enabled=true;objective(bi('The flashlight is dead. Find another light.','چراغ‌قوه مرده. یک نور دیگر پیدا کن.'));Game.lock=false},1750)}
  function buildLabyrinth(){
   // extension corridor and observation chamber
   corridor(-30,13,3.2,{wall:MAT.wallDark});for(const z of[-25.5,-29.5,-33.5])lamp(0,z,.75,0x9b856f,3.5);
@@ -350,10 +353,10 @@ STAGES[5]={name:'ROOM 05 — MOM’S ROOM',fa:'اتاق ۵ — اتاق ماما
  resetPlayer(0,5.2,0);Game.candle=false;Game.hasFlashlight=true;Game.flashlightDead=false;Game.flashlightOn=true;updateLights();scene.fog.density=.072;
  floor(0,0,7.5,14,MAT.floor);ceiling(0,0,7.5,14);wall(-3.75,1.45,0,.18,3,14,MAT.wallDark);wall(3.75,1.45,0,.18,3,14,MAT.wallDark);wall(0,1.45,7,7.5,3,.18,MAT.wallDark);wall(-2.2,1.45,-7,3.1,3,.18,MAT.wallDark);wall(2.2,1.45,-7,3.1,3,.18,MAT.wallDark);
  const exit=createDoor(0,-6.94,'z','LOCKED • قفل');exit.panel.userData.interaction.action=()=>{if(L.tape)openDoor(exit);else subtitle(bi('You came here for something.','برای یک چیزی به اینجا آمدی.'),1100)};
- addBed(-2.25,.8);addPropTable(2.3,2.0);const wardrobe=meshBox(2.7,.95,-4.8,1.45,1.9,.75,MAT.wood);solid(2.7,-4.8,1.45,.75);const radio=meshBox(-2.45,.95,2.0,.55,.32,.3,MAT.black);const radioGlow=new THREE.PointLight(0x8ba1aa,.2,1.3,2);radioGlow.position.set(-2.45,1.05,2.0);world.add(radioGlow);
+ addBed(-2.25,.8);addPropTable(2.3,2.0);const wardrobe=meshBox(2.7,.95,-4.8,1.45,1.9,.75,MAT.wood);solid(2.7,-4.8,1.45,.75);const radio=meshBox(-2.45,.95,2.0,.55,.32,.3,MAT.black);const radioGlow=new THREE.PointLight(0x8ba1aa,2.5,1.5,2);radioGlow.position.set(-2.45,1.05,2.0);world.add(radioGlow);
  const L=Game.local={safe:true,cycle:0,danger:0,tape:false,lastSafe:true};objective(bi('The radio gives you cover. Move only when it is breathing. Find the cassette.','رادیو بهت پوشش می‌دهد. فقط وقتی نفس می‌کشد حرکت کن. نوار را پیدا کن.'));
  const tape=meshBox(2.7,1.16,-4.55,.34,.12,.22,MAT.black);addInteract(tape,'TAKE CASSETTE • نوار را بردار',it=>{if(L.tape)return;L.tape=true;it.enabled=false;tape.visible=false;subtitle(bi('MOM: “Samyar? If you hear this, you left again without saying goodbye.”','MOM: «سامیار؟ اگه اینو می‌شنوی، باز بدون خداحافظی رفتی.»'),4700);objective(bi('Return to the door. Keep listening to the radio.','به در برگرد. هنوز به رادیو گوش بده.'));openDoor(exit)});
- Game.update=(dt,now)=>{const phase=(now/1000)%7;L.safe=phase<3.8;radioGlow.intensity=L.safe?0.85:0.08;if(L.safe!==L.lastSafe){L.lastSafe=L.safe;subtitle(L.safe?bi('STATIC — MOVE','خش‌خش — حرکت کن'):bi('SILENCE — STOP','سکوت — وایسا'),900)}const mv=movementVector();if(!L.safe&&mv.mag>.16&&!Game.lock&&!Game.modal)L.danger+=dt*(input.run?2.2:1.25);else L.danger=Math.max(0,L.danger-dt*.55);if(L.danger>1.15)Game.fail('THE SILENCE HEARD YOU.');if(exit.open&&P.pos.z<-7.35)Game.next()};
+ Game.update=(dt,now)=>{const phase=(now/1000)%7;L.safe=phase<3.8;radioGlow.intensity=L.safe?14:1.2;if(L.safe!==L.lastSafe){L.lastSafe=L.safe;subtitle(L.safe?bi('STATIC — MOVE','خش‌خش — حرکت کن'):bi('SILENCE — STOP','سکوت — وایسا'),900)}const mv=movementVector();if(!L.safe&&mv.mag>.16&&!Game.lock&&!Game.modal)L.danger+=dt*(input.run?2.2:1.25);else L.danger=Math.max(0,L.danger-dt*.55);if(L.danger>1.15)Game.fail('THE SILENCE HEARD YOU.');if(exit.open&&P.pos.z<-7.35)Game.next()};
 }};
 
 // ============================================================
@@ -453,7 +456,7 @@ function frame(now){requestAnimationFrame(frame);if(isTouch&&now-frameGate<14.5)
    if(Game.hasFlashlight&&Game.flashlightOn&&!Game.flashlightDead){Game.battery=Math.max(0,Game.battery-dt*.035);if(Game.battery<=0){Game.flashlightDead=true;Game.flashlightOn=false;updateLights();subtitle(bi('The battery is dead.','باتری تمام شد.'),1200)}}
   }
   camera.position.copy(P.pos);camera.rotation.set(P.pitch,P.yaw,0);
-  if(Game.candle)candleLight.intensity=2.35+Math.sin(now*.017)*.18+Math.sin(now*.041)*.08;
+  if(Game.candle)candleLight.intensity=21.5+Math.sin(now*.017)*1.6+Math.sin(now*.041)*.8;
   if(!paused&&Game.update){try{Game.update(dt,now)}catch(e){bootFail(e);Game.update=null}}
   // subtle light instability, intentionally cheap and slow
   for(const a of animated){if(a.type==='lamp'){a.light.intensity=a.base*(.93+.07*Math.sin(now*.003+a.seed));}else if(a.type==='door'&&!a.done){const k=clamp((now-a.start)/650,0,1),e=1-Math.pow(1-k,3);a.obj.rotation.y=a.base-e*1.38;if(k>=1)a.done=true}}
