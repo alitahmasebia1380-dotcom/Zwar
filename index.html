@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — ROOM 0.4 • PORTRAIT NIGHTMARE</title>
+<title>Z: DON'T LOOK BACK — ROOM 0.5 • DEEP HORROR</title>
 <style>
 :root{--fg:#e9e9e9;--muted:#9b9b9b;--red:#a60e16;--glass:rgba(8,8,10,.56)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -63,7 +63,7 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 #portraitTag{position:absolute;left:50%;top:max(82px,calc(env(safe-area-inset-top) + 62px));transform:translateX(-50%);font-size:8px;letter-spacing:.22em;color:#555;opacity:.72;white-space:nowrap;pointer-events:none}
 #orientationLock{display:none;position:fixed;inset:0;z-index:120;background:#020203;align-items:center;justify-content:center;text-align:center;padding:32px;color:#aaa;letter-spacing:.18em;font-size:12px;line-height:1.8}
 #orientationLock b{display:block;color:#eee;font-size:17px;margin-bottom:10px}
-@media (orientation:landscape) and (max-height:600px){#orientationLock{display:flex}}
+@media (orientation:landscape){#orientationLock{display:flex}}
 @media (orientation:portrait){#objective{top:max(28px,env(safe-area-inset-top));left:max(22px,env(safe-area-inset-left));max-width:54vw;font-size:11px;line-height:1.45}#battery{top:max(28px,env(safe-area-inset-top));right:max(22px,env(safe-area-inset-right))}#joy{width:126px;height:126px;left:max(18px,env(safe-area-inset-left));bottom:max(54px,calc(env(safe-area-inset-bottom) + 32px))}#stick{left:39px;top:39px;width:48px;height:48px}#runBtn{left:max(44px,calc(env(safe-area-inset-left) + 44px));bottom:max(190px,calc(env(safe-area-inset-bottom) + 168px));width:58px;height:58px}#useBtn{right:max(18px,env(safe-area-inset-right));bottom:max(62px,calc(env(safe-area-inset-bottom) + 40px));width:78px;height:78px}#lightBtn{right:max(112px,calc(env(safe-area-inset-right) + 104px));bottom:max(67px,calc(env(safe-area-inset-bottom) + 45px));width:66px;height:66px}#prompt{bottom:22%}#subtitle{bottom:15%;width:84vw;font-size:14px}#hint{top:16%;width:76vw;text-align:center;font-size:9px}}
 @media (pointer:fine){#joy,#useBtn,#lightBtn,#runBtn{opacity:.22}#joy:hover,#useBtn:hover,#lightBtn:hover,#runBtn:hover{opacity:.7}}
 @media (max-height:520px){#objective{font-size:10px}.ctrl{transform:scale(.88);transform-origin:center}#joy{transform:scale(.88);transform-origin:left bottom}#subtitle{bottom:8%}}
@@ -74,9 +74,9 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 </head>
 <body>
 <div id="game"></div><div id="grain"></div><div id="vignette"></div><div id="blackout"></div><div id="flash"></div>
-<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP</div><p>You wake up somewhere you do not remember.</p><p>Headphones recommended. Darkness is part of the gameplay.</p><button id="startBtn">WAKE UP</button><div id="loading">ROOM 0.4 • PORTRAIT NIGHTMARE</div></div></div>
+<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP</div><p>You wake up somewhere you do not remember.</p><p>Headphones recommended. Darkness is part of the gameplay.</p><button id="startBtn">WAKE UP</button><div id="loading">ROOM 0.5 • DEEP HORROR</div></div></div>
 <div id="orientationLock"><div><b>PORTRAIT MODE</b>Rotate the phone upright to continue.</div></div>
-<div id="hud"><div id="objective"><small>OBJECTIVE</small><span id="objectiveText">Find a light.</span></div><div id="battery">FLASHLIGHT<div id="batteryBar"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="hint"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">RUN</button><button class="ctrl" id="lightBtn">◉</button><button class="ctrl" id="useBtn">USE</button><div id="fps"></div><div id="guide"></div><div id="pickupArrow">↓</div><div id="portraitTag">PORTRAIT NIGHTMARE</div></div>
+<div id="hud"><div id="objective"><small>OBJECTIVE</small><span id="objectiveText">Find a light.</span></div><div id="battery">FLASHLIGHT<div id="batteryBar"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="hint"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">RUN</button><button class="ctrl" id="lightBtn">◉</button><button class="ctrl" id="useBtn">USE</button><div id="fps"></div><div id="guide"></div><div id="pickupArrow">↓</div><div id="portraitTag">PORTRAIT • DEEP HORROR</div></div>
 <div id="keypad"><div class="panel"><h2>DOOR LOCK</h2><p>The display waits for three digits.</p><div id="codeDisplay">_ _ _</div><div id="keys"></div><button class="closeBtn" id="keyClose">BACK</button></div></div>
 <div id="notePanel"><div class="panel"><h2>NOTE</h2><p id="noteText"></p><button class="closeBtn" id="noteClose">PUT IT DOWN</button></div></div>
 <div id="endPanel"><div class="panel"><h2>ROOM 0 COMPLETE</h2><p>The hallway should not exist.</p><p>Stage 2: THE HALLWAY</p><button class="closeBtn" onclick="location.reload()">RESTART ROOM 0</button></div></div>
@@ -93,7 +93,7 @@ const assetCache=new Map();
 
 const scene=new THREE.Scene();
 scene.background=new THREE.Color(0x000000);
-scene.fog=new THREE.FogExp2(0x050507,.035);
+scene.fog=new THREE.FogExp2(0x030304,.055);
 const camera=new THREE.PerspectiveCamera(innerHeight>innerWidth?74:68,innerWidth/innerHeight,.04,50);
 camera.rotation.order='YXZ';
 const renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:'high-performance',alpha:false,stencil:false});
@@ -101,8 +101,8 @@ renderer.setSize(innerWidth,innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.25));
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=.56;
-renderer.shadowMap.enabled=true;
+renderer.toneMappingExposure=.42;
+renderer.shadowMap.enabled=!isTouch;
 renderer.shadowMap.type=THREE.BasicShadowMap;
 $('game').appendChild(renderer.domElement);
 
@@ -111,21 +111,34 @@ const raycaster=new THREE.Raycaster();
 const center=new THREE.Vector2(0,0);
 const colliders=[];
 const interactables=[];
-const state={started:false,flashlight:false,hasFlashlight:false,battery:100,fragments:0,phoneDone:false,doorUnlocked:false,finalNote:false,scare:false,scareDone:false,ended:false,running:false,modal:false,objective:'Find a light.'};
+const state={started:false,flashlight:false,hasFlashlight:false,battery:100,fragments:0,phoneDone:false,doorUnlocked:false,finalNote:false,scare:false,scareDone:false,ended:false,running:false,modal:false,objective:'Find a light.',flashGlitch:1,nextFlashFault:20+Math.random()*5,flashFaulting:false};
 const player={pos:new THREE.Vector3(0,1.68,2.75),yaw:0,pitch:-.24,radius:.3,speed:2.0};
 camera.position.copy(player.pos);
 
 function seeded(seed=123){let s=seed>>>0;return()=>((s=(s*1664525+1013904223)>>>0)/4294967296)}
-function texturePlaster(base='#4b4946',dark='#282725'){
+function texturePlaster(base='#302c29',dark='#141313'){
  const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),r=seeded(44);
- x.fillStyle=base;x.fillRect(0,0,256,256);for(let i=0;i<6500;i++){const v=Math.floor(25+r()*35);x.fillStyle=`rgba(${v},${v},${v},${.035+r()*.05})`;x.fillRect(r()*256,r()*256,1+r()*2,1+r()*2)}
- x.strokeStyle=dark;x.globalAlpha=.5;for(let i=0;i<18;i++){x.beginPath();let px=r()*256,py=r()*256;x.moveTo(px,py);for(let j=0;j<5;j++){px+=(r()-.5)*28;py+=(r()-.5)*35;x.lineTo(px,py)}x.stroke()}
- const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(3,2);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=2;return t;
+ x.fillStyle=base;x.fillRect(0,0,256,256);
+ // broad damp / grime blotches; intentionally no single-pixel noise (fixes iOS colored speckle artifacts)
+ for(let i=0;i<85;i++){
+   const px=r()*256,py=r()*256,rx=8+r()*32,ry=6+r()*38;
+   x.save();x.translate(px,py);x.scale(rx,ry);x.beginPath();x.arc(0,0,1,0,Math.PI*2);
+   const v=18+Math.floor(r()*26);x.fillStyle=`rgba(${v},${v-2},${v-4},${.025+r()*.075})`;x.fill();x.restore();
+ }
+ // rusty downward stains
+ for(let i=0;i<18;i++){
+   const px=r()*256,py=r()*150,w=2+r()*8,h=28+r()*85;
+   const g=x.createLinearGradient(px,py,px,py+h);g.addColorStop(0,'rgba(106,48,24,.03)');g.addColorStop(.2,'rgba(92,35,17,.20)');g.addColorStop(1,'rgba(40,15,10,0)');x.fillStyle=g;x.fillRect(px,py,w,h);
+ }
+ // cracks
+ x.lineWidth=1;x.strokeStyle='rgba(15,12,12,.52)';
+ for(let i=0;i<22;i++){x.beginPath();let px=r()*256,py=r()*256;x.moveTo(px,py);for(let j=0;j<4;j++){px+=(r()-.5)*25;py+=(r()-.5)*30;x.lineTo(px,py)}x.stroke()}
+ const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(3,2);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=1;t.magFilter=THREE.LinearFilter;t.minFilter=THREE.LinearMipmapLinearFilter;return t;
 }
 function textureWood(){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),r=seeded(9);x.fillStyle='#221a16';x.fillRect(0,0,256,256);for(let y=0;y<256;y+=32){x.fillStyle=y%64?'#2d211a':'#32241c';x.fillRect(0,y,256,30);x.fillStyle='rgba(0,0,0,.5)';x.fillRect(0,y+30,256,2);for(let i=0;i<16;i++){x.strokeStyle=`rgba(0,0,0,${.08+r()*.15})`;x.beginPath();x.moveTo(0,y+r()*28);x.bezierCurveTo(70,y+r()*28,150,y+r()*28,256,y+r()*28);x.stroke()}}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(4,4);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=2;return t}
-const wallMat=new THREE.MeshStandardMaterial({map:texturePlaster('#373432','#151414'),roughness:.97,color:0x47433f});
-const floorMat=new THREE.MeshStandardMaterial({map:textureWood(),roughness:.9,color:0x43372f});
-const ceilMat=new THREE.MeshStandardMaterial({color:0x111112,roughness:1});
+const wallMat=new THREE.MeshStandardMaterial({map:texturePlaster('#2d2926','#121111'),roughness:1,color:0x4b443d});
+const floorMat=new THREE.MeshStandardMaterial({map:textureWood(),roughness:.96,color:0x2f2722});
+const ceilMat=new THREE.MeshStandardMaterial({color:0x070708,roughness:1});
 const blackMat=new THREE.MeshStandardMaterial({color:0x080809,roughness:.93});
 const redMat=new THREE.MeshStandardMaterial({color:0x5c080d,roughness:.8});
 
@@ -140,13 +153,27 @@ wall(5.1,3.2,.18,-3.45,1.55,-4.5);wall(5.1,3.2,.18,3.45,1.55,-4.5);wall(1.45,.6,
 box(3.2,.18,8,0,-.08,-8.4,floorMat);box(3.2,.18,8,0,3.18,-8.4,ceilMat);wall(.18,3.2,8,-1.6,1.55,-8.4);wall(.18,3.2,8,1.6,1.55,-8.4);wall(3.2,3.2,.18,0,1.55,-12.4);
 
 // Lighting: intentionally nearly black without flashlight
-const hemi=new THREE.HemisphereLight(0x182028,0x030203,.045);scene.add(hemi);
-const emergency=new THREE.PointLight(0x5a070d,3.2,5.2,2);emergency.position.set(-4.9,2.45,-3.75);scene.add(emergency);
+const hemi=new THREE.HemisphereLight(0x121518,0x020202,.018);scene.add(hemi);
+const emergency=new THREE.PointLight(0x4f0508,.72,3.8,2);emergency.position.set(-4.9,2.45,-3.75);scene.add(emergency);
 const ceilingFlicker=new THREE.PointLight(0x9aa3a6,.0,5.2,2);ceilingFlicker.position.set(0,2.85,.2);scene.add(ceilingFlicker);
 
-function makeFlashCookie(){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d'),g=x.createRadialGradient(64,64,5,64,64,62);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.50,'rgba(255,250,230,.82)');g.addColorStop(.82,'rgba(255,245,215,.25)');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,128,128);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
-const flashlight=new THREE.SpotLight(0xffedc7,0,13.5,Math.PI/7.5,.60,1.9);flashlight.position.set(.12,-.08,-.05);flashlight.map=makeFlashCookie();flashlight.castShadow=true;flashlight.shadow.mapSize.set(isTouch?256:512,isTouch?256:512);flashlight.shadow.camera.near=.1;flashlight.shadow.camera.far=14;flashlight.shadow.bias=-.0008;camera.add(flashlight);scene.add(camera);
-const flashTarget=new THREE.Object3D();flashTarget.position.set(0,-.04,-7);camera.add(flashTarget);flashlight.target=flashTarget;
+function makeFlashCookie(){
+ const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');
+ const g=x.createRadialGradient(128,128,8,128,128,124);
+ g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.24,'rgba(255,252,240,.98)');g.addColorStop(.55,'rgba(246,236,214,.74)');g.addColorStop(.80,'rgba(210,194,164,.22)');g.addColorStop(1,'rgba(0,0,0,0)');
+ x.fillStyle=g;x.fillRect(0,0,256,256);
+ // subtle lens dirt arcs — broad translucent marks only
+ x.strokeStyle='rgba(40,28,19,.10)';x.lineWidth=9;x.beginPath();x.arc(126,132,82,.25,2.2);x.stroke();
+ x.strokeStyle='rgba(255,240,205,.055)';x.lineWidth=4;x.beginPath();x.arc(130,124,102,3.4,5.6);x.stroke();
+ const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.magFilter=THREE.LinearFilter;t.minFilter=THREE.LinearFilter;return t
+}
+const flashlight=new THREE.SpotLight(0xffe7bd,0,11.2,Math.PI/10.5,.72,2.0);
+flashlight.position.set(.10,-.08,-.04);flashlight.map=makeFlashCookie();flashlight.castShadow=!isTouch;
+flashlight.shadow.mapSize.set(384,384);flashlight.shadow.camera.near=.12;flashlight.shadow.camera.far=12;flashlight.shadow.bias=-.0012;
+// Soft peripheral spill makes the beam feel like a real damaged flashlight without making the room bright.
+const flashlightSpill=new THREE.SpotLight(0xd8c09a,0,6.5,Math.PI/5.2,.94,2.15);flashlightSpill.position.set(.10,-.08,-.04);flashlightSpill.castShadow=false;
+camera.add(flashlight,flashlightSpill);scene.add(camera);
+const flashTarget=new THREE.Object3D();flashTarget.position.set(0,-.04,-7);camera.add(flashTarget);flashlight.target=flashTarget;flashlightSpill.target=flashTarget;
 const flashlightBody=new THREE.Group();
 const body=new THREE.Mesh(new THREE.CylinderGeometry(.055,.065,.32,14),new THREE.MeshStandardMaterial({color:0x202326,metalness:.55,roughness:.32}));body.rotation.z=Math.PI/2;flashlightBody.add(body);const rim=new THREE.Mesh(new THREE.CylinderGeometry(.095,.065,.10,18),new THREE.MeshStandardMaterial({color:0x151719,metalness:.7,roughness:.25}));rim.rotation.z=Math.PI/2;rim.position.x=-.19;flashlightBody.add(rim);flashlightBody.position.set(.42,-.34,-.7);flashlightBody.rotation.set(-.12,-.16,.02);flashlightBody.visible=false;camera.add(flashlightBody);
 
@@ -157,7 +184,7 @@ async function loadAsset(path,{pos=[0,0,0],scale=1,rot=0,targetH=0,cast=true}={}
   o.updateMatrixWorld(true);let b=new THREE.Box3().setFromObject(o),size=new THREE.Vector3();b.getSize(size);
   if(targetH&&size.y>0){o.scale.multiplyScalar(targetH/size.y);o.updateMatrixWorld(true);b=new THREE.Box3().setFromObject(o)}
   const c=new THREE.Vector3();b.getCenter(c);o.position.x+=pos[0]-c.x;o.position.z+=pos[2]-c.z;o.position.y+=pos[1]-b.min.y;o.updateMatrixWorld(true);
-  o.traverse(m=>{if(m.isMesh){m.castShadow=cast;m.receiveShadow=true;if(m.material){m.material=m.material.clone();m.material.roughness=Math.max(m.material.roughness??.6,.66);m.material.side=THREE.FrontSide;m.material.depthWrite=true}}});return o
+  o.traverse(m=>{if(m.isMesh){m.castShadow=cast;m.receiveShadow=true;if(m.material){m.material=m.material.clone();m.material.roughness=Math.max(m.material.roughness??.6,.66);m.material.side=THREE.FrontSide;m.material.depthWrite=true;m.material.dithering=false;if(isTouch&&'vertexColors' in m.material)m.material.vertexColors=false}}});return o
  }catch(e){console.warn('asset fallback',path,e);return null}
 }
 function fallbackProp(x,y,z,w,h,d,c=0x35312d){return box(w,h,d,x,y,z,new THREE.MeshStandardMaterial({color:c,roughness:.9}),true)}
@@ -170,18 +197,47 @@ async function buildProps(){
  shelf=await loadAsset('packs/furniture-kit/bookcasecloseddoors.glb',{pos:[4.72,0,-2.15],targetH:2.0,rot:-Math.PI/2})||fallbackProp(4.72,1.0,-2.15,1,2.0,2.0);addCollider(4.72,-2.15,1,2.1);
  lampObj=await loadAsset('packs/furniture-kit/lamproundtable.glb',{pos:[3.95,.83,1.58],targetH:.38,rot:.3});
 }
-buildProps();
+const propsReady=buildProps();
 
 // Stable thin door: local geometry avoids the broken GLB door artifact seen on iPhone.
-const doorWood=new THREE.MeshStandardMaterial({color:0x1c1310,roughness:.78,metalness:.02});
+const doorWood=new THREE.MeshStandardMaterial({map:texturePlaster('#231713','#0b0908'),color:0x6a4635,roughness:.98,metalness:.08});
 const doorTrim=new THREE.MeshStandardMaterial({color:0x0d0b0a,roughness:.9});
 const brass=new THREE.MeshStandardMaterial({color:0x625135,roughness:.42,metalness:.55});
 const doorVisual=new THREE.Group();doorVisual.position.set(-.79,0,-4.405);scene.add(doorVisual);
-const doorSlab=new THREE.Mesh(new THREE.BoxGeometry(1.58,2.36,.072),doorWood);doorSlab.position.set(.79,1.18,0);doorSlab.castShadow=true;doorSlab.receiveShadow=true;doorVisual.add(doorSlab);
+const doorSlab=new THREE.Mesh(new THREE.BoxGeometry(1.58,2.36,.048),doorWood);doorSlab.position.set(.79,1.18,0);doorSlab.castShadow=true;doorSlab.receiveShadow=true;doorVisual.add(doorSlab);
 for(const yy of [.63,1.66])for(const xx of [.43,1.15]){const panel=new THREE.Mesh(new THREE.BoxGeometry(.48,.62,.018),doorTrim);panel.position.set(xx,yy,.045);doorVisual.add(panel)}
-const knob=new THREE.Mesh(new THREE.SphereGeometry(.055,14,10),brass);knob.position.set(1.31,1.13,.082);doorVisual.add(knob);
+const knob=new THREE.Mesh(new THREE.SphereGeometry(.055,14,10),brass);knob.position.set(1.31,1.13,.064);doorVisual.add(knob);
 // frame hides wall seams and makes the doorway feel physically built-in
 box(.11,2.55,.20,-.86,1.275,-4.43,doorTrim,true);box(.11,2.55,.20,.86,1.275,-4.43,doorTrim,true);box(1.83,.11,.20,0,2.50,-4.43,doorTrim,true);
+
+// Horror surface decals: broad rust + blood smears, kept as a handful of planes for mobile performance.
+function makeDecalTexture(kind='rust',seed=1){
+ const c=document.createElement('canvas');c.width=256;c.height=256;const x=c.getContext('2d'),r=seeded(seed);x.clearRect(0,0,256,256);
+ if(kind==='blood'){
+   for(let i=0;i<12;i++){const px=65+r()*125,py=45+r()*145,rx=12+r()*35,ry=5+r()*18;x.save();x.translate(px,py);x.rotate((r()-.5)*1.2);x.scale(rx,ry);x.beginPath();x.arc(0,0,1,0,Math.PI*2);x.fillStyle=`rgba(${72+20*r()|0},${4+5*r()|0},${6+6*r()|0},${.18+r()*.32})`;x.fill();x.restore()}
+   x.strokeStyle='rgba(70,3,5,.42)';for(let i=0;i<8;i++){const px=80+r()*110,py=80+r()*80;x.lineWidth=2+r()*4;x.beginPath();x.moveTo(px,py);x.lineTo(px+(r()-.5)*18,py+20+r()*90);x.stroke()}
+ }else{
+   for(let i=0;i<32;i++){const px=r()*256,py=r()*256,rx=5+r()*28,ry=8+r()*42;x.save();x.translate(px,py);x.scale(rx,ry);x.beginPath();x.arc(0,0,1,0,Math.PI*2);x.fillStyle=`rgba(${95+45*r()|0},${35+18*r()|0},${14+10*r()|0},${.05+r()*.19})`;x.fill();x.restore()}
+ }
+ const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.magFilter=THREE.LinearFilter;t.minFilter=THREE.LinearMipmapLinearFilter;return t
+}
+function wallDecal(x,y,z,w,h,rotY,kind,seed){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:makeDecalTexture(kind,seed),transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2,side:THREE.DoubleSide,toneMapped:false}));m.position.set(x,y,z);m.rotation.y=rotY;scene.add(m);return m}
+wallDecal(-5.905,1.50,-.8,2.4,2.0,Math.PI/2,'blood',71);
+wallDecal(2.5,1.65,4.405,2.7,2.2,Math.PI,'rust',21);
+wallDecal(5.905,1.45,-2.2,2.0,2.1,-Math.PI/2,'rust',34);
+wallDecal(-1.9,1.25,-4.405,1.4,1.55,0,'blood',92);
+
+// Extra ready-made CC0 horror props from Kenney Graveyard Kit.
+async function buildHorrorProps(){
+ const candles=await loadAsset('packs/graveyard-kit/candle-multiple.glb',{pos:[3.12,.83,1.74],targetH:.34,rot:.15,cast:false});
+ const lantern=await loadAsset('packs/graveyard-kit/lantern-glass.glb',{pos:[-5.15,0,-3.55],targetH:.62,rot:-.5,cast:false});
+ const coffin=await loadAsset('packs/graveyard-kit/coffin-old.glb',{pos:[.55,0,-9.8],targetH:.72,rot:.18,cast:false});
+ const brick=await loadAsset('packs/graveyard-kit/brick-wall.glb',{pos:[1.52,0,-9.1],targetH:1.15,rot:Math.PI/2,cast:false});
+ if(candles){const glow=new THREE.PointLight(0xff6a32,.18,1.4,2);glow.position.set(3.12,1.18,1.74);scene.add(glow)}
+ if(lantern){const lg=new THREE.PointLight(0x6f090b,.18,1.7,2);lg.position.set(-5.15,.55,-3.55);scene.add(lg)}
+}
+buildHorrorProps();
+
 // Interactive item helpers
 function markerDisc(x,y,z,color=0xb6ad88){const m=new THREE.Mesh(new THREE.CircleGeometry(.055,18),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.6,side:THREE.DoubleSide}));m.position.set(x,y,z);m.rotation.x=-Math.PI/2;scene.add(m);return m}
 function paper(x,y,z,rotY=0,text='',num=null){const mat=new THREE.MeshStandardMaterial({color:0xd0c4a7,roughness:1,side:THREE.DoubleSide});const m=new THREE.Mesh(new THREE.PlaneGeometry(.32,.24),mat);m.position.set(x,y,z);m.rotation.set(-Math.PI/2+.08,rotY,0);m.castShadow=true;scene.add(m);m.userData={type:'fragment',text,num,collected:false};interactables.push(m);return m}
@@ -196,6 +252,8 @@ const pickupLED=new THREE.Mesh(new THREE.SphereGeometry(.045,12,10),new THREE.Me
 // Phone on desk (stylized but interactive)
 const phone=new THREE.Group();const phoneBase=new THREE.Mesh(new THREE.BoxGeometry(.38,.12,.26),blackMat);phone.add(phoneBase);const receiver=new THREE.Mesh(new THREE.BoxGeometry(.42,.08,.1),new THREE.MeshStandardMaterial({color:0x111214,roughness:.8}));receiver.position.y=.11;phone.add(receiver);phone.position.set(3.45,.89,1.55);scene.add(phone);phone.userData={type:'phone'};interactables.push(phone);
 const phoneLight=new THREE.PointLight(0x7b1017,0,1.5,2);phoneLight.position.copy(phone.position).add(new THREE.Vector3(0,.16,0));scene.add(phoneLight);
+propsReady.then(()=>{if(desk){desk.updateMatrixWorld(true);const b=new THREE.Box3().setFromObject(desk);phone.position.set(3.50,b.max.y+.075,1.60);phoneLight.position.copy(phone.position).add(new THREE.Vector3(0,.16,0));}});
+
 
 const f1=paper(-4.15,.86,-1.1,.2,'Fragment I\n\n"The first number was the age you learned to lie."\n\n7',7);
 const f2=paper(3.72,.835,1.35,-.4,'Fragment II\n\n"Three knocks. Always three."\n\n3',3);
@@ -222,7 +280,7 @@ for(let i=0;i<14;i++){const x=-5.6+Math.random()*11.2,z=-4.2+Math.random()*8.4;c
 // Uncanny entity — ready-made CC0 character silhouette with local material override
 let entity=null;
 async function spawnEntity(){
- if(entity)return;entity=await loadAsset('packs/blocky-characters/character-q.glb',{pos:[0,0,0],targetH:2.65,cast:true});
+ if(entity)return;entity=await loadAsset('packs/graveyard-kit/character-ghost.glb',{pos:[0,0,0],targetH:2.55,cast:!isTouch});
  if(!entity){entity=new THREE.Group();const torso=new THREE.Mesh(new THREE.BoxGeometry(.55,1.45,.28),blackMat);torso.position.y=1.4;entity.add(torso);const head=new THREE.Mesh(new THREE.SphereGeometry(.25,12,10),blackMat);head.position.y=2.35;entity.add(head);scene.add(entity)}
  entity.traverse(o=>{if(o.isMesh){o.material=new THREE.MeshStandardMaterial({color:0x020203,roughness:.98,metalness:0});o.castShadow=true}});
  const eyeMat=new THREE.MeshBasicMaterial({color:0x51060a});for(const x of [-.065,.065]){const e=new THREE.Mesh(new THREE.SphereGeometry(.018,8,6),eyeMat);e.position.set(x,2.36,-.25);entity.add(e)}
@@ -272,7 +330,17 @@ let currentInteract=null;
 function interactionCheck(){if(state.modal){$('prompt').style.opacity=0;return}raycaster.setFromCamera(center,camera);const hits=raycaster.intersectObjects(interactables.filter(o=>o.visible),true);let hit=null;for(const h of hits){let root=h.object;while(root.parent&&root.parent!==scene&&root.parent!==camera&&!root.userData.type)root=root.parent;if(root.userData.type&&h.distance<2.15){hit=root;break}}if(!hit&&!state.hasFlashlight){const d=Math.hypot(player.pos.x-.35,player.pos.z-1.0);if(d<3.0)hit=flashlightHit}
 currentInteract=hit;const p=$('prompt');if(!hit){p.style.opacity=0;return}let text='USE';switch(hit.userData.type){case'flashlight':text='TAKE FLASHLIGHT';break;case'phone':text=state.phoneDone?'PHONE':'ANSWER PHONE';break;case'fragment':text='READ';break;case'keypad':text='KEYPAD';break;case'finalNote':text='READ NOTE';break;case'door':text=state.doorUnlocked?'OPEN DOOR':'LOCKED DOOR';break}p.textContent=text;p.style.opacity=1}
 
-function setFlashlight(v,forced=false){if(!state.hasFlashlight&&!forced){hint('You do not have the flashlight yet. Follow the warm light and press USE.',2200);return}state.flashlight=v;flashlight.intensity=v?620:0;renderer.toneMappingExposure=v?.66:.46;$('lightBtn').style.background=v?'rgba(188,181,137,.22)':'rgba(10,10,12,.46)'}
+function setFlashlight(v,forced=false){
+ if(!state.hasFlashlight&&!forced){hint('You do not have the flashlight yet. Follow the weak warm light and press USE.',2200);return}
+ state.flashlight=v;state.flashGlitch=1;flashlight.intensity=v?315:0;flashlightSpill.intensity=v?58:0;renderer.toneMappingExposure=v?.49:.34;$('lightBtn').style.background=v?'rgba(160,145,108,.16)':'rgba(10,10,12,.46)'
+}
+function flashlightFault(t){
+ if(state.flashFaulting||!state.flashlight)return;state.flashFaulting=true;
+ const seq=[[0,.03],[75,.72],[150,0],[225,.24],[330,0],[430,1]];
+ for(const [ms,v] of seq)setTimeout(()=>state.flashGlitch=v,ms);
+ setTimeout(()=>{state.flashGlitch=1;state.flashFaulting=false},520);
+ state.nextFlashFault=t+18+Math.random()*7;
+}
 function collisionTry(nx,nz){for(const c of colliders){if(c.active===false)continue;const px=clamp(nx,c.x-c.hw,c.x+c.hw),pz=clamp(nz,c.z-c.hd,c.z+c.hd);const dx=nx-px,dz=nz-pz;if(dx*dx+dz*dz<player.radius*player.radius)return false}return true}
 
 // Desktop controls
@@ -287,7 +355,7 @@ let lookId=null,lastLook=null;renderer.domElement.addEventListener('pointerdown'
 let joyId=null,jx=0,jy=0;const joy=$('joy'),stick=$('stick');function joyMove(e){const r=joy.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,m=Math.hypot(dx,dy),lim=r.width*.34,k=m>lim?lim/m:1;jx=dx*k/lim;jy=dy*k/lim;stick.style.transform=`translate(${dx*k}px,${dy*k}px)`}joy.addEventListener('pointerdown',e=>{joyId=e.pointerId;joy.setPointerCapture(e.pointerId);joyMove(e)});joy.addEventListener('pointermove',e=>{if(e.pointerId===joyId)joyMove(e)});joy.addEventListener('pointerup',e=>{if(e.pointerId===joyId){joyId=null;jx=jy=0;stick.style.transform=''}});joy.addEventListener('pointercancel',()=>{joyId=null;jx=jy=0;stick.style.transform=''});
 $('useBtn').addEventListener('pointerdown',e=>{e.preventDefault();useObject()});$('lightBtn').addEventListener('pointerdown',e=>{e.preventDefault();setFlashlight(!state.flashlight)});$('runBtn').addEventListener('pointerdown',e=>{e.preventDefault();state.running=true});$('runBtn').addEventListener('pointerup',()=>state.running=false);$('runBtn').addEventListener('pointercancel',()=>state.running=false);
 
-function startGame(){audioInit();if(actx.state==='suspended')actx.resume();startDrone();state.started=true;$('intro').style.display='none';$('hud').style.display='block';$('blackout').style.transition='opacity 1.5s ease';requestAnimationFrame(()=>$('blackout').style.opacity=.0);$('guide').innerHTML=isTouch?'<b>WAKE UP</b><br>Left circle = MOVE &nbsp; • &nbsp; Drag the center/right area = LOOK<br>Find the weak warm glow and tap <b>USE</b>.':'<b>WAKE UP</b><br>WASD = MOVE &nbsp; • &nbsp; Mouse = LOOK &nbsp; • &nbsp; E = USE';$('guide').style.opacity=1;$('pickupArrow').style.opacity=.9;setTimeout(()=>{$('guide').style.opacity=0},5200);setTimeout(()=>{subtitle('You wake up on the floor.');hint('The warm light is the flashlight. Move to it and press USE.',4200)},700)}
+function startGame(){if(innerWidth>innerHeight){$('orientationLock').style.display='flex';return}audioInit();if(actx.state==='suspended')actx.resume();startDrone();state.started=true;$('intro').style.display='none';$('hud').style.display='block';$('blackout').style.transition='opacity 1.5s ease';requestAnimationFrame(()=>$('blackout').style.opacity=.0);$('guide').innerHTML=isTouch?'<b>WAKE UP</b><br>Left circle = MOVE &nbsp; • &nbsp; Drag the center/right area = LOOK<br>Find the weak warm glow and tap <b>USE</b>.':'<b>WAKE UP</b><br>WASD = MOVE &nbsp; • &nbsp; Mouse = LOOK &nbsp; • &nbsp; E = USE';$('guide').style.opacity=1;$('pickupArrow').style.opacity=.9;setTimeout(()=>{$('guide').style.opacity=0},5200);setTimeout(()=>{subtitle('You wake up on the floor.');hint('The weak warm light is the flashlight. Move to it and press USE.',4200)},700)}
 $('startBtn').onclick=startGame;setInterval(()=>{if(state.started&&!state.hasFlashlight&&!state.modal){const d=Math.hypot(player.pos.x-.35,player.pos.z-1.0);if(d<2.7){$('prompt').textContent='USE — TAKE FLASHLIGHT';$('prompt').style.opacity=1}}},500);
 
 let perfAcc=0,frames=0,lastPerf=performance.now(),dynamicPR=Math.min(devicePixelRatio,1.25);
@@ -298,7 +366,13 @@ function update(dt,t){if(!state.started)return;
  camera.position.copy(player.pos);camera.rotation.set(player.pitch,player.yaw,0);
  // flashlight subtle human sway, no expensive volumetric post process
  flashlight.position.x=.12+Math.sin(t*1.7)*.007;flashTarget.position.x=Math.sin(t*.9)*.08;flashTarget.position.y=-.05+Math.sin(t*1.3)*.025;
- if(state.flashlight){state.battery=Math.max(0,state.battery-dt*.055);if(state.battery<=0)setFlashlight(false);flashlight.intensity=610+Math.sin(t*11)*18;if(state.scare&&!state.scareDone&&Math.random()<.025)flashlight.intensity=Math.random()<.5?45:610}
+ if(state.flashlight){
+   state.battery=Math.max(0,state.battery-dt*.055);if(state.battery<=0)setFlashlight(false);
+   if(t>state.nextFlashFault)flashlightFault(t);
+   const micro=1+Math.sin(t*8.7)*.012+Math.sin(t*17.3)*.006;
+   const scary=state.scare&&!state.scareDone&&Math.random()<.022?(Math.random()<.5?.06:.35):1;
+   flashlight.intensity=315*state.flashGlitch*micro*scary;flashlightSpill.intensity=58*state.flashGlitch*(.96+Math.sin(t*3.4)*.015)*scary;
+ }
  if(!state.hasFlashlight){const pulse=.72+.28*Math.sin(t*3.2);pickGlow.intensity=12+pulse*10;pickupHalo.material.opacity=.42+pulse*.34;pickupLED.scale.setScalar(.9+pulse*.55);$('pickupArrow').style.opacity=.55+pulse*.35}
  $('batteryFill').style.transform=`scaleX(${state.battery/100})`;
  // occasional dead ceiling flicker after phone
@@ -308,12 +382,12 @@ function update(dt,t){if(!state.started)return;
  if(state.scare&&!state.scareDone&&entity?.visible){const to=entity.position.clone().sub(camera.position).normalize(),forward=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);if(forward.dot(to)>.82)triggerScare()}
  // End room when player enters corridor far enough
  if(!state.ended&&state.doorUnlocked&&!doorBlock.active&&player.pos.z<-6.4){state.ended=true;$('endPanel').style.display='flex';state.modal=true;setFlashlight(false,true);$('blackout').style.opacity=.7}
- const baseExp=state.flashlight?.66:.46;renderer.toneMappingExposure=baseExp+Math.sin(t*.43)*.012;
+ const baseExp=state.flashlight?.49:.34;renderer.toneMappingExposure=baseExp+Math.sin(t*.43)*.008;
  adaptPerformance(dt)
 }
 function loop(){const dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;update(dt,t);renderer.render(scene,camera);requestAnimationFrame(loop)}loop();
 
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.fov=innerHeight>innerWidth?74:68;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.fov=innerHeight>innerWidth?66:68;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 // Prevent iOS double tap zoom/context menu
 addEventListener('contextmenu',e=>e.preventDefault());
 </script>
