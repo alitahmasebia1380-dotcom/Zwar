@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — ROOM 0.7 • LANDSCAPE BILINGUAL HORROR</title>
+<title>Z: DON'T LOOK BACK — ROOM 0.8 • HALLWAY PARANOIA</title>
 <style>
 :root{--fg:#e9e9e9;--muted:#9b9b9b;--red:#a60e16;--glass:rgba(8,8,10,.56)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -17,13 +17,13 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 #blackout{background:#000;opacity:1;transition:opacity 1.5s ease}
 #flash{background:#fff;opacity:0;mix-blend-mode:screen}
 @keyframes noise{0%{transform:translate(0,0)}25%{transform:translate(-2%,1%)}50%{transform:translate(1%,-2%)}75%{transform:translate(2%,2%)}100%{transform:translate(-1%,0)}}
-#intro{position:fixed;inset:0;z-index:80;background:#000;display:flex;align-items:center;justify-content:center;padding:24px}
-#introCard{width:min(680px,92vw);text-align:center}
-#logo{font-size:clamp(34px,7vw,84px);letter-spacing:.13em;font-weight:900;margin:0;color:#efefef;text-shadow:0 0 22px rgba(255,255,255,.08)}
+#intro{position:fixed;inset:0;z-index:80;background:#000;display:flex;align-items:center;justify-content:center;padding:clamp(10px,3vh,24px);overflow:auto;-webkit-overflow-scrolling:touch}
+#introCard{width:min(760px,94vw);text-align:center;max-height:100%;padding:4px 0 14px}
+#logo{font-size:clamp(26px,5.2vw,68px);letter-spacing:.11em;font-weight:900;margin:0;color:#efefef;text-shadow:0 0 22px rgba(255,255,255,.08);white-space:nowrap}
 #logo span{color:#9b111e}
 #chapter{margin:10px 0 28px;color:#777;letter-spacing:.34em;font-size:12px}
 #intro p{font-size:14px;color:#aaa;line-height:1.65;margin:8px auto;max-width:560px}
-#startBtn{margin-top:26px;min-width:180px;padding:15px 28px;border:1px solid #303030;background:#0b0b0d;color:#eee;font-weight:800;letter-spacing:.2em;border-radius:4px;font-size:14px}
+#startBtn{margin-top:26px;min-width:180px;padding:15px 28px;align-items:center;justify-content:center;border:1px solid #303030;background:#0b0b0d;color:#eee;font-weight:800;letter-spacing:.2em;border-radius:4px;font-size:14px}
 #startBtn:active{transform:scale(.98);background:#17171a}
 #loading{margin-top:14px;color:#555;font-size:11px;letter-spacing:.15em;min-height:16px}
 #hud{position:fixed;inset:0;z-index:40;pointer-events:none;display:none}
@@ -65,6 +65,18 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 #orientationLock b{display:block;color:#eee;font-size:17px;margin-bottom:10px}
 @media (orientation:portrait){#orientationLock{display:flex}}
 @media (orientation:landscape){#objective{top:max(18px,env(safe-area-inset-top));left:max(28px,env(safe-area-inset-left));max-width:43vw}#battery{top:max(18px,env(safe-area-inset-top));right:max(28px,env(safe-area-inset-right))}#joy{width:112px;height:112px;left:max(24px,env(safe-area-inset-left));bottom:max(22px,env(safe-area-inset-bottom))}#stick{left:34px;top:34px;width:44px;height:44px}#runBtn{left:max(47px,calc(env(safe-area-inset-left) + 47px));bottom:max(144px,calc(env(safe-area-inset-bottom) + 144px));width:54px;height:54px}#useBtn{right:max(28px,env(safe-area-inset-right));bottom:max(26px,env(safe-area-inset-bottom));width:72px;height:72px}#lightBtn{right:max(116px,calc(env(safe-area-inset-right) + 116px));bottom:max(30px,env(safe-area-inset-bottom));width:62px;height:62px}#prompt{bottom:15%}#subtitle{bottom:7%;font-size:13px}#hint{top:10%}}
+
+@media (orientation:landscape) and (max-height:560px){
+ #intro{align-items:flex-start;justify-content:center;padding:8px 18px 76px}
+ #introCard{width:min(920px,96vw);max-height:none;padding:0}
+ #logo{font-size:clamp(27px,5.1vw,52px);letter-spacing:.09em;line-height:1.05}
+ #chapter{margin:5px 0 8px;font-size:9px;letter-spacing:.22em}
+ #intro p{font-size:11px;line-height:1.28;margin:3px auto;max-width:720px}
+ #loading{margin-top:6px;font-size:9px}
+ #startBtn{position:fixed;left:50%;bottom:max(10px,calc(env(safe-area-inset-bottom) + 8px));transform:translateX(-50%);z-index:95;margin:0;min-width:210px;padding:11px 24px;font-size:12px;box-shadow:0 10px 35px rgba(0,0,0,.8)}
+ #startBtn:active{transform:translateX(-50%) scale(.98)}
+}
+
 @media (pointer:fine){#joy,#useBtn,#lightBtn,#runBtn{opacity:.22}#joy:hover,#useBtn:hover,#lightBtn:hover,#runBtn:hover{opacity:.7}}
 @media (max-height:520px){#objective{font-size:10px}.ctrl{transform:scale(.88);transform-origin:center}#joy{transform:scale(.88);transform-origin:left bottom}#subtitle{bottom:8%}}
 </style>
@@ -74,13 +86,13 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 </head>
 <body>
 <div id="game"></div><div id="grain"></div><div id="vignette"></div><div id="blackout"></div><div id="flash"></div>
-<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP</div><p>You wake up somewhere you do not remember.</p><p>Headphones recommended. Darkness is part of the gameplay.</p><button id="startBtn">WAKE UP</button><div id="loading">ROOM 0.7 • LANDSCAPE BILINGUAL HORROR</div></div></div>
+<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP • اتاق صفر — بیدار شو</div><p>You wake up somewhere you do not remember.<br><span dir="rtl">جایی بیدار می‌شوی که یادت نمی‌آید.</span></p><p>Headphones recommended. Darkness is part of the gameplay.<br><span dir="rtl">هدفون پیشنهاد می‌شود. تاریکی بخشی از بازی است.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">ROOM 0.8 • HALLWAY PARANOIA</div></div></div>
 <div id="orientationLock"><div><b>LANDSCAPE MODE • حالت افقی</b>Rotate your phone sideways to continue.<br><span dir="rtl">برای ادامه گوشی را افقی کن.</span></div></div>
 <div id="hud"><div id="objective"><small>OBJECTIVE • هدف</small><span id="objectiveText">Find a light.
 یک نور پیدا کن.</span></div><div id="battery">FLASHLIGHT<div id="batteryBar"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="hint"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">RUN<br>بدو</button><button class="ctrl" id="lightBtn">◉</button><button class="ctrl" id="useBtn">USE<br>استفاده</button><div id="fps"></div><div id="guide"></div><div id="pickupArrow">↓</div><div id="portraitTag">LANDSCAPE • NIGHTMARE</div></div>
 <div id="keypad"><div class="panel"><h2>DOOR LOCK • قفل در</h2><p>The display waits for three digits.<br><span dir="rtl">قفل منتظر سه رقم است.</span></p><div id="codeDisplay">_ _ _</div><div id="keys"></div><button class="closeBtn" id="keyClose">BACK • برگشت</button></div></div>
 <div id="notePanel"><div class="panel"><h2>NOTE • یادداشت</h2><p id="noteText"></p><button class="closeBtn" id="noteClose">PUT IT DOWN • بذارش پایین</button></div></div>
-<div id="endPanel"><div class="panel"><h2>STAGE 2 HAS BEGUN</h2><p>The hallway has already repeated once.<br><span dir="rtl">راهرو یک بار خودش را تکرار کرده.</span></p><p>THE HALLWAY continues in the next build.<br><span dir="rtl">راهرو در نسخه بعد ادامه پیدا می‌کند.</span></p><button class="closeBtn" onclick="location.reload()">RESTART • شروع دوباره</button></div></div>
+<div id="endPanel"><div class="panel"><h2>STAGE 2 HAS BEGUN</h2><p>The hallway has already repeated once.<br><span dir="rtl">راهرو یک بار خودش را تکرار کرده.</span></p><p>You survived the first loop of THE HALLWAY.<br><span dir="rtl">از اولین حلقه‌ی راهرو عبور کردی.</span></p><button class="closeBtn" onclick="location.reload()">RESTART • شروع دوباره</button></div></div>
 <script type="module">
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
@@ -117,7 +129,7 @@ const raycaster=new THREE.Raycaster();
 const center=new THREE.Vector2(0,0);
 const colliders=[];
 const interactables=[];
-const state={started:false,flashlight:false,hasFlashlight:false,battery:100,fragments:0,phoneDone:false,doorUnlocked:false,finalNote:false,scare:false,scareDone:false,ended:false,running:false,modal:false,objective:'Find a light. / یک نور پیدا کن.',flashGlitch:1,nextFlashFault:18+Math.random()*5,flashFaulting:false,hallPreview:false,hallLoop:0,hallNoteRead:false};
+const state={started:false,flashlight:false,hasFlashlight:false,battery:100,fragments:0,phoneDone:false,doorUnlocked:false,finalNote:false,scare:false,scareDone:false,ended:false,running:false,modal:false,objective:'Find a light. / یک نور پیدا کن.',flashGlitch:1,nextFlashFault:18+Math.random()*5,flashFaulting:false,hallPreview:false,hallLoop:0,hallNoteRead:false,hallShifted:false,hallLookedBack:false,nextShadowAt:4+Math.random()*4,shadowUntil:0,shadowStart:0,shadowSide:-1,nextHallBlackout:3+Math.random()*5,hallBlackoutUntil:0};
 const player={pos:new THREE.Vector3(0,1.74,2.75),yaw:0,pitch:-.18,radius:.3,speed:2.0};
 camera.position.copy(player.pos);
 
@@ -169,7 +181,7 @@ function makeWallpaperTexture(seed=321){
  for(let xx=0;xx<384;xx+=48){
   const g=x.createLinearGradient(xx,0,xx+48,0);g.addColorStop(0,'rgba(42,38,30,.22)');g.addColorStop(.45,'rgba(138,126,92,.08)');g.addColorStop(1,'rgba(26,24,20,.28)');x.fillStyle=g;x.fillRect(xx,0,48,384);
   x.strokeStyle='rgba(24,22,18,.23)';x.lineWidth=1;x.beginPath();x.moveTo(xx+24,0);x.lineTo(xx+24,384);x.stroke();
-  for(let yy=24;yy<384;yy+=64){x.strokeStyle='rgba(28,35,27,.28)';x.lineWidth=2;x.beginPath();x.arc(xx+24,yy,9,0,Math.PI*2);x.stroke();x.beginPath();x.moveTo(xx+24,yy-15);x.quadraticCurveTo(xx+8,yy-2,xx+24,yy+16);x.quadraticCurveTo(xx+40,yy-2,xx+24,yy-15);x.stroke()}
+  for(let yy=24;yy<384;yy+=64){x.strokeStyle='rgba(58,46,37,.24)';x.lineWidth=2;x.beginPath();x.arc(xx+24,yy,9,0,Math.PI*2);x.stroke();x.beginPath();x.moveTo(xx+24,yy-15);x.quadraticCurveTo(xx+8,yy-2,xx+24,yy+16);x.quadraticCurveTo(xx+40,yy-2,xx+24,yy-15);x.stroke()}
  }
  // damp stains + age
  for(let i=0;i<90;i++){const px=r()*384,py=r()*384,rad=5+r()*35;const g=x.createRadialGradient(px,py,0,px,py,rad);g.addColorStop(0,`rgba(${18+r()*15|0},${19+r()*15|0},${13+r()*12|0},${.03+r()*.10})`);g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(px-rad,py-rad,rad*2,rad*2)}
@@ -177,7 +189,7 @@ function makeWallpaperTexture(seed=321){
  x.globalCompositeOperation='destination-out';for(let i=0;i<13;i++){const px=r()*384,py=r()*384,ww=18+r()*75,hh=8+r()*55;x.beginPath();x.moveTo(px,py);for(let k=0;k<8;k++)x.lineTo(px+(r()-.5)*ww,py+(r()-.5)*hh);x.closePath();x.fillStyle=`rgba(0,0,0,${.25+r()*.68})`;x.fill()}x.globalCompositeOperation='source-over';
  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2.0,1.0);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=1;return t
 }
-const wallpaperMat=new THREE.MeshStandardMaterial({map:makeWallpaperTexture(),transparent:true,alphaTest:.025,roughness:1,color:0xb1a481,side:THREE.DoubleSide,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2});
+const wallpaperMat=new THREE.MeshStandardMaterial({map:makeWallpaperTexture(),transparent:true,alphaTest:.025,roughness:1,color:0x8d806d,side:THREE.DoubleSide,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2});
 function wallpaperPanel(w,h,x,y,z,ry=0,u=1){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),wallpaperMat.clone());m.material.map=wallpaperMat.map.clone();m.material.map.needsUpdate=true;m.material.map.repeat.set(u,1);m.position.set(x,y,z);m.rotation.y=ry;scene.add(m);return m}
 
 function box(w,h,d,x,y,z,mat=wallMat,cast=false){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=cast;m.receiveShadow=true;scene.add(m);return m}
@@ -190,11 +202,30 @@ wall(5.1,3.2,.18,-3.45,1.55,-4.5);wall(5.1,3.2,.18,3.45,1.55,-4.5);box(1.45,.6,.
 // STAGE 2 — THE HALLWAY. Long enough to feel spatially wrong, but still mobile-light.
 box(3.8,.18,20,0,-.08,-14.5,floorMat);box(3.8,.18,20,0,3.18,-14.5,ceilMat);wall(.18,3.2,20,-1.9,1.55,-14.5);wall(.18,3.2,20,1.9,1.55,-14.5);wall(3.8,3.2,.18,0,1.55,-24.5);
 wallpaperPanel(20,2.82,-1.805,1.45,-14.5,Math.PI/2,5.7);wallpaperPanel(20,2.82,1.805,1.45,-14.5,-Math.PI/2,5.7);
-const hallLamp=new THREE.PointLight(0x5b0a0d,.20,4.8,2);hallLamp.position.set(0,2.75,-11.2);scene.add(hallLamp);
-const hallLamp2=new THREE.PointLight(0x290306,.10,4.0,2);hallLamp2.position.set(0,2.75,-19.2);scene.add(hallLamp2);
-for(const lp of [[0,2.75,-11.2],[0,2.75,-19.2]]){const b=new THREE.Mesh(new THREE.SphereGeometry(.045,8,6),new THREE.MeshBasicMaterial({color:0x5c0a0e}));b.position.set(...lp);scene.add(b)}
-function hallDoor(side,z,n){const x=side*1.79;const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=side>0?-Math.PI/2:Math.PI/2;scene.add(g);const slab=new THREE.Mesh(new THREE.BoxGeometry(1.12,2.18,.035),doorWood);slab.position.set(0,1.09,0);g.add(slab);const plate=new THREE.Mesh(new THREE.PlaneGeometry(.24,.14),new THREE.MeshBasicMaterial({map:(()=>{const c=document.createElement('canvas');c.width=128;c.height=64;const q=c.getContext('2d');q.fillStyle='#171411';q.fillRect(0,0,128,64);q.fillStyle='#b6a784';q.font='bold 34px Georgia';q.textAlign='center';q.textBaseline='middle';q.fillText(String(n),64,34);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t})()}));plate.position.set(0,1.55,.022);g.add(plate);return g}
+const hallLamp=new THREE.PointLight(0x5b0a0d,1.4,5.0,2);hallLamp.position.set(0,2.72,-11.2);scene.add(hallLamp);
+const hallLamp2=new THREE.PointLight(0x290306,.85,4.6,2);hallLamp2.position.set(0,2.72,-19.2);scene.add(hallLamp2);
+const hallCeilingLights=[];
+for(const z of [-8.8,-13.4,-18.0,-22.2]){
+ const l=new THREE.PointLight(0xc8c0ad,5.2,4.4,2);l.position.set(0,2.83,z);l.userData.base=5.2;scene.add(l);hallCeilingLights.push(l);
+ const housing=new THREE.Mesh(new THREE.BoxGeometry(.78,.035,.12),new THREE.MeshStandardMaterial({color:0x181716,roughness:.88,metalness:.12}));housing.position.set(0,3.00,z);scene.add(housing);
+ const tube=new THREE.Mesh(new THREE.BoxGeometry(.58,.025,.045),new THREE.MeshBasicMaterial({color:0xb7b09f,transparent:true,opacity:.32}));tube.position.set(0,2.965,z);scene.add(tube);l.userData.tube=tube;
+}
+const hallDoors=[];
+function hallDoor(side,z,n){const x=side*1.79;const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=side>0?-Math.PI/2:Math.PI/2;scene.add(g);const slab=new THREE.Mesh(new THREE.BoxGeometry(1.12,2.18,.035),doorWood);slab.position.set(0,1.09,0);g.add(slab);const plate=new THREE.Mesh(new THREE.PlaneGeometry(.24,.14),new THREE.MeshBasicMaterial({map:(()=>{const c=document.createElement('canvas');c.width=128;c.height=64;const q=c.getContext('2d');q.fillStyle='#171411';q.fillRect(0,0,128,64);q.fillStyle='#b6a784';q.font='bold 34px Georgia';q.textAlign='center';q.textBaseline='middle';q.fillText(String(n),64,34);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t})()}));plate.position.set(0,1.55,.022);g.add(plate);g.userData.number=n;hallDoors.push(g);return g}
 [-8.2,-11.4,-14.6,-17.8,-21.0].forEach((z,i)=>{hallDoor(-1,z,[11,4,17,3,9][i]);hallDoor(1,z,[2,16,5,8,13][i])});
+
+// Stage 2 paranoia props. They move only after Samyar looks back.
+const hallFrame=new THREE.Group();hallFrame.position.set(-1.79,1.63,-15.3);hallFrame.rotation.y=Math.PI/2;scene.add(hallFrame);
+const frameOuter=new THREE.Mesh(new THREE.BoxGeometry(.78,.64,.035),new THREE.MeshStandardMaterial({color:0x120f0d,roughness:.85}));hallFrame.add(frameOuter);
+const frameInner=new THREE.Mesh(new THREE.PlaneGeometry(.62,.48),new THREE.MeshBasicMaterial({color:0x080808}));frameInner.position.z=.021;hallFrame.add(frameInner);
+hallFrame.visible=false;
+let hallChair=null;
+(async()=>{hallChair=await loadAsset('packs/furniture-kit/chair.glb',{pos:[.92,0,-16.1],targetH:1.05,rot:-1.15,cast:false});if(hallChair)hallChair.visible=false})();
+
+// Fast wall shadow: visible for only a fraction of a second.
+const hallShadow=new THREE.Mesh(new THREE.PlaneGeometry(.52,1.82),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide}));
+hallShadow.position.set(-1.795,1.18,-12);hallShadow.rotation.y=Math.PI/2;hallShadow.visible=false;scene.add(hallShadow);
+
 
 // Decayed wallpaper: enough pattern to feel like an old lived-in room, with torn areas exposing plaster.
 wallpaperPanel(11.55,2.82,0,1.47,4.405,Math.PI,3.3);
@@ -217,14 +248,15 @@ function makeFlashCookie(){
  x.strokeStyle='rgba(255,240,205,.055)';x.lineWidth=4;x.beginPath();x.arc(130,124,102,3.4,5.6);x.stroke();
  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.magFilter=THREE.LinearFilter;t.minFilter=THREE.LinearFilter;return t
 }
-const flashlight=new THREE.SpotLight(0xffe3b8,0,12.5,Math.PI/10.8,.82,2.0);
-flashlight.position.set(.10,-.08,-.04);flashlight.map=makeFlashCookie();flashlight.castShadow=!isTouch;
-flashlight.shadow.mapSize.set(512,512);flashlight.shadow.camera.near=.12;flashlight.shadow.camera.far=13;flashlight.shadow.bias=-.0010;
-// Soft peripheral spill makes the beam feel like a real damaged flashlight without making the room bright.
-const flashlightSpill=new THREE.SpotLight(0xb9a27f,0,6.3,Math.PI/5.4,.98,2.10);flashlightSpill.position.set(.10,-.08,-.04);flashlightSpill.castShadow=false;
-const flashlightCore=new THREE.SpotLight(0xfff0cf,0,11.5,Math.PI/22,.74,1.95);flashlightCore.position.set(.10,-.08,-.04);flashlightCore.castShadow=false;
-camera.add(flashlight,flashlightSpill,flashlightCore);scene.add(camera);
-const flashTarget=new THREE.Object3D();flashTarget.position.set(0,-.04,-7);camera.add(flashTarget);flashlight.target=flashTarget;flashlightSpill.target=flashTarget;flashlightCore.target=flashTarget;
+const flashlight=new THREE.SpotLight(0xfff4df,0,14.0,Math.PI/8.2,.95,2.0);
+flashlight.position.set(.10,-.08,-.04);flashlight.castShadow=!isTouch;
+flashlight.shadow.mapSize.set(512,512);flashlight.shadow.camera.near=.12;flashlight.shadow.camera.far=14;flashlight.shadow.bias=-.0010;
+// Wide spill + tiny local bounce prevents the player from seeing only a perfect glowing circle.
+const flashlightSpill=new THREE.SpotLight(0xd8d1c5,0,7.2,Math.PI/3.9,.995,2.05);flashlightSpill.position.set(.10,-.08,-.04);flashlightSpill.castShadow=false;
+const flashlightCore=new THREE.SpotLight(0xffffff,0,12.0,Math.PI/18,.97,2.0);flashlightCore.position.set(.10,-.08,-.04);flashlightCore.castShadow=false;
+const flashlightBounce=new THREE.PointLight(0xcfc7bb,0,3.0,2.0);flashlightBounce.position.set(.08,-.12,-.28);
+camera.add(flashlight,flashlightSpill,flashlightCore,flashlightBounce);scene.add(camera);
+const flashTarget=new THREE.Object3D();flashTarget.position.set(0,-.06,-8);camera.add(flashTarget);flashlight.target=flashTarget;flashlightSpill.target=flashTarget;flashlightCore.target=flashTarget;
 const flashlightBody=new THREE.Group();
 const body=new THREE.Mesh(new THREE.CylinderGeometry(.055,.065,.32,14),new THREE.MeshStandardMaterial({color:0x202326,metalness:.55,roughness:.32}));body.rotation.z=Math.PI/2;flashlightBody.add(body);const rim=new THREE.Mesh(new THREE.CylinderGeometry(.095,.065,.10,18),new THREE.MeshStandardMaterial({color:0x151719,metalness:.7,roughness:.25}));rim.rotation.z=Math.PI/2;rim.position.x=-.19;flashlightBody.add(rim);flashlightBody.position.set(.42,-.34,-.7);flashlightBody.rotation.set(-.12,-.16,.02);flashlightBody.visible=false;camera.add(flashlightBody);
 
@@ -285,6 +317,11 @@ wallDecal(-5.905,1.42,-.95,2.05,1.55,Math.PI/2,'blood',71);
 wallDecal(2.25,1.55,4.405,2.6,2.05,Math.PI,'rust',21);
 wallDecal(5.905,1.35,-2.25,1.8,1.85,-Math.PI/2,'rust',34);
 wallDecal(-1.92,1.18,-4.405,1.30,1.42,0,'blood',92);
+wallDecal(-1.795,1.42,-9.7,1.35,1.65,Math.PI/2,'blood',123);
+wallDecal(1.795,1.05,-12.8,1.05,1.35,-Math.PI/2,'blood',137);
+wallDecal(-1.795,1.72,-18.1,1.50,1.20,Math.PI/2,'blood',151);
+wallDecal(1.795,1.38,-21.7,1.22,1.55,-Math.PI/2,'blood',166);
+
 
 // Extra ready-made CC0 horror props from Kenney Graveyard Kit.
 async function buildHorrorProps(){
@@ -381,7 +418,7 @@ async function spawnEntity(){
  const eyeMat=new THREE.MeshBasicMaterial({color:0x51060a});for(const x of [-.065,.065]){const e=new THREE.Mesh(new THREE.SphereGeometry(.018,8,6),eyeMat);e.position.set(x,2.36,-.25);entity.add(e)}
  entity.visible=false;
 }
-spawnEntity();
+// Stage 1 intentionally contains no creature or jumpscare.
 
 // Audio
 let actx=null,master=null;
@@ -404,7 +441,7 @@ let code='';for(const n of [1,2,3,4,5,6,7,8,9,'C',0,'OK']){const b=document.crea
 function updateCode(){$('codeDisplay').textContent=(code+'___').slice(0,3).split('').join(' ')}
 function openKeypad(){state.modal=true;code='';updateCode();$('keypad').style.display='flex'}
 $('keyClose').onclick=()=>{$('keypad').style.display='none';state.modal=false};
-function checkCode(){if(code==='731'){state.doorUnlocked=true;$('keypad').style.display='none';state.modal=false;tone(900,.12,.12,'sine');setTimeout(()=>tone(1200,.15,.08,'sine'),130);finalNote.visible=true;setObjective(bi('Something appeared on the desk.','چیزی روی میز ظاهر شد.'));subtitle(bi('The lock clicks.','صدای باز شدن قفل می‌آید.'));}else{tone(95,.28,.2,'square');code='';updateCode();setTimeout(knock,330);subtitle(bi('Wrong.','اشتباه بود.'),1100)}}
+function checkCode(){if(code==='731'){state.doorUnlocked=true;$('keypad').style.display='none';state.modal=false;tone(900,.12,.12,'sine');setTimeout(()=>tone(1200,.15,.08,'sine'),130);finalNote.visible=false;setObjective(bi('Open the unlocked door.','درِ بازشده را باز کن.'));subtitle(bi('The lock clicks. Room 0 is complete.','قفل باز شد. اتاق صفر تمام شد.'),2200);}else{tone(95,.28,.2,'square');code='';updateCode();setTimeout(knock,330);subtitle(bi('Wrong.','اشتباه بود.'),1100)}}
 
 function pickupFlashlight(){if(state.hasFlashlight)return;state.hasFlashlight=true;flashlightPickup.visible=false;flashlightHit.visible=false;pickGlow.intensity=0;pickupHalo.visible=false;pickupLED.visible=false;$('pickupArrow').style.opacity=0;$('guide').style.opacity=0;flashlightBody.visible=true;setFlashlight(true);setObjective(BI.answerPhone);subtitle(bi('A flashlight. The battery is almost full.','یک چراغ‌قوه. باتری تقریباً پر است.'));setTimeout(()=>{ring();phoneLight.intensity=.8},950);hint(isTouch?bi('Drag the right side to look • ◉ toggles light','سمت راست صفحه را بکش تا نگاه کنی • ◉ چراغ'):bi('Mouse to look • F toggles flashlight','با موس نگاه کن • F چراغ‌قوه'),3500)}
 function answerPhone(){if(state.phoneDone||!state.hasFlashlight)return;state.phoneDone=true;phoneLight.intensity=0;ring();subtitle(bi('MOM: “Samyar... you are awake? Whatever happens, do NOT turn the flashlight off.”','مادر: «سامیار... بیدار شدی؟ هر اتفاقی افتاد، چراغ‌قوه رو خاموش نکن.»'),7000);whisper('بالاخره بیدار شدی؟ هر اتفاقی افتاد، چراغو خاموش نکن.');setObjective(BI.findFragments(0));setTimeout(()=>{ceilingFlicker.intensity=.22;setTimeout(()=>ceilingFlicker.intensity=0,85)},1200)}
@@ -428,7 +465,7 @@ currentInteract=hit;const p=$('prompt');if(!hit){p.style.opacity=0;return}let te
 
 function setFlashlight(v,forced=false){
  if(!state.hasFlashlight&&!forced){hint(bi('You do not have the flashlight yet. Follow the weak warm light and press USE.','هنوز چراغ‌قوه را برنداشتی. نور گرم ضعیف را دنبال کن و USE را بزن.'),2600);return}
- state.flashlight=v;state.flashGlitch=1;flashlight.intensity=v?380:0;flashlightSpill.intensity=v?52:0;flashlightCore.intensity=v?145:0;renderer.toneMappingExposure=v?.48:.27;$('lightBtn').style.background=v?'rgba(160,145,108,.16)':'rgba(10,10,12,.46)'
+ state.flashlight=v;state.flashGlitch=1;flashlight.intensity=v?520:0;flashlightSpill.intensity=v?88:0;flashlightCore.intensity=v?92:0;flashlightBounce.intensity=v?7.5:0;renderer.toneMappingExposure=v?.56:.27;$('lightBtn').style.background=v?'rgba(160,145,108,.16)':'rgba(10,10,12,.46)'
 }
 function flashlightFault(t){
  if(state.flashFaulting||!state.flashlight)return;state.flashFaulting=true;
@@ -470,29 +507,50 @@ function update(dt,t){if(!state.started)return;
    state.battery=Math.max(0,state.battery-dt*.055);if(state.battery<=0)setFlashlight(false);
    if(t>state.nextFlashFault)flashlightFault(t);
    const micro=1+Math.sin(t*8.7)*.012+Math.sin(t*17.3)*.006;
-   const scary=state.scare&&!state.scareDone&&Math.random()<.022?(Math.random()<.5?.06:.35):1;
-   flashlight.intensity=380*state.flashGlitch*micro*scary;flashlightSpill.intensity=52*state.flashGlitch*(.96+Math.sin(t*3.4)*.015)*scary;flashlightCore.intensity=145*state.flashGlitch*(.98+Math.sin(t*11.1)*.008)*scary;
+   const scary=1;
+   flashlight.intensity=520*state.flashGlitch*micro*scary;flashlightSpill.intensity=88*state.flashGlitch*(.97+Math.sin(t*3.4)*.012)*scary;flashlightCore.intensity=92*state.flashGlitch*(.99+Math.sin(t*11.1)*.006)*scary;flashlightBounce.intensity=7.5*state.flashGlitch;
  }
  if(!state.hasFlashlight){const pulse=.72+.28*Math.sin(t*3.2);pickGlow.intensity=12+pulse*10;pickupHalo.material.opacity=.42+pulse*.34;pickupLED.scale.setScalar(.9+pulse*.55);$('pickupArrow').style.opacity=.55+pulse*.35}
  $('batteryFill').style.transform=`scaleX(${state.battery/100})`;
  // occasional dead ceiling flicker after phone
  if(state.phoneDone&&Math.random()<.0009){ceilingFlicker.intensity=.16;setTimeout(()=>ceilingFlicker.intensity=0,45)}
  interactionCheck();
- // Scare triggers only when the player voluntarily turns enough to face entity
- if(state.scare&&!state.scareDone&&entity?.visible){const to=entity.position.clone().sub(camera.position).normalize(),forward=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);if(forward.dot(to)>.82)triggerScare()}
  // Let the player actually walk through the door and experience a short Stage-2 preview before ending Room 0.
  if(!state.hallPreview&&state.doorUnlocked&&!doorBlock.active&&player.pos.z<-6.15){state.hallPreview=true;setObjective(bi('Find the patient file in the hallway.','پرونده بیمار را در راهرو پیدا کن.'));subtitle(bi('STAGE 2 — THE HALLWAY','مرحله ۲ — راهرو'),3000);knock()}
- if(state.hallPreview){hallLamp.intensity=.12+Math.max(0,Math.sin(t*7.7))*.08;hallLamp2.intensity=.07+Math.max(0,Math.sin(t*5.1+1.4))*.05;if(Math.random()<.002){hallLamp.intensity=0;hallLamp2.intensity=0}}
+ if(state.hallPreview){
+   hallFrame.visible=true;if(hallChair)hallChair.visible=true;
+   // Corridor lighting is unstable: dirty fluorescent tubes repeatedly lose power.
+   if(t>state.nextHallBlackout){state.hallBlackoutUntil=t+.16+Math.random()*.42;state.nextHallBlackout=t+2.2+Math.random()*5.0;if(Math.random()<.45)knock()}
+   const blackout=t<state.hallBlackoutUntil;
+   hallLamp.intensity=blackout?0:(.55+Math.max(0,Math.sin(t*8.1))*.95);
+   hallLamp2.intensity=blackout?0:(.30+Math.max(0,Math.sin(t*5.7+1.4))*.62);
+   hallCeilingLights.forEach((l,i)=>{const f=.52+.48*Math.max(0,Math.sin(t*(5.4+i*.73)+i*1.9));const randomDrop=Math.random()<.018?0:1;l.intensity=blackout?0:l.userData.base*f*randomDrop;if(l.userData.tube)l.userData.tube.material.opacity=blackout?.025:.10+.22*f*randomDrop});
+   // When Samyar looks back, one object silently changes place after he faces forward again.
+   const forwardNow=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);
+   if(player.pos.z<-11&&forwardNow.z>.28)state.hallLookedBack=true;
+   if(state.hallLookedBack&&!state.hallShifted&&forwardNow.z<-.30){
+      state.hallShifted=true;
+      if(hallChair){hallChair.position.x=-.82;hallChair.position.z=-18.3;hallChair.rotation.y=.68}
+      hallFrame.position.z=-12.2;hallFrame.rotation.z=.12;
+      if(hallDoors[5])hallDoors[5].position.z-=.38;
+      tone(38,.18,.10,'triangle');
+   }
+   // Blink-and-you-miss-it wall shadows. No creature exists in Stage 1; these begin only here.
+   if(t>state.nextShadowAt&&player.pos.z<-8.5){state.shadowStart=t;state.shadowUntil=t+.34;state.shadowSide=Math.random()<.5?-1:1;hallShadow.visible=true;hallShadow.rotation.y=state.shadowSide<0?Math.PI/2:-Math.PI/2;hallShadow.position.x=state.shadowSide*1.795;hallShadow.position.z=player.pos.z-2.8;state.nextShadowAt=t+5.0+Math.random()*8.0}
+   if(hallShadow.visible){const q=clamp((t-state.shadowStart)/.34,0,1);hallShadow.position.z=player.pos.z-2.8+q*5.6;hallShadow.material.opacity=Math.sin(q*Math.PI)*.68;if(t>=state.shadowUntil){hallShadow.visible=false;hallShadow.material.opacity=0}}
+ }
  if(state.hallPreview&&player.pos.z<-23.2){
    if(state.hallLoop===0){state.hallLoop=1;player.pos.set(0,1.74,-6.8);player.yaw=0;player.pitch=-.06;subtitle(bi('You have been here before.','قبلاً اینجا بودی.'),2600);setObjective(bi('The hallway repeated. Find what changed.','راهرو تکرار شد. چیزی که تغییر کرده را پیدا کن.'));knock()}
    else if(!state.ended&&state.hallNoteRead){state.ended=true;$('endPanel').style.display='flex';state.modal=true;$('blackout').style.opacity=.46}else if(!state.hallNoteRead){player.pos.set(0,1.74,-6.8);subtitle(bi('You missed something.','یه چیزی رو جا انداختی.'),2200);setObjective(bi('Find the patient file.','پرونده بیمار را پیدا کن.'));knock()}
  }
- const baseExp=state.flashlight?.48:.27;renderer.toneMappingExposure=baseExp+Math.sin(t*.43)*.006;
+ const baseExp=state.flashlight?.56:.27;renderer.toneMappingExposure=baseExp+Math.sin(t*.43)*.006;
  adaptPerformance(dt)
 }
 function loop(){const dt=Math.min(clock.getDelta(),.04),t=clock.elapsedTime;update(dt,t);renderer.render(scene,camera);requestAnimationFrame(loop)}loop();
 
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.fov=64;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);const bad=innerWidth<innerHeight;$('orientationLock').style.display=bad?'flex':'none'});
+function syncOrientationUI(){const bad=innerWidth<innerHeight;$('orientationLock').style.display=bad?'flex':'none';if(!state.started)$('intro').style.display='flex';$('startBtn').style.display='inline-flex';}
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.fov=64;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);syncOrientationUI();setTimeout(syncOrientationUI,180)});
+addEventListener('orientationchange',()=>{setTimeout(()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);syncOrientationUI()},260)});
 // Prevent iOS double tap zoom/context menu
 addEventListener('contextmenu',e=>e.preventDefault());
 </script>
