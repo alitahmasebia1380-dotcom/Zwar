@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
-<title>Z: DON'T LOOK BACK — ROOM 0.8.2 • BOOT FIX + ROOM LOCKS</title>
+<title>Z: DON'T LOOK BACK — ROOM 0.9 • REAL SFX + HALLWAY PUZZLE</title>
 <style>
 :root{--fg:#e9e9e9;--muted:#9b9b9b;--red:#a60e16;--glass:rgba(8,8,10,.56)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
@@ -88,13 +88,13 @@ html,body{margin:0;width:100%;height:100%;min-height:100dvh;overflow:hidden;back
 <body>
 <div id="game"></div><div id="grain"></div><div id="vignette"></div><div id="blackout"></div><div id="flash"></div>
 <div id="bootError"></div>
-<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 0 — WAKE UP • اتاق صفر — بیدار شو</div><p>You wake up somewhere you do not remember.<br><span dir="rtl">جایی بیدار می‌شوی که یادت نمی‌آید.</span></p><p>Headphones recommended. Darkness is part of the gameplay.<br><span dir="rtl">هدفون پیشنهاد می‌شود. تاریکی بخشی از بازی است.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">ROOM 0.8.2 • BOOT FIX + ROOM LOCKS</div></div></div>
+<div id="intro"><div id="introCard"><h1 id="logo"><span>Z:</span> DON'T LOOK BACK</h1><div id="chapter">ROOM 01 — WAKE UP • اتاق ۱ — بیدار شو</div><p>You wake up somewhere you do not remember.<br><span dir="rtl">جایی بیدار می‌شوی که یادت نمی‌آید.</span></p><p>Headphones recommended. Darkness is part of the gameplay.<br><span dir="rtl">هدفون پیشنهاد می‌شود. تاریکی بخشی از بازی است.</span></p><button id="startBtn">WAKE UP • بیدار شو</button><div id="loading">ROOM 0.9 • REAL SFX + HALLWAY PUZZLE</div></div></div>
 <div id="orientationLock"><div><b>LANDSCAPE MODE • حالت افقی</b>Rotate your phone sideways to continue.<br><span dir="rtl">برای ادامه گوشی را افقی کن.</span></div></div>
 <div id="hud"><div id="objective"><small>OBJECTIVE • هدف</small><span id="objectiveText">Find a light.
 یک نور پیدا کن.</span></div><div id="battery">FLASHLIGHT<div id="batteryBar"><div id="batteryFill"></div></div></div><div id="dot"></div><div id="prompt"></div><div id="subtitle"></div><div id="hint"></div><div id="joy"><div id="stick"></div></div><button class="ctrl" id="runBtn">RUN<br>بدو</button><button class="ctrl" id="lightBtn">◉</button><button class="ctrl" id="useBtn">USE<br>استفاده</button><div id="fps"></div><div id="guide"></div><div id="pickupArrow">↓</div><div id="portraitTag">LANDSCAPE • NIGHTMARE</div></div>
 <div id="keypad"><div class="panel"><h2>DOOR LOCK • قفل در</h2><p>The display waits for three digits.<br><span dir="rtl">قفل منتظر سه رقم است.</span></p><div id="codeDisplay">_ _ _</div><div id="keys"></div><button class="closeBtn" id="keyClose">BACK • برگشت</button></div></div>
 <div id="notePanel"><div class="panel"><h2>NOTE • یادداشت</h2><p id="noteText"></p><button class="closeBtn" id="noteClose">PUT IT DOWN • بذارش پایین</button></div></div>
-<div id="endPanel"><div class="panel"><h2>STAGE 2 HAS BEGUN</h2><p>The hallway has already repeated once.<br><span dir="rtl">راهرو یک بار خودش را تکرار کرده.</span></p><p>You survived the first loop of THE HALLWAY.<br><span dir="rtl">از اولین حلقه‌ی راهرو عبور کردی.</span></p><button class="closeBtn" onclick="location.reload()">RESTART • شروع دوباره</button></div></div>
+<div id="endPanel"><div class="panel"><h2>ROOM 02 COMPLETE • اتاق ۲ تمام شد</h2><p>The hallway accepted all three answers.<br><span dir="rtl">راهرو هر سه جواب را پذیرفت.</span></p><p>STAGE 3 — THE LAUNDRY ROOM<br><span dir="rtl">مرحله ۳ — رخت‌شوی‌خانه</span></p><button class="closeBtn" onclick="location.reload()">RESTART • شروع دوباره</button></div></div>
 <script type="module">
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
@@ -134,11 +134,11 @@ const raycaster=new THREE.Raycaster();
 const center=new THREE.Vector2(0,0);
 const colliders=[];
 const interactables=[];
-const state={started:false,flashlight:false,hasFlashlight:false,battery:100,fragments:0,phoneDone:false,doorUnlocked:false,finalNote:false,scare:false,scareDone:false,ended:false,running:false,modal:false,objective:'Find a light. / یک نور پیدا کن.',flashGlitch:1,nextFlashFault:18+Math.random()*5,flashFaulting:false,hallPreview:false,hallLoop:0,hallNoteRead:false,hallShifted:false,hallLookedBack:false,nextShadowAt:4+Math.random()*4,shadowUntil:0,shadowStart:0,shadowSide:-1,nextHallBlackout:3+Math.random()*5,hallBlackoutUntil:0};
+const state={started:false,flashlight:false,hasFlashlight:false,battery:100,fragments:0,phoneDone:false,doorUnlocked:false,finalNote:false,scare:false,scareDone:false,ended:false,running:false,modal:false,objective:'Find a light. / یک نور پیدا کن.',flashGlitch:1,nextFlashFault:18+Math.random()*5,flashFaulting:false,hallPreview:false,hallLoop:0,hallNoteRead:false,hallShifted:false,hallLookedBack:false,nextShadowAt:4+Math.random()*4,shadowUntil:0,shadowStart:0,shadowSide:-1,nextHallBlackout:3+Math.random()*5,hallBlackoutUntil:0,hallPhase:0,hallChoiceSolved:false,hallEndDoorUnlocked:false,hallEndDoorOpen:false,hallTransitioning:false,hallMistakes:0,hallCryPlayed:false,nextStepAt:0};
 
 // ============================================================
 // 30-ROOM ARCHITECTURE CONTRACT
-// ROOM 01: Wake Up      -> LOCKED after acceptance
+// ROOM 01: Wake Up      -> LOCKED (only approved text clarity / progression bug fixes)
 // ROOM 02: The Hallway  -> ACTIVE
 // ROOM 03+: add as isolated sections; never rewrite completed rooms.
 // Persistent cross-room state belongs only in `state`; room-local props,
@@ -146,12 +146,13 @@ const state={started:false,flashlight:false,hasFlashlight:false,battery:100,frag
 // ============================================================
 const player={pos:new THREE.Vector3(0,1.74,2.75),yaw:0,pitch:-.18,radius:.3,speed:2.0};
 camera.position.copy(player.pos);
+const stepAnchor=new THREE.Vector3().copy(player.pos);
 
 const bi=(en,fa)=>`${en}\n${fa}`;
 const BI={
  findLight:bi('Find a light.','یک نور پیدا کن.'),
  answerPhone:bi('Answer the ringing phone.','تلفنِ زنگ‌خور را جواب بده.'),
- findFragments:(n=0)=>bi(`Find the torn fragments. ${n}/3`,`تکه‌های پاره‌شده را پیدا کن. ${n}/3`),
+ findFragments:(n=0)=>bi(`Find all three fragments. Each one hides a number. Read them in order: I → II → III. ${n}/3`,`هر سه تکه را پیدا کن. داخل هر کدام یک عدد پنهان شده. آن‌ها را به ترتیب I ← II ← III بخوان. ${n}/3`),
  useCode:bi('Use the numbers on the door keypad.','عددها را روی قفل در وارد کن.'),
  openDoor:bi('Open the door.','در را باز کن.'),
  enterHall:bi('Enter the hallway.','وارد راهرو شو.'),
@@ -225,8 +226,12 @@ loadReadyTexture(READY_TEX_ROOT+'Metal055A/Metal055A.png',{repeat:[1.2,2.0]}).th
 // New Room 02 work goes below this marker. Do not edit locked Room 01
 // except for a confirmed bug that prevents progression.
 // ============================================================
-// STAGE 2 — THE HALLWAY. Long enough to feel spatially wrong, but still mobile-light.
-box(3.8,.18,20,0,-.08,-14.5,floorMat);box(3.8,.18,20,0,3.18,-14.5,ceilMat);wall(.18,3.2,20,-1.9,1.55,-14.5);wall(.18,3.2,20,1.9,1.55,-14.5);wall(3.8,3.2,.18,0,1.55,-24.5);
+// STAGE 2 — THE HALLWAY. Puzzle rule: door numbers lie; the environment tells the truth.
+box(3.8,.18,20,0,-.08,-14.5,floorMat);box(3.8,.18,20,0,3.18,-14.5,ceilMat);wall(.18,3.2,20,-1.9,1.55,-14.5);wall(.18,3.2,20,1.9,1.55,-14.5);
+// Far end now has a real doorway. The lintel is VISUAL ONLY because collision is 2D and ignores Y.
+wall(1.12,3.2,.18,-1.34,1.55,-24.5);wall(1.12,3.2,.18,1.34,1.55,-24.5);box(1.56,.62,.18,0,2.89,-24.5,wallMat);
+// Short vestibule lets the player physically cross the end door before a loop/reset occurs.
+box(3.8,.18,1.7,0,-.08,-25.34,floorMat);box(3.8,.18,1.7,0,3.18,-25.34,ceilMat);wall(.18,3.2,1.7,-1.9,1.55,-25.34);wall(.18,3.2,1.7,1.9,1.55,-25.34);
 wallpaperPanel(20,2.82,-1.805,1.45,-14.5,Math.PI/2,5.7);wallpaperPanel(20,2.82,1.805,1.45,-14.5,-Math.PI/2,5.7);
 const hallLamp=new THREE.PointLight(0x5b0a0d,1.4,5.0,2);hallLamp.position.set(0,2.72,-11.2);scene.add(hallLamp);
 const hallLamp2=new THREE.PointLight(0x290306,.85,4.6,2);hallLamp2.position.set(0,2.72,-19.2);scene.add(hallLamp2);
@@ -237,21 +242,35 @@ for(const z of [-8.8,-13.4,-18.0,-22.2]){
  const tube=new THREE.Mesh(new THREE.BoxGeometry(.58,.025,.045),new THREE.MeshBasicMaterial({color:0xb7b09f,transparent:true,opacity:.32}));tube.position.set(0,2.965,z);scene.add(tube);l.userData.tube=tube;
 }
 const hallDoors=[];
-function hallDoor(side,z,n){const x=side*1.79;const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=side>0?-Math.PI/2:Math.PI/2;scene.add(g);const slab=new THREE.Mesh(new THREE.BoxGeometry(1.12,2.18,.035),doorWood);slab.position.set(0,1.09,0);g.add(slab);const plate=new THREE.Mesh(new THREE.PlaneGeometry(.24,.14),new THREE.MeshBasicMaterial({map:(()=>{const c=document.createElement('canvas');c.width=128;c.height=64;const q=c.getContext('2d');q.fillStyle='#171411';q.fillRect(0,0,128,64);q.fillStyle='#b6a784';q.font='bold 34px Georgia';q.textAlign='center';q.textBaseline='middle';q.fillText(String(n),64,34);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t})()}));plate.position.set(0,1.55,.022);g.add(plate);g.userData.number=n;hallDoors.push(g);return g}
+function hallDoor(side,z,n){
+ const x=side*1.79,g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=side>0?-Math.PI/2:Math.PI/2;scene.add(g);
+ const slab=new THREE.Mesh(new THREE.BoxGeometry(1.12,2.18,.035),doorWood);slab.position.set(0,1.09,0);g.add(slab);
+ const plate=new THREE.Mesh(new THREE.PlaneGeometry(.24,.14),new THREE.MeshBasicMaterial({map:(()=>{const c=document.createElement('canvas');c.width=128;c.height=64;const q=c.getContext('2d');q.fillStyle='#171411';q.fillRect(0,0,128,64);q.fillStyle='#b6a784';q.font='bold 34px Georgia';q.textAlign='center';q.textBaseline='middle';q.fillText(String(n),64,34);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t})()}));plate.position.set(0,1.55,.022);g.add(plate);
+ const lamp=new THREE.Mesh(new THREE.SphereGeometry(.055,10,8),new THREE.MeshBasicMaterial({color:0xd9d2bc}));lamp.position.set(0,2.38,.055);lamp.visible=false;g.add(lamp);
+ g.userData={type:'hallDoor',number:n,side,z,lamp,index:hallDoors.length};hallDoors.push(g);interactables.push(g);return g
+}
 [-8.2,-11.4,-14.6,-17.8,-21.0].forEach((z,i)=>{hallDoor(-1,z,[11,4,17,3,9][i]);hallDoor(1,z,[2,16,5,8,13][i])});
 
+// Phase 1 clue: THREE WOUNDS beside the correct door (index 5, right wall at z -14.6).
+const hallWounds=[];const woundMat=new THREE.MeshBasicMaterial({color:0x350306,transparent:true,opacity:.72,depthWrite:false,side:THREE.DoubleSide});
+[-.16,0,.16].forEach((dz,i)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(.055,.62+i*.08),woundMat.clone());m.position.set(1.794,1.30+i*.06,-14.60+dz);m.rotation.y=-Math.PI/2;m.rotation.z=(i-1)*.08;scene.add(m);hallWounds.push(m);m.visible=false});
+
 // Stage 2 paranoia props. They move only after Samyar looks back.
-const hallFrame=new THREE.Group();hallFrame.position.set(-1.79,1.63,-15.3);hallFrame.rotation.y=Math.PI/2;scene.add(hallFrame);
+const hallFrame=new THREE.Group();hallFrame.position.set(-1.79,1.63,-17.8);hallFrame.rotation.y=Math.PI/2;scene.add(hallFrame);
 const frameOuter=new THREE.Mesh(new THREE.BoxGeometry(.78,.64,.035),new THREE.MeshStandardMaterial({color:0x120f0d,roughness:.85}));hallFrame.add(frameOuter);
-const frameInner=new THREE.Mesh(new THREE.PlaneGeometry(.62,.48),new THREE.MeshBasicMaterial({color:0x080808}));frameInner.position.z=.021;hallFrame.add(frameInner);
-hallFrame.visible=false;
-let hallChair=null;
-(async()=>{hallChair=await loadAsset('packs/furniture-kit/chair.glb',{pos:[.92,0,-16.1],targetH:1.05,rot:-1.15,cast:false});if(hallChair)hallChair.visible=false})();
+const frameInner=new THREE.Mesh(new THREE.PlaneGeometry(.62,.48),new THREE.MeshBasicMaterial({color:0x080808}));frameInner.position.z=.021;hallFrame.add(frameInner);hallFrame.visible=false;
+let hallChair=null;(async()=>{hallChair=await loadAsset('packs/furniture-kit/chair.glb',{pos:[.92,0,-16.1],targetH:1.05,rot:-1.15,cast:false});if(hallChair)hallChair.visible=false})();
 
 // Fast wall shadow: visible for only a fraction of a second.
 const hallShadow=new THREE.Mesh(new THREE.PlaneGeometry(.52,1.82),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide}));
 hallShadow.position.set(-1.795,1.18,-12);hallShadow.rotation.y=Math.PI/2;hallShadow.visible=false;scene.add(hallShadow);
 
+// Real end door — opening it, then crossing it, causes the impossible hallway loop.
+const hallEndDoorBlock={x:0,z:-24.42,hw:.74,hd:.06,active:true};colliders.push(hallEndDoorBlock);
+const hallEndDoorVisual=new THREE.Group();hallEndDoorVisual.position.set(-.76,0,-24.405);scene.add(hallEndDoorVisual);
+const hallEndDoorSlab=new THREE.Mesh(new THREE.BoxGeometry(1.52,2.40,.038),doorWood);hallEndDoorSlab.position.set(.76,1.20,0);hallEndDoorSlab.castShadow=true;hallEndDoorSlab.receiveShadow=true;hallEndDoorVisual.add(hallEndDoorSlab);
+const hallEndDoorProxy=new THREE.Mesh(new THREE.BoxGeometry(1.58,2.52,.12),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));hallEndDoorProxy.position.set(0,1.25,-24.30);scene.add(hallEndDoorProxy);hallEndDoorProxy.userData={type:'hallEndDoor'};interactables.push(hallEndDoorProxy);
+const hallEndTrim=new THREE.MeshStandardMaterial({color:0x0d0b0a,roughness:.9});box(.10,2.55,.20,-.84,1.275,-24.43,hallEndTrim,true);box(.10,2.55,.20,.84,1.275,-24.43,hallEndTrim,true);box(1.78,.10,.20,0,2.50,-24.43,hallEndTrim,true);
 
 // ===== END ROOM 02 STATIC GEOMETRY BLOCK =====
 
@@ -421,13 +440,63 @@ Under it he wrote: I woke up there first.
 ۱`),1);
 [f1,f2,f3].forEach((p,i)=>{const l=new THREE.PointLight(0x806d49,0.018,.9,2);l.position.copy(p.position).add(new THREE.Vector3(0,.18,0));scene.add(l);p.userData.glow=l});
 
+// ===== ROOM 02 PUZZLE LOGIC — isolated from locked Room 01 =====
+const HALL_CORRECT=[5,7,8]; // phase 1: 3 wounds, phase 2: empty frame, phase 3: dead light
+function hallPhaseObjective(){
+ if(state.hallPhase===0)return bi('Find the door marked by THREE WOUNDS. Ignore its number.','دری را پیدا کن که با سه زخم مشخص شده. شماره‌اش مهم نیست.');
+ if(state.hallPhase===1)return bi('Find the door watched by the EMPTY FRAME.','دری را پیدا کن که قاب خالی به آن نگاه می‌کند.');
+ return bi('Find the door beneath the DEAD LIGHT.','دری را پیدا کن که زیر چراغ مرده است.');
+}
+function applyHallPhaseVisuals(){
+ hallWounds.forEach(m=>m.visible=state.hallPreview&&state.hallPhase===0);
+ hallFrame.visible=state.hallPreview&&state.hallPhase===1;
+ hallDoors.forEach((d,i)=>{const lamp=d.userData.lamp;if(!lamp)return;lamp.visible=state.hallPreview&&state.hallPhase===2;lamp.material.color.set(i===HALL_CORRECT[2]?0x050505:0xd8d1bb)});
+ if(hallChair)hallChair.visible=state.hallPreview;
+}
+function resetHallEndDoor(){state.hallEndDoorOpen=false;state.hallEndDoorUnlocked=false;hallEndDoorBlock.active=true;hallEndDoorProxy.visible=true;hallEndDoorVisual.rotation.y=0}
+function tryHallDoor(o){
+ if(!state.hallNoteRead){hint(bi('Read the patient file first. The numbers are a trap.','اول پرونده بیمار را بخوان. شماره‌ها یک تله‌اند.'),2200);return}
+ if(state.hallChoiceSolved){subtitle(bi('A lock has already opened at the end of the hallway.','یک قفل در انتهای راهرو قبلاً باز شده.'),1800);return}
+ const idx=o.userData.index;
+ playSfx('doorHandle',.28,1);
+ if(idx===HALL_CORRECT[state.hallPhase]){
+   state.hallChoiceSolved=true;state.hallEndDoorUnlocked=true;playSfx('shock',.34,.82);
+   setObjective(bi('The LAST DOOR unlocked. Go to the end of the hallway.','درِ آخر باز شد. برو انتهای راهرو.'));
+   subtitle(bi('A lock clicks somewhere ahead.','صدای باز شدن یک قفل از دور می‌آید.'),2200);
+ }else{
+   state.hallMistakes++;state.hallBlackoutUntil=clock.elapsedTime+.9;playSfx('doorCreak',.40,.92);playSfx('shock',.42,.78);
+   $('blackout').style.transition='opacity .12s';$('blackout').style.opacity=.82;
+   setTimeout(()=>{player.pos.set(0,1.74,-6.9);player.yaw=0;player.pitch=-.05;$('blackout').style.transition='opacity .45s';$('blackout').style.opacity=0;subtitle(bi('Wrong door. The hallway remembers.','در اشتباه بود. راهرو یادش می‌ماند.'),2300);setObjective(hallPhaseObjective())},420);
+ }
+}
+function openHallEndDoor(){
+ if(!state.hallEndDoorUnlocked){playSfx('doorHandle',.24,.9);subtitle(bi('LOCKED. The hallway is waiting for an answer.','قفل است. راهرو منتظر جواب است.'),1900);return}
+ if(!hallEndDoorBlock.active)return;
+ hallEndDoorBlock.active=false;hallEndDoorProxy.visible=false;state.hallEndDoorOpen=true;playSfx('doorHandle',.40,1);setTimeout(()=>playSfx('doorCreak',.58,.94),100);
+ const st=performance.now(),r0=hallEndDoorVisual.rotation.y;function anim(t){const k=clamp((t-st)/950,0,1),e=1-Math.pow(1-k,3);hallEndDoorVisual.rotation.y=r0-Math.PI*.57*e;if(k<1)requestAnimationFrame(anim)}requestAnimationFrame(anim);
+ setObjective(bi('Go through the door.','از در رد شو.'));subtitle(bi('It opened.','باز شد.'),1200)
+}
+function advanceHallLoop(){
+ if(state.hallTransitioning)return;state.hallTransitioning=true;playSfx('doorCreak',.52,.82);$('blackout').style.transition='opacity .18s';$('blackout').style.opacity=1;
+ setTimeout(()=>{
+   if(state.hallPhase<2){
+     state.hallPhase++;state.hallLoop=state.hallPhase;state.hallChoiceSolved=false;state.hallLookedBack=false;state.hallShifted=false;player.pos.set(0,1.74,-6.9);player.yaw=0;player.pitch=-.05;resetHallEndDoor();applyHallPhaseVisuals();
+     if(state.hallPhase===1&&!state.hallCryPlayed){state.hallCryPlayed=true;setTimeout(()=>playSfx('cry',.09,.96),900)}
+     subtitle(state.hallPhase===1?bi('The hallway is the same. Something is not.','راهرو همان است. چیزی دیگر همان نیست.'):bi('It brought you back again. One answer remains.','دوباره برگرداندت. یک جواب مانده.'),3000);setObjective(hallPhaseObjective());
+     $('blackout').style.transition='opacity .75s';$('blackout').style.opacity=0;state.hallTransitioning=false;
+   }else{
+     state.ended=true;state.modal=true;$('endPanel').style.display='flex';$('blackout').style.transition='opacity .8s';$('blackout').style.opacity=.38;playSfx('shock',.48,.72);state.hallTransitioning=false;
+   }
+ },700)
+}
+
 // Difficulty curve note: later rooms use chained clues, stateful multi-room logic, non-bruteforce constraints and expert-level deduction.
 // Keypad beside door
 const keypadObj=new THREE.Group();const kp=new THREE.Mesh(new THREE.BoxGeometry(.28,.45,.08),new THREE.MeshStandardMaterial({color:0x1a1b1d,metalness:.45,roughness:.45}));keypadObj.add(kp);const screen=new THREE.Mesh(new THREE.PlaneGeometry(.18,.07),new THREE.MeshBasicMaterial({color:0x431116}));screen.position.set(0,.11,.045);keypadObj.add(screen);keypadObj.position.set(.95,1.25,-4.35);scene.add(keypadObj);keypadObj.userData={type:'keypad'};interactables.push(keypadObj);
 
 // Final note appears after code success
 const finalNote=paper(3.58,.91,1.88,.2,bi("SAMYAR, DON'T LOOK BEHIND YOU.",'سامیار، پشت سرت را نگاه نکن.'),null);finalNote.visible=false;finalNote.userData.type='finalNote';
-const hallNote=paper(-1.40,.82,-13.10,0,bi('HALLWAY LOG — PATIENT S.\n\nSamyar counted the doors every night. The number changed whenever he looked back.\nOn the third night he stopped counting doors and started counting footsteps.\n\nIf the hallway repeats, do not trust the numbers.','گزارش راهرو — بیمار س.\n\nسامیار هر شب درها را می‌شمرد. هر بار که پشت سرش را نگاه می‌کرد، تعدادشان عوض می‌شد.\nشب سوم، شمارش درها را کنار گذاشت و قدم‌هایش را شمرد.\n\nاگر راهرو تکرار شد، به عددها اعتماد نکن.'),null);hallNote.visible=true;hallNote.userData.type='hallNote';
+const hallNote=paper(-1.40,.82,-13.10,0,bi('HALLWAY LOG — PATIENT S.\n\nTHE NUMBERS LIE.\nFirst: follow the THREE WOUNDS.\nSecond: the EMPTY FRAME watches the right door.\nThird: only the DEAD LIGHT knows the way out.\n\nThe last door never leads forward twice.','گزارش راهرو — بیمار س.\n\nشماره‌ها دروغ می‌گویند.\nاول: سه زخم را دنبال کن.\nدوم: قاب خالی درِ درست را نگاه می‌کند.\nسوم: فقط چراغ مرده راه خروج را می‌داند.\n\nدرِ آخر هیچ‌وقت دو بار به جلو نمی‌رود.'),null);hallNote.visible=true;hallNote.userData.type='hallNote';
 
 // Door pivot/collision state
 const doorBlock={x:0,z:-4.42,hw:.74,hd:.055,active:true};colliders.push(doorBlock);
@@ -451,15 +520,26 @@ async function spawnEntity(){
 }
 // Stage 1 intentionally contains no creature or jumpscare.
 
-// Audio
-let actx=null,master=null;
-function audioInit(){if(actx)return;actx=new (window.AudioContext||window.webkitAudioContext)();master=actx.createGain();master.gain.value=.62;master.connect(actx.destination)}
-let droneStarted=false;function startDrone(){if(!actx||droneStarted)return;droneStarted=true;const o=actx.createOscillator(),o2=actx.createOscillator(),g=actx.createGain(),lfo=actx.createOscillator(),lg=actx.createGain();o.type='sine';o.frequency.value=38;o2.type='triangle';o2.frequency.value=57;g.gain.value=.018;lfo.frequency.value=.11;lg.gain.value=.006;lfo.connect(lg);lg.connect(g.gain);o.connect(g);o2.connect(g);g.connect(master);o.start();o2.start();lfo.start()}
-function tone(freq=220,dur=.2,vol=.1,type='sine',delay=0){if(!actx)return;const o=actx.createOscillator(),g=actx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,actx.currentTime+delay);g.gain.exponentialRampToValueAtTime(vol,actx.currentTime+delay+.015);g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+delay+dur);o.connect(g);g.connect(master);o.start(actx.currentTime+delay);o.stop(actx.currentTime+delay+dur+.02)}
-function ring(){tone(860,.28,.12,'sine');tone(640,.28,.08,'sine',.06);tone(860,.28,.12,'sine',.52);tone(640,.28,.08,'sine',.58)}
-function knock(){tone(55,.12,.36,'triangle');setTimeout(()=>tone(55,.12,.33,'triangle'),190);setTimeout(()=>tone(50,.16,.38,'triangle'),390)}
-function scareBoom(){tone(42,.8,.55,'sawtooth');tone(110,.24,.22,'square',.04);tone(760,.15,.12,'sawtooth',.08)}
-function whisper(text){if(!('speechSynthesis'in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='fa-IR';u.rate=.72;u.pitch=.72;u.volume=.75;speechSynthesis.speak(u)}catch{}}
+// REAL SFX ONLY — no background music and no synthesized oscillator/TTS audio.
+// Sources are Wikimedia Commons public-domain / CC0 recordings. MP3 transcodes are used for iPhone/Safari reliability.
+const SFX_URL={
+ doorCreak:'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/15/Squeaky_door.ogg/Squeaky_door.ogg.mp3',
+ doorHandle:'https://upload.wikimedia.org/wikipedia/commons/transcoded/7/74/Door_handle_creaking.ogg/Door_handle_creaking.ogg.mp3',
+ phone:'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1c/Telephone.ogg/Telephone.ogg.mp3',
+ knock:'https://upload.wikimedia.org/wikipedia/commons/transcoded/1/1c/Knocking_on_wood_or_door.ogg/Knocking_on_wood_or_door.ogg.mp3',
+ step:'https://upload.wikimedia.org/wikipedia/commons/transcoded/5/5b/Dull_thud.ogg/Dull_thud.ogg.mp3',
+ cry:'https://upload.wikimedia.org/wikipedia/commons/transcoded/5/5f/Cry_of_woman.ogg/Cry_of_woman.ogg.mp3',
+ scream:'https://upload.wikimedia.org/wikipedia/commons/e/e6/Nick121087_-_Demonic_Woman_Scream_(cc0)_(freesound).mp3',
+ shock:'https://upload.wikimedia.org/wikipedia/commons/transcoded/8/8d/Metal_drop_thump.ogg/Metal_drop_thump.ogg.mp3'
+};
+const sfx={};for(const [name,url] of Object.entries(SFX_URL)){const a=new Audio(url);a.preload='metadata';a.playsInline=true;sfx[name]=a}
+function primeSfx(){for(const a of Object.values(sfx)){try{a.muted=true;const p=a.play();if(p?.then)p.then(()=>{a.pause();a.currentTime=0;a.muted=false}).catch(()=>{a.muted=false})}catch{a.muted=false}}}
+function playSfx(name,vol=.55,rate=1){const a=sfx[name];if(!a)return null;try{a.pause();a.currentTime=0;a.volume=clamp(vol,0,1);a.playbackRate=rate;const p=a.play();p?.catch?.(()=>{});return a}catch{return null}}
+function stopSfx(name){const a=sfx[name];if(a){try{a.pause();a.currentTime=0}catch{}}}
+function ring(){playSfx('phone',.34,1)}
+function knock(){playSfx('knock',.48,.96+Math.random()*.05)}
+function scareBoom(){playSfx('shock',.82,.92)}
+function whisper(){/* synthetic speech intentionally disabled */}
 
 function setObjective(t){state.objective=t;$('objectiveText').textContent=t}
 let subtitleTimer=0;function subtitle(t,ms=2800){clearTimeout(subtitleTimer);$('subtitle').textContent=t;$('subtitle').style.opacity=1;subtitleTimer=setTimeout(()=>$('subtitle').style.opacity=0,ms)}
@@ -472,27 +552,27 @@ let code='';for(const n of [1,2,3,4,5,6,7,8,9,'C',0,'OK']){const b=document.crea
 function updateCode(){$('codeDisplay').textContent=(code+'___').slice(0,3).split('').join(' ')}
 function openKeypad(){state.modal=true;code='';updateCode();$('keypad').style.display='flex'}
 $('keyClose').onclick=()=>{$('keypad').style.display='none';state.modal=false};
-function checkCode(){if(code==='731'){state.doorUnlocked=true;$('keypad').style.display='none';state.modal=false;tone(900,.12,.12,'sine');setTimeout(()=>tone(1200,.15,.08,'sine'),130);finalNote.visible=false;setObjective(bi('Open the unlocked door.','درِ بازشده را باز کن.'));subtitle(bi('The lock clicks. Room 0 is complete.','قفل باز شد. اتاق صفر تمام شد.'),2200);}else{tone(95,.28,.2,'square');code='';updateCode();setTimeout(knock,330);subtitle(bi('Wrong.','اشتباه بود.'),1100)}}
+function checkCode(){if(code==='731'){state.doorUnlocked=true;$('keypad').style.display='none';state.modal=false;playSfx('doorHandle',.30,1);finalNote.visible=false;setObjective(bi('Open the unlocked door.','درِ بازشده را باز کن.'));subtitle(bi('The lock clicks. Room 0 is complete.','قفل باز شد. اتاق صفر تمام شد.'),2200);}else{playSfx('shock',.24,.82);code='';updateCode();setTimeout(knock,330);subtitle(bi('Wrong.','اشتباه بود.'),1100)}}
 
 function pickupFlashlight(){if(state.hasFlashlight)return;state.hasFlashlight=true;flashlightPickup.visible=false;flashlightHit.visible=false;pickGlow.intensity=0;pickupHalo.visible=false;pickupLED.visible=false;$('pickupArrow').style.opacity=0;$('guide').style.opacity=0;flashlightBody.visible=true;setFlashlight(true);setObjective(BI.answerPhone);subtitle(bi('A flashlight. The battery is almost full.','یک چراغ‌قوه. باتری تقریباً پر است.'));setTimeout(()=>{ring();phoneLight.intensity=.8},950);hint(isTouch?bi('Drag the right side to look • ◉ toggles light','سمت راست صفحه را بکش تا نگاه کنی • ◉ چراغ'):bi('Mouse to look • F toggles flashlight','با موس نگاه کن • F چراغ‌قوه'),3500)}
-function answerPhone(){if(state.phoneDone||!state.hasFlashlight)return;state.phoneDone=true;phoneLight.intensity=0;ring();subtitle(bi('MOM: “Samyar... you are awake? Whatever happens, do NOT turn the flashlight off.”','مادر: «سامیار... بیدار شدی؟ هر اتفاقی افتاد، چراغ‌قوه رو خاموش نکن.»'),7000);whisper('بالاخره بیدار شدی؟ هر اتفاقی افتاد، چراغو خاموش نکن.');setObjective(BI.findFragments(0));setTimeout(()=>{ceilingFlicker.intensity=.22;setTimeout(()=>ceilingFlicker.intensity=0,85)},1200)}
-function collectFragment(o){if(o.userData.collected)return;o.userData.collected=true;o.visible=false;if(o.userData.glow)o.userData.glow.intensity=0;state.fragments++;showNote(o.userData.text,()=>{if(state.fragments<3)setObjective(BI.findFragments(state.fragments));else{setObjective(BI.useCode);subtitle(bi('Seven... three... one...','هفت... سه... یک...'),2200)}})}
+function answerPhone(){if(state.phoneDone||!state.hasFlashlight)return;state.phoneDone=true;phoneLight.intensity=0;stopSfx('phone');subtitle(bi('MOM: “Samyar... you are awake? Whatever happens, do NOT turn the flashlight off.”','مادر: «سامیار... بیدار شدی؟ هر اتفاقی افتاد، چراغ‌قوه رو خاموش نکن.»'),7000);setObjective(BI.findFragments(0));setTimeout(()=>{ceilingFlicker.intensity=.22;setTimeout(()=>ceilingFlicker.intensity=0,85)},1200)}
+function collectFragment(o){if(o.userData.collected)return;o.userData.collected=true;o.visible=false;if(o.userData.glow)o.userData.glow.intensity=0;state.fragments++;showNote(o.userData.text,()=>{if(state.fragments<3)setObjective(BI.findFragments(state.fragments));else{setObjective(BI.useCode);subtitle(bi('Three fragments. Three numbers. The door is waiting.','سه تکه. سه عدد. در منتظر است.'),2600)}})}
 function inspectFinal(){if(state.finalNote)return;state.finalNote=true;showNote(bi("SAMYAR, DON'T LOOK BEHIND YOU.",'سامیار، پشت سرت را نگاه نکن.'),()=>{setObjective(bi('Do not turn around.','برنگرد.'));beginScareSetup()})}
 
 function beginScareSetup(){state.scare=true;const fwd=new THREE.Vector3(0,0,-1).applyEuler(new THREE.Euler(0,player.yaw,0,'YXZ'));const back=fwd.multiplyScalar(-1);if(entity){entity.visible=true;entity.position.set(player.pos.x+back.x*1.7,0,player.pos.z+back.z*1.7);entity.lookAt(player.pos.x,1.35,player.pos.z)}subtitle('...',1100);setTimeout(()=>{if(!state.scareDone)whisper('نگاه نکن')},1800)}
 function triggerScare(){if(state.scareDone||!entity)return;state.scareDone=true;scareBoom();$('flash').style.opacity=.9;setTimeout(()=>$('flash').style.opacity=0,80);const start=performance.now();const ep=entity.position.clone(),target=player.pos.clone().add(new THREE.Vector3(0,-1.72,0));target.y=0;function lunge(t){const k=clamp((t-start)/420,0,1);entity.position.lerpVectors(ep,new THREE.Vector3(target.x+(ep.x-target.x)*.18,0,target.z+(ep.z-target.z)*.18),k*k);if(k<1)requestAnimationFrame(lunge);else{setFlashlight(false,true);$('blackout').style.transition='opacity .08s';$('blackout').style.opacity=1;setTimeout(()=>{entity.visible=false;$('blackout').style.transition='opacity .7s';$('blackout').style.opacity=0;state.scare=false;setObjective(BI.openDoor);subtitle(bi('The door is unlocked.','در باز شده.'),2000)},650)}}requestAnimationFrame(lunge)}
 
-function openDoor(){if(!state.doorUnlocked){subtitle(bi('LOCKED','قفل است'));openKeypad();return}if(doorBlock.active){doorBlock.active=false;doorProxy.visible=false;const st=performance.now(),r0=doorVisual.rotation.y;function anim(t){const k=clamp((t-st)/900,0,1),e=1-Math.pow(1-k,3);doorVisual.rotation.y=r0-Math.PI*.56*e;if(k<1)requestAnimationFrame(anim)}requestAnimationFrame(anim);setObjective(BI.enterHall);subtitle(bi('The doorway is clear.','راه باز است.'),1600);tone(72,.65,.1,'triangle')}}
+function openDoor(){if(!state.doorUnlocked){subtitle(bi('LOCKED','قفل است'));openKeypad();return}if(doorBlock.active){doorBlock.active=false;doorProxy.visible=false;playSfx('doorHandle',.38,1);setTimeout(()=>playSfx('doorCreak',.56,.95),90);const st=performance.now(),r0=doorVisual.rotation.y;function anim(t){const k=clamp((t-st)/900,0,1),e=1-Math.pow(1-k,3);doorVisual.rotation.y=r0-Math.PI*.56*e;if(k<1)requestAnimationFrame(anim)}requestAnimationFrame(anim);setObjective(BI.enterHall);subtitle(bi('The doorway is clear.','راه باز است.'),1600)}}
 
 function nearestUsable(maxDist=2.6){let best=null,bestD=maxDist;for(const o of interactables){if(!o.visible)continue;const wp=new THREE.Vector3();o.getWorldPosition(wp);const d=Math.hypot(wp.x-player.pos.x,wp.z-player.pos.z);if(d<bestD){best=o;bestD=d}}return best}
-function useObject(){if(state.modal||!state.started)return;let o=currentInteract||nearestUsable(state.hasFlashlight?2.05:3.0);if(!o){hint(bi('Move closer and look at the object.','نزدیک‌تر شو و به شیء نگاه کن.'),1500);return}const t=o.userData.type;if(t==='flashlight')pickupFlashlight();else if(t==='phone')answerPhone();else if(t==='fragment')collectFragment(o);else if(t==='keypad')openKeypad();else if(t==='finalNote')inspectFinal();else if(t==='hallNote'){state.hallNoteRead=true;showNote(o.userData.text,()=>{setObjective(bi('Keep walking until the hallway changes.','راه برو تا خود راهرو تغییر کند.'));subtitle(bi('Do not trust the door numbers.','به شماره درها اعتماد نکن.'),2300)})}else if(t==='door')openDoor()}
+function useObject(){if(state.modal||!state.started)return;let o=currentInteract||nearestUsable(state.hasFlashlight?2.05:3.0);if(!o){hint(bi('Move closer and look at the object.','نزدیک‌تر شو و به شیء نگاه کن.'),1500);return}const t=o.userData.type;if(t==='flashlight')pickupFlashlight();else if(t==='phone')answerPhone();else if(t==='fragment')collectFragment(o);else if(t==='keypad')openKeypad();else if(t==='finalNote')inspectFinal();else if(t==='hallNote'){state.hallNoteRead=true;showNote(o.userData.text,()=>{hallNote.visible=false;applyHallPhaseVisuals();setObjective(hallPhaseObjective());subtitle(bi('Do not trust the door numbers. Watch the hallway itself.','به شماره درها اعتماد نکن. خود راهرو را نگاه کن.'),2800)})}else if(t==='hallDoor')tryHallDoor(o);else if(t==='hallEndDoor')openHallEndDoor();else if(t==='door')openDoor()}
 
 // Invisible door interaction proxy
 const doorProxy=new THREE.Mesh(new THREE.BoxGeometry(1.62,2.52,.10),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));doorProxy.position.set(0,1.25,-4.34);scene.add(doorProxy);doorProxy.userData={type:'door'};interactables.push(doorProxy);
 
 let currentInteract=null;
 function interactionCheck(){if(state.modal){$('prompt').style.opacity=0;return}raycaster.setFromCamera(center,camera);const hits=raycaster.intersectObjects(interactables.filter(o=>o.visible),true);let hit=null;for(const h of hits){let root=h.object;while(root.parent&&root.parent!==scene&&root.parent!==camera&&!root.userData.type)root=root.parent;if(root.userData.type&&h.distance<2.15){hit=root;break}}if(!hit&&!state.hasFlashlight){const d=Math.hypot(player.pos.x-.35,player.pos.z-1.0);if(d<3.0)hit=flashlightHit}
-currentInteract=hit;const p=$('prompt');if(!hit){p.style.opacity=0;return}let text='USE';switch(hit.userData.type){case'flashlight':text=bi('TAKE FLASHLIGHT','چراغ‌قوه را بردار');break;case'phone':text=state.phoneDone?bi('PHONE','تلفن'):bi('ANSWER PHONE','تلفن را جواب بده');break;case'fragment':text=bi('READ','بخوان');break;case'keypad':text=bi('KEYPAD','صفحه رمز');break;case'finalNote':text=bi('READ NOTE','یادداشت را بخوان');break;case'hallNote':text=bi('READ FILE','پرونده را بخوان');break;case'door':text=state.doorUnlocked?bi('OPEN DOOR','در را باز کن'):bi('LOCKED DOOR','در قفل است');break}p.textContent=text;p.style.opacity=1}
+currentInteract=hit;const p=$('prompt');if(!hit){p.style.opacity=0;return}let text='USE';switch(hit.userData.type){case'flashlight':text=bi('TAKE FLASHLIGHT','چراغ‌قوه را بردار');break;case'phone':text=state.phoneDone?bi('PHONE','تلفن'):bi('ANSWER PHONE','تلفن را جواب بده');break;case'fragment':text=bi('READ','بخوان');break;case'keypad':text=bi('KEYPAD','صفحه رمز');break;case'finalNote':text=bi('READ NOTE','یادداشت را بخوان');break;case'hallNote':text=bi('READ FILE','پرونده را بخوان');break;case'hallDoor':text=bi('TRY DOOR','در را امتحان کن');break;case'hallEndDoor':text=state.hallEndDoorUnlocked?bi('OPEN LAST DOOR','در آخر را باز کن'):bi('LAST DOOR — LOCKED','در آخر — قفل');break;case'door':text=state.doorUnlocked?bi('OPEN DOOR','در را باز کن'):bi('LOCKED DOOR','در قفل است');break}p.textContent=text;p.style.opacity=1}
 
 function setFlashlight(v,forced=false){
  if(!state.hasFlashlight&&!forced){hint(bi('You do not have the flashlight yet. Follow the weak warm light and press USE.','هنوز چراغ‌قوه را برنداشتی. نور گرم ضعیف را دنبال کن و USE را بزن.'),2600);return}
@@ -508,6 +588,7 @@ function flashlightFault(t){
 function collisionTry(nx,nz){
  // Doorway safety corridor: once the physical door collider is disabled, the player must never be caught by the old lintel/edge footprint.
  if(!doorBlock.active&&Math.abs(nx)<.72&&nz<-4.05&&nz>-5.15)return true;
+ if(!hallEndDoorBlock.active&&Math.abs(nx)<.78&&nz<-25.22&&nz>-24.02)return true;
  for(const c of colliders){if(c.active===false)continue;const px=clamp(nx,c.x-c.hw,c.x+c.hw),pz=clamp(nz,c.z-c.hd,c.z+c.hd);const dx=nx-px,dz=nz-pz;if(dx*dx+dz*dz<player.radius*player.radius)return false}return true
 }
 
@@ -529,7 +610,7 @@ function startGame(){
  startLocked=true;
  // iOS Safari can report stale innerWidth/innerHeight for a moment after rotation.
  // Do not abort the tap. CSS still keeps portrait mode blocked visually.
- try{audioInit();if(actx&&actx.state==='suspended')actx.resume().catch(()=>{});startDrone()}catch(err){console.warn('Audio init skipped:',err)}
+ try{primeSfx()}catch(err){console.warn('SFX preload skipped:',err)}
  state.started=true;
  $('intro').style.display='none';$('hud').style.display='block';$('orientationLock').style.display='none';
  $('blackout').style.transition='opacity 1.5s ease';requestAnimationFrame(()=>$('blackout').style.opacity=.0);
@@ -564,34 +645,26 @@ function update(dt,t){if(!state.started)return;
  // occasional dead ceiling flicker after phone
  if(state.phoneDone&&Math.random()<.0009){ceilingFlicker.intensity=.16;setTimeout(()=>ceilingFlicker.intensity=0,45)}
  interactionCheck();
- // Let the player actually walk through the door and experience a short Stage-2 preview before ending Room 0.
- if(!state.hallPreview&&state.doorUnlocked&&!doorBlock.active&&player.pos.z<-6.15){state.hallPreview=true;setObjective(bi('Find the patient file in the hallway.','پرونده بیمار را در راهرو پیدا کن.'));subtitle(bi('STAGE 2 — THE HALLWAY','مرحله ۲ — راهرو'),3000);knock()}
+ // Room 01 -> Room 02 transition. Room 01 remains locked; all active development below is Room 02.
+ if(!state.hallPreview&&state.doorUnlocked&&!doorBlock.active&&player.pos.z<-6.15){state.hallPreview=true;state.hallPhase=0;state.hallChoiceSolved=false;setObjective(bi('Find the patient file in the hallway.','پرونده بیمار را در راهرو پیدا کن.'));subtitle(bi('STAGE 2 — THE HALLWAY','مرحله ۲ — راهرو'),3000);applyHallPhaseVisuals();knock()}
  // ===== ROOM 02 RUNTIME — THE HALLWAY =====
  if(state.hallPreview){
-   hallFrame.visible=true;if(hallChair)hallChair.visible=true;
+   if(hallChair)hallChair.visible=true;
    // Corridor lighting is unstable: dirty fluorescent tubes repeatedly lose power.
-   if(t>state.nextHallBlackout){state.hallBlackoutUntil=t+.16+Math.random()*.42;state.nextHallBlackout=t+2.2+Math.random()*5.0;if(Math.random()<.45)knock()}
+   if(t>state.nextHallBlackout){state.hallBlackoutUntil=t+.16+Math.random()*.42;state.nextHallBlackout=t+2.2+Math.random()*5.0;if(Math.random()<.33)knock()}
    const blackout=t<state.hallBlackoutUntil;
-   hallLamp.intensity=blackout?0:(.55+Math.max(0,Math.sin(t*8.1))*.95);
-   hallLamp2.intensity=blackout?0:(.30+Math.max(0,Math.sin(t*5.7+1.4))*.62);
-   hallCeilingLights.forEach((l,i)=>{const f=.52+.48*Math.max(0,Math.sin(t*(5.4+i*.73)+i*1.9));const randomDrop=Math.random()<.018?0:1;l.intensity=blackout?0:l.userData.base*f*randomDrop;if(l.userData.tube)l.userData.tube.material.opacity=blackout?.025:.10+.22*f*randomDrop});
-   // When Samyar looks back, one object silently changes place after he faces forward again.
-   const forwardNow=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);
-   if(player.pos.z<-11&&forwardNow.z>.28)state.hallLookedBack=true;
-   if(state.hallLookedBack&&!state.hallShifted&&forwardNow.z<-.30){
-      state.hallShifted=true;
-      if(hallChair){hallChair.position.x=-.82;hallChair.position.z=-18.3;hallChair.rotation.y=.68}
-      hallFrame.position.z=-12.2;hallFrame.rotation.z=.12;
-      if(hallDoors[5])hallDoors[5].position.z-=.38;
-      tone(38,.18,.10,'triangle');
-   }
-   // Blink-and-you-miss-it wall shadows. No creature exists in Stage 1; these begin only here.
+   hallLamp.intensity=blackout?0:(.55+Math.max(0,Math.sin(t*8.1))*.95);hallLamp2.intensity=blackout?0:(.30+Math.max(0,Math.sin(t*5.7+1.4))*.62);
+   hallCeilingLights.forEach((l,i)=>{const f=.52+.48*Math.max(0,Math.sin(t*(5.4+i*.73)+i*1.9)),randomDrop=Math.random()<.018?0:1;l.intensity=blackout?0:l.userData.base*f*randomDrop;if(l.userData.tube)l.userData.tube.material.opacity=blackout?.025:.10+.22*f*randomDrop});
+   // Real footsteps, sparse and quiet. No background music.
+   if(!state.modal){const moved=Math.hypot(player.pos.x-stepAnchor.x,player.pos.z-stepAnchor.z),need=state.running?.58:.78;if(moved>need&&t>state.nextStepAt){playSfx('step',state.running?.13:.095,.90+Math.random()*.16);stepAnchor.copy(player.pos);state.nextStepAt=t+(state.running?.24:.36)}}
+   // When Samyar looks back, a non-clue object silently changes place after he faces forward again.
+   const forwardNow=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);if(player.pos.z<-11&&forwardNow.z>.28)state.hallLookedBack=true;
+   if(state.hallLookedBack&&!state.hallShifted&&forwardNow.z<-.30){state.hallShifted=true;if(hallChair){hallChair.position.x=-.82;hallChair.position.z=-18.3;hallChair.rotation.y=.68}if(state.hallPhase===1){hallFrame.position.z=-17.35;hallFrame.rotation.z=.09}if(hallDoors[1])hallDoors[1].position.z-=.34;playSfx('shock',.16,.66)}
+   // Blink-and-you-miss-it wall shadows.
    if(t>state.nextShadowAt&&player.pos.z<-8.5){state.shadowStart=t;state.shadowUntil=t+.34;state.shadowSide=Math.random()<.5?-1:1;hallShadow.visible=true;hallShadow.rotation.y=state.shadowSide<0?Math.PI/2:-Math.PI/2;hallShadow.position.x=state.shadowSide*1.795;hallShadow.position.z=player.pos.z-2.8;state.nextShadowAt=t+5.0+Math.random()*8.0}
    if(hallShadow.visible){const q=clamp((t-state.shadowStart)/.34,0,1);hallShadow.position.z=player.pos.z-2.8+q*5.6;hallShadow.material.opacity=Math.sin(q*Math.PI)*.68;if(t>=state.shadowUntil){hallShadow.visible=false;hallShadow.material.opacity=0}}
- }
- if(state.hallPreview&&player.pos.z<-23.2){
-   if(state.hallLoop===0){state.hallLoop=1;player.pos.set(0,1.74,-6.8);player.yaw=0;player.pitch=-.06;subtitle(bi('You have been here before.','قبلاً اینجا بودی.'),2600);setObjective(bi('The hallway repeated. Find what changed.','راهرو تکرار شد. چیزی که تغییر کرده را پیدا کن.'));knock()}
-   else if(!state.ended&&state.hallNoteRead){state.ended=true;$('endPanel').style.display='flex';state.modal=true;$('blackout').style.opacity=.46}else if(!state.hallNoteRead){player.pos.set(0,1.74,-6.8);subtitle(bi('You missed something.','یه چیزی رو جا انداختی.'),2200);setObjective(bi('Find the patient file.','پرونده بیمار را پیدا کن.'));knock()}
+   // The loop occurs only AFTER the end door is opened and Samyar physically walks through it.
+   if(state.hallEndDoorOpen&&player.pos.z<-25.02)advanceHallLoop();
  }
  const baseExp=state.flashlight?.56:.27;renderer.toneMappingExposure=baseExp+Math.sin(t*.43)*.006;
  adaptPerformance(dt)
