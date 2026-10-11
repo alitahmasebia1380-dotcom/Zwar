@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="mobile-web-app-capable" content="yes" />
-<title>Z WAR — V17.1 • VOXEL WAR MOBILE</title>
+<title>Z WAR — V17.2 • VOXEL WAR MOBILE</title>
 <!-- Z WAR V17 Voxel War Mobile Pass. Block/voxel world, ready-made hero assets, tall concealment grass, hard collision proxies and mobile thermal budget. -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
@@ -79,6 +79,30 @@ canvas{display:block}#renderHost canvas{image-rendering:auto}button,select{font:
 @media (orientation:portrait){#rotateOverlay{display:flex}}@media (max-height:620px){#tutorial{left:calc(var(--safeL) + 150px);top:calc(var(--safeT) + 58px);width:min(240px,31vw);font-size:7px}#contextPrompt{bottom:calc(var(--safeB) + 87px)}#quickTools{bottom:calc(var(--safeB) + 7px)}#objective{top:43px;font-size:8px;padding:4px 8px}#compass{top:31px}#baseStatus{top:56px}.panel{max-height:90vh}.menuBox{transform:scale(.91);transform-origin:center}.control{font-size:7px}#inventory{font-size:8px;bottom:calc(var(--safeB) + 1px)}#weaponName{font-size:9px}#utilityTray{bottom:calc(var(--safeB) + 91px);width:min(600px,76vw)}}
 @media (orientation:landscape) and (max-height:500px){#mainMenu{padding:max(6px,var(--safeT)) max(10px,var(--safeR)) max(6px,var(--safeB)) max(10px,var(--safeL));align-items:stretch;overflow:hidden}.menuBox{width:100%;height:100%;min-height:0;grid-template-columns:minmax(220px,.82fr) minmax(300px,1.18fr);gap:10px;align-items:stretch;transform:none!important}.menuTitle{display:flex;flex-direction:column;justify-content:center;min-height:0;overflow:hidden;padding-bottom:58px}.menuTitle h1{font-size:clamp(34px,7vw,56px);line-height:.84;letter-spacing:5px}.menuTitle h3{margin:6px 0 0;font-size:8px;letter-spacing:2px}.menuTitle p:first-of-type{font-size:7px;line-height:1.25;max-height:58px;overflow:hidden;margin:6px 0 0}.deploy{position:fixed!important;left:max(12px,var(--safeL));bottom:max(10px,var(--safeB));z-index:1200;margin:0!important;padding:10px 20px!important;min-height:42px;width:min(220px,38vw);font-size:12px!important;box-shadow:0 8px 24px rgba(0,0,0,.55),0 0 18px rgba(229,68,80,.28)}#commanderHint{display:none}#roleGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;max-height:calc(100dvh - 30px);overflow-y:auto;overscroll-behavior:contain;padding:0 2px 8px}.roleCard{padding:5px;min-height:0;font-size:7px}.roleCard b{font-size:8px}.roleCard span{font-size:6px;margin-top:1px;line-height:1.1}}
 @media (orientation:landscape) and (max-height:390px){.menuTitle p:first-of-type{display:none}.menuTitle h3{font-size:7px}.menuTitle{padding-bottom:54px}#roleGrid{max-height:calc(100dvh - 24px)}}
+
+/* V17.2 iPhone landscape menu hard-fix: never allow DEPLOY outside viewport. */
+@media (orientation:landscape){
+  #mainMenu{padding:max(8px,var(--safeT)) max(10px,var(--safeR)) max(8px,var(--safeB)) max(10px,var(--safeL));align-items:stretch;justify-content:center;overflow:hidden}
+  #mainMenu .menuBox{width:100%;height:100%;max-height:100dvh;min-height:0;transform:none!important;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:12px;align-items:stretch;overflow:hidden}
+  #mainMenu .menuTitle{min-height:0;height:100%;overflow:hidden;padding:6px 6px 64px 0;display:flex;flex-direction:column;justify-content:center}
+  #mainMenu .menuTitle h1{font-size:clamp(30px,12vh,58px);line-height:.86;letter-spacing:5px;margin:0}
+  #mainMenu .menuTitle h3{margin:6px 0 0;font-size:8px;line-height:1.15;letter-spacing:2px}
+  #mainMenu .menuTitle p:first-of-type{font-size:7px;line-height:1.28;max-height:30vh;overflow:hidden;margin:6px 0 0}
+  #mainMenu #commanderHint{display:none}
+  #mainMenu .menuBox>div:nth-child(2){min-height:0;height:100%;overflow:hidden;padding:6px 0}
+  #mainMenu #roleGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;max-height:none;height:calc(100% - 24px);overflow-y:auto;overscroll-behavior:contain;padding:0 2px 12px}
+  #mainMenu .roleCard{padding:6px;min-height:0;font-size:7px}
+  #mainMenu .roleCard b{font-size:9px}
+  #mainMenu .roleCard span{font-size:6.5px;line-height:1.12;margin-top:2px}
+  #mainMenu #deployBtn{position:fixed!important;left:50%!important;right:auto!important;bottom:calc(max(10px,var(--safeB)))!important;top:auto!important;transform:translateX(-50%)!important;z-index:100000!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;width:min(240px,42vw)!important;min-width:180px;min-height:46px;margin:0!important;padding:11px 22px!important;font-size:13px!important;border-radius:10px!important;box-shadow:0 10px 30px rgba(0,0,0,.7),0 0 20px rgba(239,67,80,.45)!important}
+}
+@media (orientation:landscape) and (max-height:430px){
+  #mainMenu .menuTitle p:first-of-type{display:none}
+  #mainMenu .menuTitle{justify-content:flex-start;padding-top:12px;padding-bottom:58px}
+  #mainMenu .menuTitle h1{font-size:38px}
+  #mainMenu #roleGrid{height:calc(100% - 20px);gap:4px}
+  #mainMenu .roleCard{padding:5px}
+}
 </style>
 </head>
 <body>
